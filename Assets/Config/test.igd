@@ -1,0 +1,8 @@
+MATCH_ROUND_START
+roundsPerHalf 17
+roundsToWin 9
+setVisibility $allT false
+
+MATCH_CT_DEAD
+kill $killer
+addCash $target -10000

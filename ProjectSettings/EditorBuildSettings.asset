@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/OnlineLobby.unity
+    guid: a36fe2ad236119d49bb532a35ca13e7c
+  - enabled: 1
+    path: Assets/Scenes/OnlineWaitMenu.unity
+    guid: f5f62e9744ffb6447bad6aac6b9a841e
+  - enabled: 1
+    path: Assets/Scenes/FightScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Settings.unity
+    guid: 6f251156dfc618f47b415ffe335e4350
+  - enabled: 1
+    path: Assets/Scenes/Graffiti.unity
+    guid: f68b776f4d6e20849af3445e2f47045b
+  - enabled: 1
+    path: Assets/Scenes/Buffer.unity
+    guid: 50a323aa937b2f04081a4c70cb7ab02b
+  - enabled: 1
+    path: Assets/Scenes/MapEditorMenu.unity
+    guid: 7e955c6873daed348ad626ea73d4d2c7
+  - enabled: 1
+    path: Assets/Scenes/MapCreator.unity
+    guid: a547018893f53ab4eb573f0aab1656ef
+  m_configObjects: {}
