@@ -651,6 +651,7 @@ GameObject:
   - component: {fileID: 261042780}
   - component: {fileID: 261042779}
   - component: {fileID: 261042778}
+  - component: {fileID: 261042782}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -748,6 +749,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &261042782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261042777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d093c00de595e8445b5a808abb51b38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &318861183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1357,7 +1370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61fba611b20bb3c45be2a57f36faacc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objToDelete: {fileID: 0}
   parent: {fileID: 1973570407}
 --- !u!114 &734347571
 MonoBehaviour:
@@ -1518,6 +1530,7 @@ GameObject:
   - component: {fileID: 799950561}
   - component: {fileID: 799950560}
   - component: {fileID: 799950564}
+  - component: {fileID: 799950565}
   m_Layer: 5
   m_Name: ConsoleCanvas
   m_TagString: Untagged
@@ -1620,7 +1633,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e2e2650c7736ea419096617c9ca39d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: {fileID: 1166896469}
+--- !u!114 &799950565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799950559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d093c00de595e8445b5a808abb51b38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &858196397
 GameObject:
   m_ObjectHideFlags: 0

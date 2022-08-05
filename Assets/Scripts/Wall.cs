@@ -5,9 +5,9 @@ using System.Globalization;
 
 public class Wall : MonoBehaviour
 {
-    public SpriteRenderer SpriteRenderer => _spriteRenderer;
+    [SerializeField] float _health;
 
-    private float _health;
+    public SpriteRenderer SpriteRenderer => _spriteRenderer;
 
     private SpriteRenderer _spriteRenderer;
 

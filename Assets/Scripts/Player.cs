@@ -261,6 +261,9 @@ public class Player : MonoBehaviour
         _hasSmoke = hasSmoke;
         _hasWall = hasWall;
         this.armor = armor;
+
+        FightSceneManager.Instance.ArmorObject.SetActive(armor != 0);
+
         _cash = cash;
 
         RespawnWeapon();
@@ -595,9 +598,12 @@ public class Player : MonoBehaviour
                     FightSceneManager.Instance.HealthText.text = "0";
 
                 float damageDealt = 0f;
-                if (_playersDamaged.ContainsKey(attacker))
+                if (attacker != null)
                 {
-                    damageDealt = _playersDamaged[attacker];
+                    if (_playersDamaged.ContainsKey(attacker))
+                    {
+                        damageDealt = _playersDamaged[attacker];
+                    }
                 }
                 float damageReceived = 0f;
 
@@ -629,7 +635,8 @@ public class Player : MonoBehaviour
                 gameHost.message += "SetDeaths " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[_playerNumber].Deaths.ToString(CultureInfo.InvariantCulture) + "\n";
             }
 
-            GameHost.Instance.RegisterKill(attacker.ID, this, damageType);
+            if (attacker != null)
+                GameHost.Instance.RegisterKill(attacker.ID, this, damageType);
         }
         else if (gameHost != null && _controlling)
             FightSceneManager.Instance.HealthText.text = health.ToString(CultureInfo.InvariantCulture);
@@ -710,6 +717,8 @@ public class Player : MonoBehaviour
                 Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
 
                 _currentGunID = 1;
+
+                _animator.Play("idle_gun", 0, 0);
 
                 _gunScript.Setup(gameObject, _team, bulletCount, roundAmmo);
 
@@ -998,6 +1007,8 @@ public class Player : MonoBehaviour
                     Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                     _currentGunID = 0;
 
+                    _animator.Play("idle_gun", 0, 0);
+
                     _gunScript.Setup(gameObject, _team, _gunBulletCount, _gunRoundAmmo);
                     GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
                 }
@@ -1011,6 +1022,9 @@ public class Player : MonoBehaviour
                     Gun = newGun;
                     Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                     _currentGunID = 1;
+
+                    _animator.Play("idle_gun", 0, 0);
+
                     _gunScript.Setup(gameObject, _team, _pistolBulletCount, _pistolRoundAmmo);
                     GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
                 }
@@ -1022,6 +1036,9 @@ public class Player : MonoBehaviour
                 Gun = knife;
                 Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                 _currentGunID = 2;
+
+                _animator.Play("idle_knife", 0, 0);
+
                 knife.transform.name = "sword";
                 _gunHitbox.KnifeSetup(_team, gameObject);
                 GameHost.Instance.message += "Play " + "21" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
@@ -1035,6 +1052,10 @@ public class Player : MonoBehaviour
                     Gun = newGun;
                     Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                     _currentGunID = 3;
+
+
+                    _animator.Play("idle_knife", 0, 0);
+
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
                     GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
@@ -1049,6 +1070,10 @@ public class Player : MonoBehaviour
                     Gun = newGun;
                     Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                     _currentGunID = 4;
+
+
+                    _animator.Play("idle_knife", 0, 0);
+
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
                     GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
@@ -1063,6 +1088,10 @@ public class Player : MonoBehaviour
                     Gun = newGun;
                     Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                     _currentGunID = 5;
+
+
+                    _animator.Play("idle_knife", 0, 0);
+
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
                     GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
@@ -1077,6 +1106,10 @@ public class Player : MonoBehaviour
                     Gun = newGun;
                     Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                     _currentGunID = 7;
+
+
+                    _animator.Play("idle_knife", 0, 0);
+
                     _gunScript.GetParent(gameObject);
                     GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
                 }
@@ -1090,6 +1123,10 @@ public class Player : MonoBehaviour
                     Gun = newGun;
                     Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
                     _currentGunID = 6;
+
+
+                    _animator.Play("idle_knife", 0, 0);
+
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
                     GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
@@ -1524,6 +1561,8 @@ public class Player : MonoBehaviour
             Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
             _currentGunID = 0;
 
+            _animator.Play("idle_gun", 0, 0);
+
             _gunScript.Setup(gameObject, _team, _gunBulletCount, _gunRoundAmmo);
         }
         else if (_hasPistol)
@@ -1532,6 +1571,8 @@ public class Player : MonoBehaviour
             Gun = newGun;
             Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
             _currentGunID = 1;
+
+            _animator.Play("idle_gun", 0, 0);
 
             _gunScript.Setup(gameObject, _team, _pistolBulletCount, _pistolRoundAmmo);
         }
@@ -1542,6 +1583,8 @@ public class Player : MonoBehaviour
             Gun.GetComponent<SpriteRenderer>().enabled = limbsObj.transform.GetChild(0).gameObject.activeInHierarchy;
             _currentGunID = 2;
             knife.transform.name = "sword";
+
+            _animator.Play("idle_knife", 0, 0);
 
             _gunHitbox.KnifeSetup(_team, gameObject);
         }
@@ -1762,7 +1805,6 @@ public class Player : MonoBehaviour
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
                             GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "2" + "\n");
-
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha4))
                         {
@@ -1867,7 +1909,7 @@ public class Player : MonoBehaviour
                 }
                 if (_defusing == false && FightSceneManager.Instance.BuyMenu.activeInHierarchy == false)
                 {
-                    if (attackKnife == false && bombPlant == false && Input.GetMouseButton(0) && Chat.Instance.Focused == false && ConsoleCanvas.Instance.Content.activeInHierarchy == false && DragMegamap.Instance == null)
+                    if (attackKnife == false && bombPlant == false && Input.GetMouseButton(0) && Chat.Instance.Focused == false && ConsoleCanvas.Instance.Content.activeInHierarchy == false && (DragMegamap.Instance != null ? DragMegamap.Instance.gameObject.activeInHierarchy == false : true))
                     {
                         if ((_hasShot == false && _gunScript.Automatic == false) || _gunScript.Automatic)
                         {

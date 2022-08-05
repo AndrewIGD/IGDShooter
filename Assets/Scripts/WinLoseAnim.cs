@@ -71,12 +71,16 @@ public class WinLoseAnim : MonoBehaviour
                         {
                             playerImages[int.Parse(parameters[1], CultureInfo.InvariantCulture)].sprite = ctSprite;
                         }
+                        else continue;
+
                         break;
                     case "T":
                         if (GameClient.Instance.Team == 1)
                         {
                             playerImages[int.Parse(parameters[1], CultureInfo.InvariantCulture)].sprite = tSprite;                          
                         }
+                        else continue;
+
                         break;
                 }
 

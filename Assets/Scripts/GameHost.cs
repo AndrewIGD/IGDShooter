@@ -183,8 +183,7 @@ public class GameHost : MonoBehaviour
 
                 return;
             }
-
-            SavePlayerInventories();
+            else SavePlayerInventories();
 
             SendNewRoundPacket();
         }
@@ -203,16 +202,6 @@ public class GameHost : MonoBehaviour
 
     private void ConnectGameClient()
     {
-        var localHost = Dns.GetHostEntry(Dns.GetHostName());
-        string ownIp = "";
-        foreach (var ip in localHost.AddressList)
-        {
-            if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-            {
-                ownIp = ip.ToString();
-            }
-        }
-
         GameObject clientObject = new GameObject();
         GameClient clientScript = clientObject.AddComponent<GameClient>();
         clientObject.name = "GameClient";
@@ -227,7 +216,7 @@ public class GameHost : MonoBehaviour
 
         clientScript.tile = Resources.Load("Prefabs\\tile") as GameObject;
 
-        clientScript.ip = ownIp;
+        clientScript.ip = "127.0.0.1";
         clientScript.Initialize();
     }
 
@@ -247,8 +236,8 @@ public class GameHost : MonoBehaviour
         clients = new Dictionary<long, NetConnection>();
         config = new NetPeerConfiguration("IGDShooter")
         {
-            EnableUPnP = true,
             Port = 25565,
+            //EnableUPnP = true,
             AcceptIncomingConnections = true,
             PingInterval = 1f,
             ResendHandshakeInterval = 1f,
@@ -258,12 +247,15 @@ public class GameHost : MonoBehaviour
             SendBufferSize = PlayerPrefs.GetInt("ServerSendBuffer", 3072)
         };
 
+        config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+        config.EnableMessageType(NetIncomingMessageType.StatusChanged);
+
         _server = new NetServer(config);
         _server.Start();
 
         StartCoroutine(MessageQueue(64));
 
-        Invoke("ConnectGameClient", 1f);
+        ConnectGameClient();
     }
 
     public void WarmupEnd()
@@ -742,7 +734,6 @@ public class GameHost : MonoBehaviour
                 NetIncomingMessage message = messages[i];
 
                 string text = message.ReadString();
-                //Debug.Log("GameHost: " + text);
 
 
                 string[] lines = text.Split('\n');
@@ -761,9 +752,10 @@ public class GameHost : MonoBehaviour
                         Destroy(gameObject);
                     if(message.MessageType == NetIncomingMessageType.StatusChanged)
                     {
-                        if(message.SenderConnection.Status == NetConnectionStatus.Connected)
+                        //Debug.Log("Status");
+                        if (message.SenderConnection.Status == NetConnectionStatus.Connected)
                         {
-                            Debug.Log("Conexiune");
+                            //Debug.Log("Conexiune");
                         }
                     }
                     if (message.MessageType == NetIncomingMessageType.Data)
@@ -879,6 +871,8 @@ public class GameHost : MonoBehaviour
 
                     if (message.MessageType == NetIncomingMessageType.ConnectionApproval)
                     {
+                        Debug.Log("Approval");
+
                         message.SenderConnection.Approve();
                     }
 
@@ -1311,11 +1305,12 @@ public class GameHost : MonoBehaviour
         {
             if (awardIDs.Contains(awards[i].id) && awardedPlayers.Contains(awards[i].playerID) == false)
             {
-                awardsGiven++;
                 awardedPlayers.Add(awards[i].playerID);
 
                 awardIDs.Remove(awards[i].id);
                 message += teamName + " " + awardsGiven.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[awards[i].playerID].Name + " " + MatchData.PlayerData[awards[i].playerID].Kills.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[awards[i].playerID].Deaths.ToString(CultureInfo.InvariantCulture) + " " + awards[i].title + "$" + awards[i].description + "\n";
+                
+                awardsGiven++;
             }
         }
     }
@@ -1417,7 +1412,7 @@ public class GameHost : MonoBehaviour
         }
     }
 
-    private void SendNewRoundPacket()
+    public void SendNewRoundPacket()
     {
         _freezeTimeLeft = Config.FreezeTime;
 

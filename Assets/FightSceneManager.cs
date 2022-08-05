@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class FightSceneManager : MonoBehaviour
 {
+    [SerializeField] WinLoseAnim winLose;
     [SerializeField] GameObject bomb;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject he;
@@ -66,6 +67,7 @@ public class FightSceneManager : MonoBehaviour
 
     public static FightSceneManager Instance;
 
+    public WinLoseAnim WinLose => winLose;
     public GameObject Bomb => bomb;
     public GameObject BulletPrefab => bullet;
     public GameObject HePrefab => he;

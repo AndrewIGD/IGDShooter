@@ -153,6 +153,52 @@ public class Console : MonoBehaviour
                         GameClient.Instance.ClientSetName(parameters[1]);
                     }
                 }
+                else if (parameters[0] == "help")
+                {
+                    chatBox.GetComponent<Text>().text += @"
+*CLIENT COMMANDS*
+
+name <desired_name> - Changes local player name.
+writeChat <all/team> <text> - Writes text.
+clearChat - Clears Chat.
+clearConsole - Clears Console.
+writeConsole <text> - Writes text in console.
+leaveMatch - Leaves Match.
+quit - Closes game.
+exec <fileName> <parameter1> <parameter2> <parameter3> ... - Load a config file from the /Config folder
+
+*SERVER COMMANDS*
+
+reset <time> - Restarts the game in <time> seconds.
+setCash <playerName> <value> - Sets the cash of target player. 
+setSpeed <playerName> <speed> - Sets the speed of target player.
+setHealth <playerName> <health> - Sets the health of target player.
+addCash <playerName> <value> - Adds cash of target player. 
+addSpeed <playerName> <speed> - Adds speed to target player.
+addHealth <playerName> <health> - Adds health to target player.
+setVisibility <playerName> <true/false> - Sets the visibility of target player.
+setRecoil <playerName> <true/false> - Sets the recoil of target player.
+kill <playerName> - Kills player.
+roundTime <time> - Changes the round time in seconds. Does not apply in the current round.
+buyTime <time> - Changes the time allowed to buy. Does not apply in the current round.
+freezeTime <time> - Changes the time you are frozen in place. Does not apply in the current round.
+bombTime <time> - Changes the time it takes a bomb to explode. Does not apply in the current round.
+warmupTime <time> - Changes the warmup time. This applies immediatly to the current round.
+roundsPerHalf <value> - Changes how many rounds a half has.
+roundsToWin <value> - Changes how many rounds it takes to win.
+swapTeams <time> - Swaps the teams and restarts the round in <time> seconds.
+warmupEnd <time> - End warmup in <time> seconds.
+maxCash <value> - Changes the maximum amount of cash a player can hold.
+loseCash <value> - Changes how much cash you gain from losing.
+winCash <value> - Changes how much cash you gain from losing.
+loseStreakCash <value> - Changes how much cash you gain from losing consecutively.
+sendCommandFeedback <true/false> - Changes if a command should send feedback.
+friendlyFire <true/false> - Changes whether or not teammates can shoot each other.
+showKillFeed <true/false> - Changes whether or not kill feed is shown.
+serverWhisper <playerName> <text> - Whispers to a player without anybody receiving feedback, not even the host.
+
+";
+                }
                 else if(parameters[0] == "kick")
                 {
                     if (parameters[1].Contains("$target"))
@@ -1826,7 +1872,7 @@ public class Console : MonoBehaviour
     void Swap()
     {
         GameHost.Instance.Swap();
-        GameHost.Instance.StartRound();
+        GameHost.Instance.SendNewRoundPacket();
     }
 
     void WarmupEnd()

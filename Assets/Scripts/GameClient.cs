@@ -154,7 +154,7 @@ public class GameClient : MonoBehaviour
 
             config = new NetPeerConfiguration("IGDShooter")
             {
-                EnableUPnP = true,
+                //EnableUPnP = true,
                 AcceptIncomingConnections = true,
                 PingInterval = 1f,
                 ResendHandshakeInterval = 1f,
@@ -163,8 +163,6 @@ public class GameClient : MonoBehaviour
                 ReceiveBufferSize = PlayerPrefs.GetInt("ClientReceiveBuffer", 3072),
                 SendBufferSize = PlayerPrefs.GetInt("ClientSendBuffer", 1024)
             };
-
-            config.EnableMessageType(NetIncomingMessageType.StatusChanged);
 
             client = new NetClient(config);
             client.Start();
@@ -1249,25 +1247,25 @@ public class GameClient : MonoBehaviour
                     GameObject obj = new GameObject();
                     obj.transform.position = new Vector3(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture), 0);
 
-                    obj.AddComponent<AudioSource>();
-                    obj.GetComponent<AudioSource>().clip = SoundArchive.Instance.sounds[int.Parse(parameters[1], CultureInfo.InvariantCulture)];
+                    AudioSource source = obj.AddComponent<AudioSource>();
+                    source.clip = SoundArchive.Instance.sounds[int.Parse(parameters[1], CultureInfo.InvariantCulture)];
 
-                    obj.GetComponent<AudioSource>().spatialBlend = 1f;
-                    obj.GetComponent<AudioSource>().spread = 360f;
-                    obj.GetComponent<AudioSource>().rolloffMode = AudioRolloffMode.Linear;
-                    obj.GetComponent<AudioSource>().dopplerLevel = 0f;
-                    obj.GetComponent<AudioSource>().maxDistance = 30f;
-                    obj.GetComponent<AudioSource>().minDistance = 5f;
+                    source.spatialBlend = 1f;
+                    source.spread = 360f;
+                    source.rolloffMode = AudioRolloffMode.Linear;
+                    source.dopplerLevel = 0f;
+                    source.maxDistance = 30f;
+                    source.minDistance = 5f;
 
                     if (parameters[1] == "14" || parameters[1] == "17")
                     {
-                        obj.GetComponent<AudioSource>().maxDistance = 60f;
-                        obj.GetComponent<AudioSource>().minDistance = 10f;
+                        source.maxDistance = 60f;
+                        source.minDistance = 10f;
                     }
                     if (parameters[1] == "25" || parameters[1] == "26")
                     {
-                        obj.GetComponent<AudioSource>().maxDistance = 45f;
-                        obj.GetComponent<AudioSource>().minDistance = 7.5f;
+                        source.maxDistance = 45f;
+                        source.minDistance = 7.5f;
                     }
 
 
@@ -1297,16 +1295,22 @@ public class GameClient : MonoBehaviour
                     obj.transform.parent = players[id].transform;
 
                     obj.transform.position = new Vector3(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture), 0);
-                    obj.AddComponent<AudioSource>();
+                    AudioSource source = obj.AddComponent<AudioSource>();
                     if (parameters[1] == "14")
-                        obj.GetComponent<AudioSource>().volume = 0.75f;
+                        source.volume = 0.75f;
 
-                    obj.GetComponent<AudioSource>().clip = SoundArchive.Instance.sounds[int.Parse(parameters[1], CultureInfo.InvariantCulture)];
+                    source.spatialBlend = 1f;
+                    source.spread = 360f;
+                    source.rolloffMode = AudioRolloffMode.Linear;
+                    source.dopplerLevel = 0f;
+                    source.maxDistance = 30f;
+                    source.minDistance = 5f;
+                    source.clip = SoundArchive.Instance.sounds[int.Parse(parameters[1], CultureInfo.InvariantCulture)];
 
                     if (parameters[1] == "13" || parameters[1] == "12")
                     {
-                        obj.GetComponent<AudioSource>().maxDistance = 60f;
-                        obj.GetComponent<AudioSource>().minDistance = 20f;
+                        source.maxDistance = 60f;
+                        source.minDistance = 20f;
                     }
 
                     List<AudioSource> asList = new List<AudioSource>();
@@ -1325,8 +1329,8 @@ public class GameClient : MonoBehaviour
                     }
 
 
-                    obj.GetComponent<AudioSource>().Play();
-                    Destroy(obj, obj.GetComponent<AudioSource>().clip.length + 1);
+                    source.Play();
+                    Destroy(obj, source.clip.length + 1);
                 }
             }
             else if (type == "Msg")
@@ -1366,20 +1370,20 @@ public class GameClient : MonoBehaviour
 
                 if (team == -1)
                 {
-                    FindObjectOfType<WinLoseAnim>().InterpretText("Draw");
+                    FightSceneManager.Instance.WinLose.InterpretText("Draw");
                 }
                 else if (team == this.Team)
                 {
-                    FindObjectOfType<WinLoseAnim>().InterpretText("Victory");
+                    FightSceneManager.Instance.WinLose.InterpretText("Victory");
                 }
                 else
                 {
-                    FindObjectOfType<WinLoseAnim>().InterpretText("Defeat");
+                    FightSceneManager.Instance.WinLose.InterpretText("Defeat");
                 }
             }
             else if (type == "CT" || type == "T")
             {
-                FindObjectOfType<WinLoseAnim>().InterpretText(line);
+                FightSceneManager.Instance.WinLose.InterpretText(line);
             }
             else if (type == "Whisper")
             {
