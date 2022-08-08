@@ -18,7 +18,7 @@ public class Grenade : MonoBehaviour
 
     private Player _parentScript;
 
-    private long _playerNumber = 0;
+    private string _playerNumber = "";
     private string _name;
     private int _team;
 
@@ -52,7 +52,7 @@ public class Grenade : MonoBehaviour
 
             if (GameHost.Instance != null)
             {
-                GameHost.Instance.message += "Play " + "9" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(9, transform.position));
 
                 foreach (Player player in GameClient.Instance.AlivePlayers)
                 {
@@ -82,7 +82,8 @@ public class Grenade : MonoBehaviour
         {
             if (GameHost.Instance != null)
             {
-                GameHost.Instance.message += "Play " + "10" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(10, transform.position));
+
                 Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
                 Bounds bounds = GetComponent<SpriteRenderer>().bounds;
 
@@ -93,9 +94,9 @@ public class Grenade : MonoBehaviour
                     cameraAnimator.Play("flash", 0, 0);
 
                     cameraAnimator.speed = ((float)((int)(Vector2.Distance(transform.position, Camera.main.transform.position)) + 1)) / 6f;
-
                 }
-                GameHost.Instance.message += "FlashScreen " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+
+                Network.Instance.Send(new FlashScreen(transform.position));
             }
             Destroy(gameObject);
         }
@@ -105,11 +106,13 @@ public class Grenade : MonoBehaviour
 
             if (GameHost.Instance != null)
             {
-                GameHost.Instance.message += "Play " + "11" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(11, transform.position));
+
                 GameObject vfx = Instantiate(explosionVfx);
                 vfx.transform.position = transform.position;
                 vfx.GetComponent<Smoke>().Activate();
-                GameHost.Instance.message += "SmokeVfx " + vfx.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + vfx.transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+
+                Network.Instance.Send(new SmokeVfx(vfx.transform.position));
             }
 
             Destroy(gameObject, 1f);
@@ -120,8 +123,8 @@ public class Grenade : MonoBehaviour
 
             if (GameHost.Instance != null)
             {
-                GameHost.Instance.message += "Play " + "24" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
-                GameHost.Instance.message += "Wall " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + transform.localEulerAngles.z.ToString(CultureInfo.InvariantCulture) + " " + "wall" + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(24, transform.position));
+                Network.Instance.Send(new WallPacket(transform.position, transform.localEulerAngles.z, GameHost.Instance.drop++));
             }
 
             Destroy(gameObject);

@@ -106,23 +106,26 @@ public class Weapon : MonoBehaviour
             bulletSpeed = Vector2.Distance(grenade.transform.position, targetPos) * 2;
 
             grenade.transform.localEulerAngles = bulletPos.transform.eulerAngles + new Vector3(0, 0, 180);
-            grenade.GetComponent<Rigidbody2D>().velocity = grenade.transform.up * bulletSpeed;
+
+            Rigidbody2D grenadeRb = grenade.GetComponent<Rigidbody2D>();
+
+            grenadeRb.velocity = grenade.transform.up * bulletSpeed;
 
             Grenade grenadeScript = grenade.GetComponent<Grenade>();
 
             grenadeScript.GetParent(parent);
             grenadeScript.InvokeDetonation();
 
-            GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + parentScript.ID.ToString(CultureInfo.InvariantCulture) + "\n";
+            Network.Instance.Send(new Play(20, transform.position, parentScript.ID));
 
             if (heGren)
-                GameHost.Instance.message += "HE " + grenade.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.localEulerAngles.z.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new GrenadePacket(0, grenade.transform.position, grenadeRb.velocity, grenade.transform.localEulerAngles.z));
             else if (flashGren)
-                GameHost.Instance.message += "Flash " + grenade.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.localEulerAngles.z.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new GrenadePacket(1, grenade.transform.position, grenadeRb.velocity, grenade.transform.localEulerAngles.z));
             else if (smokeGren)
-                GameHost.Instance.message += "Smoke " + grenade.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.localEulerAngles.z.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new GrenadePacket(2, grenade.transform.position, grenadeRb.velocity, grenade.transform.localEulerAngles.z));
             else if (wallGren)
-                GameHost.Instance.message += "WallGren " + grenade.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.x.ToString(CultureInfo.InvariantCulture) + " " + grenade.GetComponent<Rigidbody2D>().velocity.y.ToString(CultureInfo.InvariantCulture) + " " + grenade.transform.localEulerAngles.z.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new GrenadePacket(3, grenade.transform.position, grenadeRb.velocity, grenade.transform.localEulerAngles.z));
 
             Destroy(gameObject);
         }
@@ -149,7 +152,7 @@ public class Weapon : MonoBehaviour
     {
         if (canShoot == true && roundAmmo != 0)
         {
-            GameHost.Instance.message += "Play " + type.ToString(CultureInfo.InvariantCulture) + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + parentScript.ID.ToString(CultureInfo.InvariantCulture) + "\n";
+            Network.Instance.Send(new Play(type, transform.position, parentScript.ID));
 
             if (shotGun)
             {
@@ -166,8 +169,8 @@ public class Weapon : MonoBehaviour
             else
             {
                 Fire(running, 0f);
-            }           
-            
+            }
+
             DecreaseAmmo();
         }
     }
@@ -197,13 +200,15 @@ public class Weapon : MonoBehaviour
 
         bulletHitbox.Setup(_team, bulletDamage, type, parent);
 
+        Rigidbody2D bulletRb = newBullet.GetComponent<Rigidbody2D>();
+
         if (running == false || parentScript.GunRecoil == false)
-            newBullet.GetComponent<Rigidbody2D>().velocity = -newBullet.transform.up * bulletSpeed;
-        else newBullet.GetComponent<Rigidbody2D>().velocity = -newBullet.transform.up * bulletSpeed + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
+            bulletRb.velocity = -newBullet.transform.up * bulletSpeed;
+        else bulletRb.velocity = -newBullet.transform.up * bulletSpeed + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
 
         newBullet.transform.name = GameHost.Instance.drop.ToString(CultureInfo.InvariantCulture);
 
-        GameHost.Instance.message += "Bullet " + newBullet.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + newBullet.transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + newBullet.GetComponent<Rigidbody2D>().velocity.x.ToString(CultureInfo.InvariantCulture) + " " + newBullet.GetComponent<Rigidbody2D>().velocity.y.ToString(CultureInfo.InvariantCulture) + " " + newBullet.transform.localEulerAngles.z.ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + "\n";
+        Network.Instance.Send(new Bullet(newBullet.transform.position, bulletRb.velocity, newBullet.transform.localEulerAngles.z, GameHost.Instance.drop++));
 
         if (destroy)
             Destroy(newBullet, 0.5f);
@@ -227,7 +232,7 @@ public class Weapon : MonoBehaviour
 
     private void ReloadSound()
     {
-        GameHost.Instance.message += "Play " + "7" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + parentScript.ID.ToString(CultureInfo.InvariantCulture) + "\n";
+        Network.Instance.Send(new Play(7, transform.position, parentScript.ID));
     }
 
     private void CanShoot()
@@ -237,8 +242,8 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        if(transform.parent.CompareTag("Prefabs") == false)
-             parentScript = parent.GetComponent<Player>();
+        if (transform.parent.CompareTag("Prefabs") == false)
+            parentScript = parent.GetComponent<Player>();
     }
 
     public void Setup(GameObject gameObject, int team, int bulletCount, int roundAmmo)

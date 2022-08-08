@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MapCreator.unity
     guid: a547018893f53ab4eb573f0aab1656ef
+  - enabled: 1
+    path: Assets/Scenes/HostRoom.unity
+    guid: 3d2bada377e149447b5de9d9a4bf2553
   m_configObjects: {}

@@ -9,7 +9,8 @@ public class KillFeed : MonoBehaviour
     [SerializeField] GameObject listObj;
     [SerializeField] Image[] deathTypes;
 
-    public void AddKillFeed(string killerName, string deadName, int type, string killerTeam, string deadTeam)
+    
+    public void AddKillFeed(string killerName, string deadName, int type, int killerTeam, int deadTeam)
     {
         GameObject newKillFeed = Instantiate(killFeed);
         newKillFeed.transform.parent = listObj.transform;
@@ -24,7 +25,7 @@ public class KillFeed : MonoBehaviour
                 case "Killer":
                     {
                         childText.text = killerName;
-                        if (killerTeam == "0")
+                        if (killerTeam == 0)
                             childText.color = new Color32(0, 255, 255, 255);
                         else childText.color = new Color32(255, 0, 0, 255);
 
@@ -33,7 +34,7 @@ public class KillFeed : MonoBehaviour
                 case "Dead":
                     {
                         childText.text = deadName;
-                        if (deadTeam == "0")
+                        if (deadTeam == 0)
                             childText.color = new Color32(0, 255, 255, 255);
                         else childText.color = new Color32(255, 0, 0, 255);
 

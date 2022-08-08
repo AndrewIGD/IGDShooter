@@ -44,7 +44,8 @@ public class Bomb : MonoBehaviour
             if (timer >= tickRate)
             {
                 timer = 0;
-                GameHost.Instance.message += "Play " + "18" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+
+                Network.Instance.Send(new Play(18, transform.position));
             }
         }
     }

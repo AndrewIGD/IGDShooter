@@ -116,7 +116,7 @@ public class LidgrenNetworkHandler : MonoBehaviour, INetworkHandler
 
                                     _sessionList.Add(new LidgrenSessionData(parameters[0], int.Parse(parameters[1]), int.Parse(parameters[2]), message.SenderEndPoint));
 
-                                    //RoomListManager.Instance.UpdateRoomList(_sessionList);
+                                    Network.Instance.UpdateSessionList(_sessionList);
 
                                     break;
                                 }

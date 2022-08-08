@@ -40,7 +40,7 @@ public class Drop : MonoBehaviour
                 bool playerGotDrop = player.GetDrop(type, _bulletCount, _roundAmmo);
 
                 if (playerGotDrop)
-                    GameHost.Instance.message += "Destroy " + transform.name + "\n";
+                    Network.Instance.Send(new Destroy(transform.name));
             }
         }
     }

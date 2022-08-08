@@ -270,7 +270,7 @@ public class Tab : MonoBehaviour
         }
     }
 
-    public void ModifyName(string old, string newName)
+    public void ModifyName(string playerID, string newName)
     {
         bool ok = false;
         for (int i = 0; i < bluePlayers.Count; i++)
@@ -373,5 +373,5 @@ public class PlayerScore
     public int kills;
     public int deaths;
     public string name;
-    public long playerID;
+    public string playerID;
 };

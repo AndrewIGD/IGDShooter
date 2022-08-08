@@ -200,9 +200,11 @@ public class Chat : MonoBehaviour
         if (allType == 1)
             message = "/all " + message;
 
-        GameClient.Instance.Send("Msg " + all.ToString(CultureInfo.InvariantCulture) + " " + GameClient.Instance.Team.ToString(CultureInfo.InvariantCulture) + " " +
-            (GameClient.Instance.Team == 0 ? "<color=aqua>" + GameClient.Instance.currentName + "</color>" : "") + (GameClient.Instance.Team == 1 ? "<color=red>" + GameClient.Instance.currentName + "</color>" : "") +
-            ": " + message + "\n");
+        Network.Instance.Send(new Msg(all == 1, GameClient.Instance.Team, message));
+
+        //GameClient.Instance.Send("Msg " + all.ToString(CultureInfo.InvariantCulture) + " " + GameClient.Instance.Team.ToString(CultureInfo.InvariantCulture) + " " +
+        //    (GameClient.Instance.Team == 0 ? "<color=aqua>" + GameClient.Instance.currentName + "</color>" : "") + (GameClient.Instance.Team == 1 ? "<color=red>" + GameClient.Instance.currentName + "</color>" : "") +
+        //    ": " + message + "\n");
     }
 
     private void Start()

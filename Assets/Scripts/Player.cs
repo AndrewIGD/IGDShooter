@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
         _consecutiveKills++;
     }
 
-    public long ID => _playerNumber;
+    public string ID => _playerNumber;
 
     public string Name => _nameText.text;
 
@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
 
     private float _timeAlive = 0;
 
-    private long _playerNumber = -1;
+    private string _playerNumber = "";
 
     private bool _controllable = false;
 
@@ -228,7 +228,7 @@ public class Player : MonoBehaviour
 
     public void SetSpeed(float v) => speed = v;
 
-    public void Setup(long id, string name, int gunID, bool hasPistol, bool hasHe, bool hasFlash, bool hasSmoke, bool hasWall, int armor, int cash, int team)
+    public void Setup(string id, string name, int gunID, bool hasPistol, bool hasHe, bool hasFlash, bool hasSmoke, bool hasWall, int armor, int cash, int team)
     {
         _team = team;
 
@@ -360,7 +360,7 @@ public class Player : MonoBehaviour
             }
 
             if (GameHost.Instance != null)
-                MatchData.PlayerData[_playerNumber - 1].Team = 0;
+                MatchData.PlayerData[_playerNumber].Team = 0;
         }
         else if (team.Trim() == "t")
         {
@@ -379,7 +379,7 @@ public class Player : MonoBehaviour
                 }
             }
             if (GameHost.Instance != null)
-                MatchData.PlayerData[_playerNumber - 1].Team = 1;
+                MatchData.PlayerData[_playerNumber].Team = 1;
         }
     }
 
@@ -425,7 +425,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void DeathData(string damageDealt, string damageReceived, string killerName)
+    public void DeathData(int damageDealt, int damageReceived, string killerName)
     {
         FightSceneManager.Instance.DeathInfo.GetComponentInChildren<Text>().text = "You were killed by <b><color=red>" + killerName + "</color></b>\n" + "Damage Dealt: <b><color=orange>" + damageDealt + "</color></b>\n" + "Damage Received: <b><color=orange>" + damageReceived + "</color></b>";
         FightSceneManager.Instance.DeathInfo.SetActive(true);
@@ -483,7 +483,7 @@ public class Player : MonoBehaviour
                 }
                 if (found == false && GameHost.Instance._roundOver == false)
                 {
-                    GameHost.Instance.message += "Play " + "15" + "\n";
+                    Network.Instance.Send(new Play(15));
                 }
 
                 GameHost gameHost = GameHost.Instance;
@@ -507,31 +507,31 @@ public class Player : MonoBehaviour
 
                 if (_gunType != -1)
                 {
-                    GameHost.Instance.message += "Drop " + _gunType.ToString(CultureInfo.InvariantCulture) + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + _gunBulletCount.ToString(CultureInfo.InvariantCulture) + " " + _gunRoundAmmo.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new ServerDrop(_gunType, transform.position, new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), GameHost.Instance.drop++, _gunBulletCount, _gunRoundAmmo));
                 }
                 if (_hasPistol)
                 {
-                    GameHost.Instance.message += "Drop " + "0" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + _pistolBulletCount.ToString(CultureInfo.InvariantCulture) + " " + _pistolRoundAmmo.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new ServerDrop(0, transform.position, new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), GameHost.Instance.drop++, _pistolBulletCount, _pistolRoundAmmo));
                 }
                 if (_hasHe)
                 {
-                    GameHost.Instance.message += "Drop " + "6" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " 0 0" + "\n";
+                    Network.Instance.Send(new ServerDrop(6, transform.position, new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), GameHost.Instance.drop++, 0, 0));
                 }
                 if (_hasFlash)
                 {
-                    GameHost.Instance.message += "Drop " + "7" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " 0 0" + "\n";
+                    Network.Instance.Send(new ServerDrop(7, transform.position, new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), GameHost.Instance.drop++, 0, 0));
                 }
                 if (_hasFlash)
                 {
-                    GameHost.Instance.message += "Drop " + "8" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " 0 0" + "\n";
+                    Network.Instance.Send(new ServerDrop(8, transform.position, new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), GameHost.Instance.drop++, 0, 0));
                 }
                 if (_hasBomb)
                 {
-                    GameHost.Instance.message += "Drop " + "9" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " 0 0" + "\n";
+                    Network.Instance.Send(new ServerDrop(9, transform.position, new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), GameHost.Instance.drop++, 0, 0));
                 }
                 if (_hasWall)
                 {
-                    GameHost.Instance.message += "Drop " + "10" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + Random.Range(-5f, 5f).ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " 0 0" + "\n";
+                    Network.Instance.Send(new ServerDrop(10, transform.position, new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)), GameHost.Instance.drop++, 0, 0));
                 }
                 _gunType = -1;
                 _hasPistol = false;
@@ -565,7 +565,7 @@ public class Player : MonoBehaviour
     public void DecreaseHp(Player attacker, float damage, int damageType)
     {
         GameHost gameHost = GameHost.Instance;
-        gameHost.message += "Play " + "16" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+        Network.Instance.Send(new Play(16, transform.position, _playerNumber));
         if (armor != 0)
         {
             if (damage > armor)
@@ -614,11 +614,11 @@ public class Player : MonoBehaviour
 
                 MatchData.PlayerData[_playerNumber].Deaths++;
 
-                gameHost.message += "SetDeaths " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[_playerNumber].Deaths.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new SetDeaths(_playerNumber, MatchData.PlayerData[_playerNumber].Deaths));
 
                 if (attacker != null)
-                    gameHost.message += "Death " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + damageDealt.ToString(CultureInfo.InvariantCulture) + " " + damageReceived.ToString(CultureInfo.InvariantCulture) + " " + attacker.Name + "\n";
-                else gameHost.message += "Death " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Death(_playerNumber, (int)damageDealt, (int)damageReceived, attacker.Name));
+                else Network.Instance.Send(new Death(_playerNumber));
             }
             else
             {
@@ -632,7 +632,7 @@ public class Player : MonoBehaviour
 
                 MatchData.PlayerData[_playerNumber].Deaths++;
 
-                gameHost.message += "SetDeaths " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[_playerNumber].Deaths.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new SetDeaths(_playerNumber, MatchData.PlayerData[_playerNumber].Deaths));
             }
 
             if (attacker != null)
@@ -722,7 +722,7 @@ public class Player : MonoBehaviour
 
                 _gunScript.Setup(gameObject, _team, bulletCount, roundAmmo);
 
-                GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(20, transform.position, _playerNumber));
             }
             ok = true;
         }
@@ -734,7 +734,7 @@ public class Player : MonoBehaviour
             if (_gunScript.Type == 0 || _gunScript.Type == 6)
             {
                 RespawnWeapon();
-                GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(20, transform.position, _playerNumber));
             }
             ok = true;
         }
@@ -797,7 +797,7 @@ public class Player : MonoBehaviour
             {
                 if (_gunType >= 1 && _gunType <= 5)
                 {
-                    GameHost.Instance.message += "Drop " + _gunType.ToString(CultureInfo.InvariantCulture) + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + "0" + " " + "0" + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + _gunBulletCount.ToString(CultureInfo.InvariantCulture) + " " + _gunRoundAmmo.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new ServerDrop(_gunType, transform.position, Vector2.zero, GameHost.Instance.drop++, _gunBulletCount, _gunRoundAmmo));
                 }
 
                 _gunType = type;
@@ -809,7 +809,8 @@ public class Player : MonoBehaviour
                 if (_gunScript.Type != 7 && _gunScript.Type != 8 && _gunScript.Type != 9)
                 {
                     RespawnWeapon();
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
                 ActivateWeaponList();
             }
@@ -877,7 +878,7 @@ public class Player : MonoBehaviour
         {
             if (Vector2.Distance(transform.position, GameHost.Instance.bombObject.transform.position) < 1)
             {
-                GameHost.Instance.message += "Play " + "13" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(13, transform.position, _playerNumber));
 
                 if (_gunScript.IsGun)
                     _animator.Play("idle_gun");
@@ -1010,7 +1011,7 @@ public class Player : MonoBehaviour
                     _animator.Play("idle_gun", 0, 0);
 
                     _gunScript.Setup(gameObject, _team, _gunBulletCount, _gunRoundAmmo);
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
             }
             else if (type == 1)
@@ -1026,7 +1027,7 @@ public class Player : MonoBehaviour
                     _animator.Play("idle_gun", 0, 0);
 
                     _gunScript.Setup(gameObject, _team, _pistolBulletCount, _pistolRoundAmmo);
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
             }
             else if (type == 2 && _gunScript.Type != 0)
@@ -1041,7 +1042,7 @@ public class Player : MonoBehaviour
 
                 knife.transform.name = "sword";
                 _gunHitbox.KnifeSetup(_team, gameObject);
-                GameHost.Instance.message += "Play " + "21" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(21, transform.position, _playerNumber));
             }
             else if (type == 3)
             {
@@ -1058,7 +1059,7 @@ public class Player : MonoBehaviour
 
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
             }
             else if (type == 4)
@@ -1076,7 +1077,7 @@ public class Player : MonoBehaviour
 
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
             }
             else if (type == 5)
@@ -1094,7 +1095,7 @@ public class Player : MonoBehaviour
 
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
             }
             else if (type == 6)
@@ -1111,7 +1112,7 @@ public class Player : MonoBehaviour
                     _animator.Play("idle_knife", 0, 0);
 
                     _gunScript.GetParent(gameObject);
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
             }
             else if (type == 7)
@@ -1129,7 +1130,7 @@ public class Player : MonoBehaviour
 
                     _gunScript.GetParent(gameObject);
                     _gunScript.GetBulletPosition(grenBltPos);
-                    GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(20, transform.position, _playerNumber));
                 }
             }
         }
@@ -1274,14 +1275,14 @@ public class Player : MonoBehaviour
             NullTargetPosition();
 
             if (_target != null)
-                GameHost.Instance.message += "Drop " + "0" + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).x.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).y.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * (5 + speed)).x.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * (5 + speed)).y.ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + _pistolBulletCount.ToString(CultureInfo.InvariantCulture) + " " + _pistolRoundAmmo.ToString(CultureInfo.InvariantCulture) + "\n";
-            else GameHost.Instance.message += "Drop " + "0" + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).x.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).y.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * 5).x.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * 5).y.ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + _pistolBulletCount.ToString(CultureInfo.InvariantCulture) + " " + _pistolRoundAmmo.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new ServerDrop(0, (transform.position - (transform.position - grenBltPos.transform.position) * 2), (-transform.up * (5 + speed)), GameHost.Instance.drop++, _pistolBulletCount, _pistolRoundAmmo));
+            else Network.Instance.Send(new ServerDrop(0, (transform.position - (transform.position - grenBltPos.transform.position) * 2), (-transform.up * 5), GameHost.Instance.drop++, _pistolBulletCount, _pistolRoundAmmo));
 
             RespawnWeapon();
 
             if (_gunScript.IsKnife)
-                GameHost.Instance.message += "Play " + "21" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
-            else GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(21, transform.position, _playerNumber));
+            else Network.Instance.Send(new Play(20, transform.position, _playerNumber));
 
             _boxCollider2D.enabled = false;
             _boxCollider2D.enabled = true;
@@ -1302,14 +1303,14 @@ public class Player : MonoBehaviour
             NullTargetPosition();
 
             if (_target != null)
-                GameHost.Instance.message += "Drop " + "9" + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).x.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).y.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * (5 + speed)).x.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * (5 + speed)).y.ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + "0" + " " + "0" + "\n";
-            else GameHost.Instance.message += "Drop " + "9" + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).x.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).y.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * 5).x.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * 5).y.ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + "0" + " " + "0" + "\n";
+                Network.Instance.Send(new ServerDrop(9, (transform.position - (transform.position - grenBltPos.transform.position) * 2), (-transform.up * (5 + speed)), GameHost.Instance.drop++, 0, 0));
+            else Network.Instance.Send(new ServerDrop(9, (transform.position - (transform.position - grenBltPos.transform.position) * 2), (-transform.up * 5), GameHost.Instance.drop++, 0, 0));
 
             RespawnWeapon();
 
             if (_gunScript.IsKnife)
-                GameHost.Instance.message += "Play " + "21" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
-            else GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                Network.Instance.Send(new Play(21, transform.position, _playerNumber));
+            else Network.Instance.Send(new Play(20, transform.position, _playerNumber));
 
             _boxCollider2D.enabled = false;
             _boxCollider2D.enabled = true;
@@ -1331,16 +1332,14 @@ public class Player : MonoBehaviour
                 NullTargetPosition();
 
                 if (_target != null)
-                    GameHost.Instance.message += "Drop " + _gunType.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).x.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).y.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * (5 + speed)).x.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * (5 + speed)).y.ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + _gunBulletCount.ToString(CultureInfo.InvariantCulture) + " " + _gunRoundAmmo.ToString(CultureInfo.InvariantCulture) + "\n";
-                else GameHost.Instance.message += "Drop " + _gunType.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).x.ToString(CultureInfo.InvariantCulture) + " " + (transform.position - (transform.position - grenBltPos.transform.position) * 2).y.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * 5).x.ToString(CultureInfo.InvariantCulture) + " " + (-transform.up * 5).y.ToString(CultureInfo.InvariantCulture) + " " + GameHost.Instance.drop++.ToString(CultureInfo.InvariantCulture) + " " + _gunBulletCount.ToString(CultureInfo.InvariantCulture) + " " + _gunRoundAmmo.ToString(CultureInfo.InvariantCulture) + "\n";
-
-                _gunType = -1;
+                    Network.Instance.Send(new ServerDrop(_gunType, (transform.position - (transform.position - grenBltPos.transform.position) * 2), (-transform.up * (5 + speed)), GameHost.Instance.drop++, _gunBulletCount, _gunRoundAmmo));
+                else Network.Instance.Send(new ServerDrop(_gunType, (transform.position - (transform.position - grenBltPos.transform.position) * 2), (-transform.up * 5), GameHost.Instance.drop++, _gunBulletCount, _gunRoundAmmo));
 
                 RespawnWeapon();
 
                 if (_gunScript.IsKnife)
-                    GameHost.Instance.message += "Play " + "21" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
-                else GameHost.Instance.message += "Play " + "20" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + GetComponent<Player>()._playerNumber.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new Play(21, transform.position, _playerNumber));
+                else Network.Instance.Send(new Play(20, transform.position, _playerNumber));
 
                 _boxCollider2D.enabled = false;
                 _boxCollider2D.enabled = true;
@@ -1516,7 +1515,8 @@ public class Player : MonoBehaviour
 
     void Win()
     {
-        GameClient.Instance.Send("StopDef " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+        Network.Instance.Send(new StopDef());
+
         CancelInvoke("Win");
         _defusing = false;
         StopDefuse();
@@ -1778,7 +1778,7 @@ public class Player : MonoBehaviour
                             bool active = FightSceneManager.Instance.BuyMenu.activeInHierarchy;
                             FightSceneManager.Instance.BuyMenu.SetActive(!active);
                             FightSceneManager.Instance.CharacterInfo.SetActive(active);
-                            GameClient.Instance.Send("DropTarget" + " " + _playerNumber.ToString(CultureInfo.InvariantCulture));
+                            Network.Instance.Send(new DropTarget());
                         }
                         else CantBuy();
                     }
@@ -1789,14 +1789,16 @@ public class Player : MonoBehaviour
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "0" + "\n");
+
+                            Network.Instance.Send(new Switch(0));
+                           
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha2))
                         {
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "1" + "\n");
+                            Network.Instance.Send(new Switch(1));
 
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -1804,14 +1806,14 @@ public class Player : MonoBehaviour
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "2" + "\n");
+                            Network.Instance.Send(new Switch(2));
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha4))
                         {
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "3" + "\n");
+                            Network.Instance.Send(new Switch(3));
 
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha5))
@@ -1819,7 +1821,7 @@ public class Player : MonoBehaviour
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "4" + "\n");
+                            Network.Instance.Send(new Switch(4));
 
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha6))
@@ -1827,84 +1829,81 @@ public class Player : MonoBehaviour
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "5" + "\n");
-
+                            Network.Instance.Send(new Switch(5));
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha8))
                         {
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "6" + "\n");
-
+                            Network.Instance.Send(new Switch(6));
                         }
                         if (Input.GetKeyDown(KeyCode.Alpha7))
                         {
                             FightSceneManager.Instance.WeaponList.SetActive(true);
                             CancelInvoke("OffWeaponList");
                             Invoke("OffWeaponList", 5f);
-                            GameClient.Instance.Send("Switch " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + "7" + "\n");
-
+                            Network.Instance.Send(new Switch(7));
                         }
 
                         if (Input.GetKeyDown(KeyCode.Z))
                         {
-                            GameClient.Instance.Send("Graffiti " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + _graffiti1.ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new Graffiti(_graffiti1));
                         }
                         if (Input.GetKeyDown(KeyCode.X))
                         {
-                            GameClient.Instance.Send("Graffiti " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + _graffiti2.ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new Graffiti(_graffiti2));
                         }
                         if (Input.GetKeyDown(KeyCode.C))
                         {
-                            GameClient.Instance.Send("Graffiti " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + _graffiti3.ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new Graffiti(_graffiti3));
                         }
                         if (Input.GetKeyDown(KeyCode.V))
                         {
-                            GameClient.Instance.Send("Graffiti " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + _graffiti4.ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new Graffiti(_graffiti4));
                         }
 
                         if (_mouseScroll)
                         {
                             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
                             {
-                                GameClient.Instance.Send("ScrollUp " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+                                Network.Instance.Send(new ScrollUp());
                             }
                             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
                             {
-                                GameClient.Instance.Send("ScrollDown " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+                                Network.Instance.Send(new ScrollDown());
                             }
                         }
 
                         if (Input.GetKeyDown(KeyCode.R))
                         {
-                            GameClient.Instance.Send("Reload " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new Reload());
                         }
 
                         if (Input.GetKeyDown(KeyCode.G))
                         {
-                            GameClient.Instance.Send("Throw " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + Cursor.Position.x.ToString(CultureInfo.InvariantCulture) + " " + Cursor.Position.y.ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new Throw(Cursor.Position));
                         }
 
                         if (_team == 0)
                         {
                             if (Input.GetKey(KeyCode.E))
                             {
-                                GameClient.Instance.Send("Defuse " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+                                Network.Instance.Send(new Defuse());
                             }
                             if (Input.GetKeyUp(KeyCode.E))
                             {
-                                GameClient.Instance.Send("StopDef " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+                                Network.Instance.Send(new StopDef());
                             }
                         }
                     }
                     if (Input.GetKeyDown(KeyCode.LeftShift))
                     {
-                        GameClient.Instance.Send("Shift " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+                        Network.Instance.Send(new Shift());
                     }
                     if (Input.GetKeyUp(KeyCode.LeftShift))
                     {
-                        GameClient.Instance.Send("StopSh " + _playerNumber.ToString(CultureInfo.InvariantCulture) + "\n");
+                        Network.Instance.Send(new StopSh());
                     }
                 }
                 if (_defusing == false && FightSceneManager.Instance.BuyMenu.activeInHierarchy == false)
@@ -1920,7 +1919,7 @@ public class Player : MonoBehaviour
 
                             float rot = Mathf.Atan2(dif.y, dif.x) * Mathf.Rad2Deg;
 
-                            GameClient.Instance.Send("Shoot " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + (rot + 90).ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new Shoot(rot + 90));
                         }
                     }
                     else _hasShot = false;
@@ -1930,12 +1929,12 @@ public class Player : MonoBehaviour
                     {
                         if (Input.GetMouseButtonUp(0) && DragMegamap.Instance == null)
                         {
-                            GameClient.Instance.Send("ThrowNade " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + Cursor.Position.x.ToString(CultureInfo.InvariantCulture) + " " + Cursor.Position.y.ToString(CultureInfo.InvariantCulture) + "\n");
+                            Network.Instance.Send(new ThrowNade(Cursor.Position));
                         }
 
                         if (attackKnife == false && bombPlant == false && Input.GetMouseButton(1))
                         {
-                            GameClient.Instance.Send("PlayerTarget" + " " + _playerNumber.ToString(CultureInfo.InvariantCulture) + " " + Cursor.Position.x.ToString(CultureInfo.InvariantCulture) + " " + Cursor.Position.y.ToString(CultureInfo.InvariantCulture));
+                            Network.Instance.Send(new PlayerTarget(Cursor.Position));
                         }
                     }
                 }

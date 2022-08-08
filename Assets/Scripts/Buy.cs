@@ -14,7 +14,7 @@ public class Buy : MonoBehaviour
 
     public void BuyItem()
     {
-        GameClient.Instance.Send("Process " + _player.ID.ToString(CultureInfo.InvariantCulture) + " " + type.ToString(CultureInfo.InvariantCulture) + "\n");
+        Network.Instance.Send(new Process(type));
 
         SoundArchive.Instance.Play(22, _player.transform);
     }

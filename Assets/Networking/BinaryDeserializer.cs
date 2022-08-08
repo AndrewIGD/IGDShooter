@@ -37,6 +37,270 @@ public static class BinaryDeserializer
 
                         break;
                     }
+                case BinaryType.PlayerCount:
+                    {
+                        objectList.Add(new PlayerCount(DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.SystemMessage:
+                    {
+                        objectList.Add(new SystemMessage(DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.ClientNewPlayerName:
+                    {
+                        objectList.Add(new ClientNewPlayerName(DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.ServerNewPlayerName:
+                    {
+                        objectList.Add(new ServerNewPlayerName(DeserializeString(), DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.NewPlayerTeam:
+                    {
+                        objectList.Add(new NewPlayerTeam(DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.PlayerTarget:
+                    {
+                        objectList.Add(new PlayerTarget(new Vector2(DeserializeFloat(), DeserializeFloat())));
+
+                        break;
+                    }
+                case BinaryType.Shoot:
+                    {
+                        objectList.Add(new Shoot(DeserializeFloat()));
+
+                        break;
+                    }
+                case BinaryType.ThrowNade:
+                    {
+                        objectList.Add(new ThrowNade(new Vector2(DeserializeFloat(), DeserializeFloat())));
+
+                        break;
+                    }
+                case BinaryType.Switch:
+                    {
+                        objectList.Add(new Switch(DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.Process:
+                    {
+                        objectList.Add(new Process(DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.Reload:
+                    {
+                        objectList.Add(new Reload());
+
+                        break;
+                    }
+                case BinaryType.Defuse:
+                    {
+                        objectList.Add(new Defuse());
+
+                        break;
+                    }
+                case BinaryType.StopDef:
+                    {
+                        objectList.Add(new StopDef());
+
+                        break;
+                    }
+                case BinaryType.DropTarget:
+                    {
+                        objectList.Add(new DropTarget());
+
+                        break;
+                    }
+                case BinaryType.Shift:
+                    {
+                        objectList.Add(new Shift());
+
+                        break;
+                    }
+                case BinaryType.StopSh:
+                    {
+                        objectList.Add(new StopSh());
+
+                        break;
+                    }
+                case BinaryType.Throw:
+                    {
+                        objectList.Add(new Throw(new Vector2(DeserializeFloat(), DeserializeFloat())));
+
+                        break;
+                    }
+                case BinaryType.ScrollDown:
+                    {
+                        objectList.Add(new ScrollDown());
+
+                        break;
+                    }
+                case BinaryType.ScrollUp:
+                    {
+                        objectList.Add(new ScrollUp());
+
+                        break;
+                    }
+                case BinaryType.Graffiti:
+                    {
+                        objectList.Add(new Graffiti(DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.Msg:
+                    {
+                        objectList.Add(new Msg(DeserializeByte() == 1, DeserializeInt(), DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.Play:
+                    {
+                        byte paramCount = DeserializeByte();
+
+                        switch (paramCount)
+                        {
+                            case 0:
+                                {
+                                    objectList.Add(new Play(DeserializeInt()));
+
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    objectList.Add(new Play(DeserializeInt(), new Vector2(DeserializeFloat(), DeserializeFloat())));
+
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    objectList.Add(new Play(DeserializeInt(), new Vector2(DeserializeFloat(), DeserializeFloat()), DeserializeString()));
+
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
+                case BinaryType.Destroy:
+                    {
+                        objectList.Add(new Destroy(DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.Kick:
+                    {
+                        objectList.Add(new Kick(DeserializeString(), DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.Ban:
+                    {
+                        objectList.Add(new Ban(DeserializeString(), DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.KillFeed:
+                    {
+                        objectList.Add(new KillFeedPacket(DeserializeString(), DeserializeString(), DeserializeInt(), DeserializeInt(), DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.SetKills:
+                    {
+                        objectList.Add(new SetKills(DeserializeString(), DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.SetDeaths:
+                    {
+                        objectList.Add(new SetDeaths(DeserializeString(), DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.FlashScreen:
+                    {
+                        objectList.Add(new FlashScreen(new Vector2(DeserializeFloat(), DeserializeFloat())));
+
+                        break;
+                    }
+                case BinaryType.SmokeVfx:
+                    {
+                        objectList.Add(new SmokeVfx(new Vector2(DeserializeFloat(), DeserializeFloat())));
+
+                        break;
+                    }
+                case BinaryType.Wall:
+                    {
+                        objectList.Add(new WallPacket(new Vector2(DeserializeFloat(), DeserializeFloat()), DeserializeFloat(), DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.Grenade:
+                    {
+                        objectList.Add(new GrenadePacket(DeserializeInt(), new Vector2(DeserializeFloat(), DeserializeFloat()), new Vector2(DeserializeFloat(), DeserializeFloat()), DeserializeFloat()));
+
+                        break;
+                    }
+                case BinaryType.Bullet:
+                    {
+                        objectList.Add(new Bullet(new Vector2(DeserializeFloat(), DeserializeFloat()), new Vector2(DeserializeFloat(), DeserializeFloat()), DeserializeFloat(), DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.Defused:
+                    {
+                        objectList.Add(new Defused());
+
+                        break;
+                    }
+                case BinaryType.Warmup:
+                    {
+                        objectList.Add(new Warmup());
+
+                        break;
+                    }
+                case BinaryType.BombExplosion:
+                    {
+                        objectList.Add(new BombExplosion(new Vector2(DeserializeFloat(), DeserializeFloat())));
+
+                        break;
+                    }
+                case BinaryType.ServerDrop:
+                    {
+                        objectList.Add(new ServerDrop(DeserializeInt(), new Vector2(DeserializeFloat(), DeserializeFloat()), new Vector2(DeserializeFloat(), DeserializeFloat()), DeserializeInt(), DeserializeInt(), DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.SpawnPlayer:
+                    {
+                        objectList.Add(new SpawnPlayer(DeserializeString(), DeserializeString(), DeserializeInt(), DeserializeInt(), DeserializeByte(), DeserializeByte(), DeserializeByte(), DeserializeByte(), DeserializeInt(), DeserializeInt(), DeserializeByte(), DeserializeInt(), DeserializeInt()));
+
+                        break;
+                    }
+                case BinaryType.Disconnect:
+                    {
+                        objectList.Add(new Disconnect(DeserializeString()));
+
+                        break;
+                    }
+                case BinaryType.Death:
+                    {
+                        if (DeserializeByte() == 1)
+                            objectList.Add(new Death(DeserializeString(), DeserializeInt(), DeserializeInt(), DeserializeString()));
+                        else objectList.Add(new Death(DeserializeString()));
+
+                        break;
+                    }
             }
         }
 

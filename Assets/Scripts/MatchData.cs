@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MatchData : MonoBehaviour
 {
-    public static Dictionary<long, PlayerData> PlayerData = new Dictionary<long, PlayerData>(); 
+    public static NetworkingLibrary NetworkingLibrary;
+
+    public static Dictionary<string, PlayerData> PlayerData = new Dictionary<string, PlayerData>(); 
     
-    public static PlayerData GetPlayerData(long id)
+    public static PlayerData GetPlayerData(string id)
     {
         if (PlayerData.ContainsKey(id) == false)
             PlayerData.Add(id, new PlayerData());
@@ -16,7 +18,7 @@ public class MatchData : MonoBehaviour
 
     public static void ResetPlayerData()
     {
-        foreach(long i in PlayerData.Keys)
+        foreach(string i in PlayerData.Keys)
         {
             PlayerData[i].Cash = 800;
             PlayerData[i].GunID = -1;
@@ -45,7 +47,7 @@ public class MatchData : MonoBehaviour
 
     public static void Swap()
     {
-        foreach (long i in PlayerData.Keys)
+        foreach (string i in PlayerData.Keys)
         {
             PlayerData[i].Cash = 800;
             PlayerData[i].GunID = -1;
@@ -64,7 +66,7 @@ public class MatchData : MonoBehaviour
 
     public static void ResetInventories()
     {
-        foreach (long i in PlayerData.Keys)
+        foreach (string i in PlayerData.Keys)
         {
             PlayerData[i].Cash = 800;
             PlayerData[i].GunID = -1;

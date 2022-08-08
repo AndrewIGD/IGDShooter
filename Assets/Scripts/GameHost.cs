@@ -26,9 +26,7 @@ public class GameHost : MonoBehaviour
 
     public string map;
 
-    public List<IPAddress> bannedIps = new List<IPAddress>();
-
-    public string message = "";
+    public List<string> bannedIps = new List<string>();
 
     public bool sentPlayers = false;
 
@@ -95,22 +93,19 @@ public class GameHost : MonoBehaviour
                 "attack_knife",
                 "bomb_plant" };
 
-    public void RegisterKill(long killerPlayerNumber, Player targetPlayer, int killType)
+    public void RegisterKill(string killerPlayerNumber, Player targetPlayer, int killType)
     {
         MatchData.PlayerData[killerPlayerNumber].Kills++;
 
         GameClient.Instance.playerScripts[killerPlayerNumber].IncreaseConsecutiveKills();
 
         if (Config.ShowKillFeed)
-            message += "KillFeed " + MatchData.PlayerData[killerPlayerNumber].Name + " " + targetPlayer.Name + " " + killType.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[killerPlayerNumber].Team.ToString(CultureInfo.InvariantCulture) + " " + targetPlayer.Team.ToString(CultureInfo.InvariantCulture) + "\n";
+            Network.Instance.Send(new KillFeedPacket(MatchData.PlayerData[killerPlayerNumber].Name, targetPlayer.Name, killType, MatchData.PlayerData[killerPlayerNumber].Team, targetPlayer.Team));
 
-        message += "SetKills " + killerPlayerNumber.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[killerPlayerNumber].Kills.ToString(CultureInfo.InvariantCulture) + "\n";
+        Network.Instance.Send(new SetKills(killerPlayerNumber, MatchData.PlayerData[killerPlayerNumber].Kills));
     }
 
     private int playerCount = 1;
-
-
-    private Dictionary<long, NetConnection> clients = new Dictionary<long, NetConnection>();
 
     private NetPeerConfiguration config;
 
@@ -122,22 +117,22 @@ public class GameHost : MonoBehaviour
 
     public void KickPlayer(string name, string message)
     {
-        long playerID = GetClientByName(name);
+        string playerID = GetClientByName(name);
 
         RemoveClient(playerID);
 
-        this.message += "Kick " + MatchData.PlayerData[playerID].Name + " " + message + "\n";
+        Network.Instance.Send(new Kick(playerID, message));
     }
 
     public void BanPlayer(string name, string message)
     {
-        long playerID = GetClientByName(name);
+        string playerID = GetClientByName(name);
 
         RemoveClient(playerID);
 
-        this.message += "Ban " + MatchData.PlayerData[playerID].Name + " " + message + "\n";
+        Network.Instance.Send(new Ban(playerID, message));
 
-        bannedIps.Add(clients[playerID].RemoteEndPoint.Address);
+        bannedIps.Add(playerID);
     }
 
     public void RestartGame()
@@ -222,19 +217,17 @@ public class GameHost : MonoBehaviour
 
     public void Initialize()
     {
-        if (FindObjectsOfType<GameHost>().Length >= 2)
+        /*if (FindObjectsOfType<GameHost>().Length >= 2)
         {
             Destroy(gameObject);
 
             return;
-        }
+        }*/
 
-        Instance = this;
 
-        SceneManager.LoadScene("OnlineWaitMenu");
+        //SceneManager.LoadScene("OnlineWaitMenu");
 
-        clients = new Dictionary<long, NetConnection>();
-        config = new NetPeerConfiguration("IGDShooter")
+        /*config = new NetPeerConfiguration("IGDShooter")
         {
             Port = 25565,
             //EnableUPnP = true,
@@ -248,14 +241,122 @@ public class GameHost : MonoBehaviour
         };
 
         config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
-        config.EnableMessageType(NetIncomingMessageType.StatusChanged);
+        config.EnableMessageType(NetIncomingMessageType.StatusChanged);*/
 
-        _server = new NetServer(config);
-        _server.Start();
+        //_server = new NetServer(config);
+        //_server.Start();
 
-        StartCoroutine(MessageQueue(64));
+        //StartCoroutine(MessageQueue(64));
 
-        ConnectGameClient();
+        Instance = this;
+
+        Network.Instance.OnClientConnected += HandleClientConnection;
+
+        Network.Instance.OnMessagesReceived += OnMessagesReceived;
+
+        DontDestroyOnLoad(gameObject);
+
+        //ConnectGameClient();
+    }
+
+    private void OnMessagesReceived(object[] objects, string senderId)
+    {
+        for (int i = 0; i < objects.Length; i++)
+        {
+            switch (objects[i])
+            {
+                case ClientNewPlayerName clientNewPlayerName:
+                    {
+                        HandleNewPlayerName(clientNewPlayerName.Data, senderId);
+                        break;
+                    }
+                case NewPlayerTeam clientNewPlayerTeam:
+                    {
+                        HandleNewPlayerTeam(clientNewPlayerTeam.TeamID, senderId);
+                        break;
+                    }
+                case PlayerTarget playerTarget:
+                    {
+                        HandlePlayerTarget(playerTarget.Position, senderId);
+                        break;
+                    }
+                case Shoot shoot:
+                    {
+                        HandleShoot(shoot.Angle, senderId);
+                        break;
+                    }
+                case ThrowNade throwNade:
+                    {
+                        HandleThrowNade(throwNade.Position, senderId);
+                        break;
+                    }
+                case Switch _switch:
+                    {
+                        HandleSwitch(_switch.InventoryID, senderId);
+                        break;
+                    }
+                case Process process:
+                    {
+                        HandleProcess(process.BuyID, senderId);
+                        break;
+                    }
+                case Reload reload:
+                    {
+                        HandleReload(senderId);
+                        break;
+                    }
+                case Defuse defuse:
+                    {
+                        HandleDefuse(senderId);
+                        break;
+                    }
+                case StopDef stopDef:
+                    {
+                        HandleStopDef(senderId);
+                        break;
+                    }
+                case DropTarget dropTarget:
+                    {
+                        HandleDropTarget(senderId);
+                        break;
+                    }
+                case Shift shift:
+                    {
+                        HandleShift(senderId);
+                        break;
+                    }
+                case StopSh stopSh:
+                    {
+                        HandleStopSh(senderId);
+                        break;
+                    }
+                case Throw thr:
+                    {
+                        HandleThrow(thr.Position, senderId);
+                        break;
+                    }
+                case ScrollUp scrollUp:
+                    {
+                        HandleScrollUp(senderId);
+                        break;
+                    }
+                case ScrollDown scrollDown:
+                    {
+                        HandleScrollDown(senderId);
+                        break;
+                    }
+                case Graffiti graffiti:
+                    {
+                        HandleGraffiti(graffiti.GraffitiID, senderId);
+                        break;
+                    }
+                case Msg msg:
+                    {
+                        HandleMsg(msg.All, msg.Team, msg.Data, senderId);
+                        break;
+                    }
+            }
+        }
     }
 
     public void WarmupEnd()
@@ -305,7 +406,7 @@ public class GameHost : MonoBehaviour
     {
         if (_inGame && sentPlayers == false)
         {
-            foreach (long i in MatchData.PlayerData.Keys)
+            foreach (string i in MatchData.PlayerData.Keys)
             {
                 if (MatchData.PlayerData[i].ClientAlive && MatchData.PlayerData[i].Team != 2)
                 {
@@ -329,7 +430,7 @@ public class GameHost : MonoBehaviour
                     if (MatchData.PlayerData[i].HasWall)
                         hasWall = 1;
 
-                    message += "SpawnPlayer " + i.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[i].Name + " " + MatchData.PlayerData[i].Team.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[i].GunID.ToString(CultureInfo.InvariantCulture) + " " + hasPistol.ToString(CultureInfo.InvariantCulture) + " " + hasHe.ToString(CultureInfo.InvariantCulture) + " " + hasFlash.ToString(CultureInfo.InvariantCulture) + " " + hasSmoke.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[i].Armor.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[i].Cash.ToString(CultureInfo.InvariantCulture) + " " + hasWall.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[i].Kills.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[i].Deaths.ToString(CultureInfo.InvariantCulture) + "\n";
+                    Network.Instance.Send(new SpawnPlayer(i, MatchData.PlayerData[i].Name, MatchData.PlayerData[i].Team, MatchData.PlayerData[i].GunID, hasPistol, hasHe, hasFlash, hasSmoke, MatchData.PlayerData[i].Armor, MatchData.PlayerData[i].Cash, hasWall, MatchData.PlayerData[i].Kills, MatchData.PlayerData[i].Deaths));
                 }
             }
             sentPlayers = true;
@@ -338,14 +439,14 @@ public class GameHost : MonoBehaviour
 
     private void DisconnectClient(NetIncomingMessage message)
     {
-        foreach (long i in MatchData.PlayerData.Keys)
+        foreach (string i in MatchData.PlayerData.Keys)
         {
             if (clients[i].RemoteEndPoint == message.SenderConnection.RemoteEndPoint && MatchData.PlayerData[i].ClientAlive)
             {
                 RemoveClient(i);
 
-                this.message += "System 1 0 <color=yellow>" + MatchData.PlayerData[i].Name + " disconnected.</color>\n";
-                this.message += "Disconnect " + MatchData.PlayerData[i].Name + "\n";
+                Network.Instance.Send(new SystemMessage("<color=yellow>" + MatchData.PlayerData[i].Name + " disconnected.</color>"));
+                Network.Instance.Send(new Disconnect(i));
 
                 return;
             }
@@ -354,15 +455,14 @@ public class GameHost : MonoBehaviour
 
     private void DisconnectClient(IPEndPoint ip)
     {
-        foreach (long i in MatchData.PlayerData.Keys)
+        foreach (string i in MatchData.PlayerData.Keys)
         {
             if (clients[i].RemoteEndPoint == ip && MatchData.PlayerData[i].ClientAlive)
             {
                 RemoveClient(i);
 
-                message += "System 1 0 <color=yellow>" + MatchData.PlayerData[i].Name + " disconnected.</color>\n";
-
-                message += "Disconnect " + MatchData.PlayerData[i].Name + "\n";
+                Network.Instance.Send(new SystemMessage("<color=yellow>" + MatchData.PlayerData[i].Name + " disconnected.</color>"));
+                Network.Instance.Send(new Disconnect(i));
 
                 return;
             }
@@ -372,7 +472,7 @@ public class GameHost : MonoBehaviour
     private void CheckForWinConditions()
     {
         if (_bombDefused && canSendMsg)
-            message += "Defused\n";
+            Network.Instance.Send(new Defused());
 
         try
         {
@@ -383,7 +483,7 @@ public class GameHost : MonoBehaviour
             {
                 bool bluePlayersExist = false;
                 bool redPlayersExist = false;
-                foreach (long i in MatchData.PlayerData.Keys)
+                foreach (string i in MatchData.PlayerData.Keys)
                 {
                     if (MatchData.PlayerData[i].ClientAlive)
                     {
@@ -453,7 +553,7 @@ public class GameHost : MonoBehaviour
                     _bombTimeLeft = 0;
                     if (_roundOver == false)
                     {
-                        message += "Expl " + bombObject.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + bombObject.transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+                        Network.Instance.Send(new BombExplosion(bombObject.transform.position));
 
                         //Kill Players
                         foreach (Player player in GameClient.Instance.AlivePlayers)
@@ -465,7 +565,7 @@ public class GameHost : MonoBehaviour
                                 if (player.FullHealth - 1400 / ((int)dist + 1) <= 0)
                                 {
                                     if (Config.ShowKillFeed)
-                                        message += "KillFeed " + player.Name + " " + player.Name + " " + 8 + " " + player.Team.ToString(CultureInfo.InvariantCulture) + " " + player.Team.ToString(CultureInfo.InvariantCulture) + "\n";
+                                        Network.Instance.Send(new KillFeedPacket(player.Name, player.Name, 8, player.Team, player.Team));
                                 }
 
                                 player.DecreaseHp(null, 1400 / ((int)dist + 1), 8);
@@ -483,13 +583,13 @@ public class GameHost : MonoBehaviour
                             }
                         }
 
-                        message += "Play " + "17" + " " + bombObject.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + bombObject.transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
-                        message += "Play " + "15" + "\n";
+                        Network.Instance.Send(new Play(17, bombObject.transform.position));
+                        Network.Instance.Send(new Play(15));
 
                         RedWin();
 
                         if (bombObject != null)
-                            message += "Destroy " + bombObject.transform.name + "\n";
+                            Network.Instance.Send(new Destroy(bombObject.transform.name));
 
                         InvokeWin();
                     }
@@ -500,7 +600,7 @@ public class GameHost : MonoBehaviour
                     _roundTimeLeft = 0;
                     if (_roundOver == false)
                     {
-                        message += "Play " + "15" + "\n";
+                        Network.Instance.Send(new Play(15));
                         _roundOver = true;
 
                         BlueWin();
@@ -628,7 +728,7 @@ public class GameHost : MonoBehaviour
         if (blueWin == false)
             _lossBonusMoneyCount = 0;
 
-        foreach (long i in MatchData.PlayerData.Keys)
+        foreach (string i in MatchData.PlayerData.Keys)
         {
             if (MatchData.PlayerData[i].Team == 0)
             {
@@ -665,7 +765,7 @@ public class GameHost : MonoBehaviour
         if (redWin == false)
             _lossBonusMoneyCount = 0;
 
-        foreach (long i in MatchData.PlayerData.Keys)
+        foreach (string i in MatchData.PlayerData.Keys)
         {
             if (MatchData.PlayerData[i].Team == 1)
             {
@@ -696,8 +796,9 @@ public class GameHost : MonoBehaviour
 
     private int CheckPlayerConnectivity()
     {
-        int playersConnected = 0;
-        foreach(long i in MatchData.PlayerData.Keys)
+        int playersConnected = 1;
+
+        foreach (string i in MatchData.PlayerData.Keys)
         {
             if (MatchData.PlayerData[i].ClientAlive)
             {
@@ -715,10 +816,10 @@ public class GameHost : MonoBehaviour
     {
         if (_inGame == false)
         {
-            message += "PlayerCount " + (playersConnected++).ToString(CultureInfo.InvariantCulture) + "\n";
+            Network.Instance.Send(new PlayerCount(playersConnected++));
         }
         else if (_warmup)
-            message += "Warmup\n";
+            Network.Instance.Send(new Warmup());
     }
 
     private void HandleMessages()
@@ -743,14 +844,9 @@ public class GameHost : MonoBehaviour
 
                     string data = line;
 
-                    if (data.Contains("Connected"))
-                    {
-                        HandleClientConnection(message);
-                    }
-
                     if (data.Contains("Server"))
                         Destroy(gameObject);
-                    if(message.MessageType == NetIncomingMessageType.StatusChanged)
+                    if (message.MessageType == NetIncomingMessageType.StatusChanged)
                     {
                         //Debug.Log("Status");
                         if (message.SenderConnection.Status == NetConnectionStatus.Connected)
@@ -763,109 +859,6 @@ public class GameHost : MonoBehaviour
                         if (data == "Disconnect")
                         {
                             DisconnectClient(message);
-                        }
-                        else
-                        {
-                            string type = data.Split(' ')[0];
-
-                            switch (type)
-                            {
-                                case "NewPlayerName":
-                                    {
-                                        HandleNewPlayerName(data);
-                                        break;
-                                    }
-                                case "ClientAlive":
-                                    {
-                                        HandleClientAlive(data);
-                                        break;
-                                    }
-                                case "NewPlayerTeam":
-                                    {
-                                        HandleNewPlayerTeam(data);
-                                        break;
-                                    }
-                                case "PlayerTarget":
-                                    {
-                                        HandlePlayerTarget(data);
-                                        break;
-                                    }
-                                case "Shoot":
-                                    {
-                                        HandleShoot(data);
-                                        break;
-                                    }
-                                case "ThrowNade":
-                                    {
-                                        HandleThrowNade(data);
-                                        break;
-                                    }
-                                case "Switch":
-                                    {
-                                        HandleSwitch(data);
-                                        break;
-                                    }
-                                case "Process":
-                                    {
-                                        HandleProcess(data);
-                                        break;
-                                    }
-                                case "Reload":
-                                    {
-                                        HandleReload(data);
-                                        break;
-                                    }
-                                case "Defuse":
-                                    {
-                                        HandleDefuse(data);
-                                        break;
-                                    }
-                                case "StopDef":
-                                    {
-                                        HandleStopDef(data);
-                                        break;
-                                    }
-                                case "DropTarget":
-                                    {
-                                        HandleDropTarget(data);
-                                        break;
-                                    }
-                                case "Shift":
-                                    {
-                                        HandleShift(data);
-                                        break;
-                                    }
-                                case "StopSh":
-                                    {
-                                        HandleStopSh(data);
-                                        break;
-                                    }
-                                case "Throw":
-                                    {
-                                        HandleThrow(data);
-                                        break;
-                                    }
-                                case "ScrollUp":
-                                    {
-                                        HandleScrollUp(data);
-                                        break;
-                                    }
-                                case "ScrollDown":
-                                    {
-                                        HandleScrollDown(data);
-                                        break;
-                                    }
-                                case "Graffiti":
-                                    {
-                                        HandleGraffiti(data);
-                                        break;
-                                    }
-                                case "Msg":
-                                    {
-                                        HandleMsg(data);
-                                        break;
-                                    }
-                            }
                         }
                     }
 
@@ -892,7 +885,7 @@ public class GameHost : MonoBehaviour
         }
     }
 
-    private void HandleMsg(string data)
+    private void HandleMsg(bool all, int team, string msg, string senderId)
     {
         string[] parameters = data.Split(' ');
         if (parameters[4] == "/whisper")
@@ -913,155 +906,138 @@ public class GameHost : MonoBehaviour
         else this.message += data + "\n";
     }
 
-    private void HandleGraffiti(string data)
+    private void HandleGraffiti(int id, string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         if (player.IsAbleToGraffiti)
         {
             this.message += "Graffiti " + player.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + player.transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + parameters[2] + "\n";
-            this.message += "Play " + "27" + " " + player.transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + player.transform.position.y.ToString(CultureInfo.InvariantCulture) + " " + player.ID.ToString(CultureInfo.InvariantCulture) + "\n";
+            Network.Instance.Send(new Play(27, player.transform.position, player.ID));
             player.Grafitied();
         }
     }
 
-    private void HandleScrollDown(string data)
+    private void HandleScrollDown(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.ScrollDown();
     }
 
-    private void HandleScrollUp(string data)
+    private void HandleScrollUp(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.ScrollUp();
     }
 
-    private void HandleThrow(string data)
+    private void HandleThrow(Vector2 position, string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
-        player.Throw(new Vector2(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture)));
+        player.Throw(position);
     }
 
-    private void HandleStopSh(string data)
+    private void HandleStopSh(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.StopSlowWalk();
     }
 
-    private void HandleShift(string data)
+    private void HandleShift(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.SlowWalk();
     }
 
-    private void HandleDropTarget(string data)
+    private void HandleDropTarget(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.NullTargetPosition();
     }
 
-    private void HandleStopDef(string data)
+    private void HandleStopDef(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.StopDefuse();
     }
 
-    private void HandleDefuse(string data)
+    private void HandleDefuse(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.Defuse();
     }
 
-    private void HandleReload(string data)
+    private void HandleReload(string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
         player.GunScript.ReloadGun();
     }
 
-    private void HandleProcess(string data)
+    private void HandleProcess(int buyId, string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
-        player.ProcessPurchase(int.Parse(parameters[2], CultureInfo.InvariantCulture));
+        player.ProcessPurchase(buyId);
     }
 
-    private void HandleSwitch(string data)
+    private void HandleSwitch(int inventoryId, string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
-        player.SwitchWeapon(int.Parse(parameters[2], CultureInfo.InvariantCulture));
+        player.SwitchWeapon(inventoryId);
     }
 
-    private void HandleThrowNade(string data)
+    private void HandleThrowNade(Vector2 position, string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
-        player.ThrowNade(new Vector2(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture)));
+        player.ThrowNade(position);
     }
 
-    private void HandleShoot(string data)
+    private void HandleShoot(float angle, string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
-        player.transform.localEulerAngles = new Vector3(0, 0, float.Parse(parameters[2], CultureInfo.InvariantCulture));
+        player.transform.localEulerAngles = new Vector3(0, 0, angle);
 
         player.Shoot();
     }
 
-    private void HandlePlayerTarget(string data)
+    private void HandlePlayerTarget(Vector2 position, string senderId)
     {
-        string[] parameters = data.Split(' ');
-        Player player = GameClient.Instance.playerScripts[long.Parse(parameters[1], CultureInfo.InvariantCulture)];
+        Player player = GameClient.Instance.playerScripts[senderId];
 
-        player.UpdateTargetCoordinates(new Vector2(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture)));
+        player.UpdateTargetCoordinates(position);
     }
 
-    private void HandleNewPlayerTeam(string data)
+    private void HandleNewPlayerTeam(int teamID, string senderID)
     {
-        long id = long.Parse(data.Split(' ')[1], CultureInfo.InvariantCulture);
+        if (teamID == 0)
+            Network.Instance.Send("<color=yellow>" + MatchData.PlayerData[senderID].Name + " joined CT side.</color>");
+        else if (teamID == 1)
+            Network.Instance.Send("<color=yellow>" + MatchData.PlayerData[senderID].Name + " joined T side.</color>");
+        else Network.Instance.Send("<color=yellow>" + MatchData.PlayerData[senderID].Name + " is now a spectator.</color>");
 
-        if (data.Split(' ')[2] == "0")
-            this.message += "System 1 0 <color=yellow>" + MatchData.PlayerData[id].Name + " joined CT side.</color>\n";
-        else if (data.Split(' ')[2] == "1")
-            this.message += "System 1 0 <color=yellow>" + MatchData.PlayerData[id].Name + " joined T side.</color>\n";
-        else this.message += "System 1 0 <color=yellow>" + MatchData.PlayerData[id].Name + " is now a spectator.</color>\n";
-
-        if (GameClient.Instance.players.ContainsKey(id))
+        if (GameClient.Instance.players.ContainsKey(senderID))
         {
-            if (GameClient.Instance.playerScripts[id].Dead == false)
+            if (GameClient.Instance.playerScripts[senderID].Dead == false)
             {
-                GameClient.Instance.playerScripts[id].DecreaseHp(null, 9999, 0);
+                GameClient.Instance.playerScripts[senderID].DecreaseHp(null, 9999, 0);
             }
         }
         try
         {
-            MatchData.PlayerData[id].Team = int.Parse(data.Split(' ')[2], CultureInfo.InvariantCulture);
+            MatchData.PlayerData[senderID].Team = teamID;
 
-            if (_warmup && MatchData.PlayerData[id].Team != 2)
+            if (_warmup && MatchData.PlayerData[senderID].Team != 2)
             {
                 int hasPistol = 0;
 
@@ -1074,15 +1050,15 @@ public class GameHost : MonoBehaviour
                 int hasWall = 0;
 
                 if (_warmup)
-                    MatchData.PlayerData[id].Cash = Config.MaxCash;
+                    MatchData.PlayerData[senderID].Cash = Config.MaxCash;
                 else
-                    MatchData.PlayerData[id].Cash = 800;
+                    MatchData.PlayerData[senderID].Cash = 800;
 
-                this.message += "SpawnPlayer " + (id).ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[id].Name + " " + MatchData.PlayerData[id].Team.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[id].GunID.ToString(CultureInfo.InvariantCulture) + " " + hasPistol.ToString(CultureInfo.InvariantCulture) + " " + hasHe.ToString(CultureInfo.InvariantCulture) + " " + hasFlash.ToString(CultureInfo.InvariantCulture) + " " + hasSmoke.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[id].Armor.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[id].Cash.ToString(CultureInfo.InvariantCulture) + " " + hasWall.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[id].Kills.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[id].Deaths.ToString(CultureInfo.InvariantCulture) + "\n";
+                this.message += "SpawnPlayer " + senderID.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[senderID].Name + " " + MatchData.PlayerData[senderID].Team.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[senderID].GunID.ToString(CultureInfo.InvariantCulture) + " " + hasPistol.ToString(CultureInfo.InvariantCulture) + " " + hasHe.ToString(CultureInfo.InvariantCulture) + " " + hasFlash.ToString(CultureInfo.InvariantCulture) + " " + hasSmoke.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[senderID].Armor.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[senderID].Cash.ToString(CultureInfo.InvariantCulture) + " " + hasWall.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[senderID].Kills.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[senderID].Deaths.ToString(CultureInfo.InvariantCulture) + "\n";
             }
-            else if (_warmup == false && MatchData.PlayerData[id].Team != 2)
+            else if (_warmup == false && MatchData.PlayerData[senderID].Team != 2)
             {
-                this.message += "TabPlayer " + MatchData.PlayerData[MatchData.PlayerData.Count - 1].Name + " " + MatchData.PlayerData[id].Team.ToString(CultureInfo.InvariantCulture) + "\n";
+                this.message += "TabPlayer " + MatchData.PlayerData[MatchData.PlayerData.Count - 1].Name + " " + MatchData.PlayerData[senderID].Team.ToString(CultureInfo.InvariantCulture) + "\n";
             }
         }
         catch (Exception ex)
@@ -1091,44 +1067,27 @@ public class GameHost : MonoBehaviour
         }
     }
 
-    private void HandleClientAlive(string data)
+    private void HandleNewPlayerName(string data, string id)
     {
-        long id = long.Parse(data.Split(' ')[1], CultureInfo.InvariantCulture) ;
-        if (id != -1)
-            MatchData.PlayerData[id].TimeOut = 0;
-    }
+        string currentName = MatchData.PlayerData[id].Name;
+        MatchData.PlayerData[id].Name = data.Split(' ')[2];
+        CheckName(id);
 
-    private void HandleNewPlayerName(string data)
-    {
-        long id = long.Parse(data.Split(' ')[1], CultureInfo.InvariantCulture) ;
-        try
+        if (Chat.Instance != null)
         {
-            string currentName = MatchData.PlayerData[id].Name;
-            MatchData.PlayerData[id].Name = data.Split(' ')[2];
-            CheckName(id);
+            Network.Instance.Send(new ServerNewPlayerName(id, MatchData.PlayerData[id].Name));
 
-            if (Chat.Instance != null)
-            {
-                this.message += "NewName " + id.ToString(CultureInfo.InvariantCulture) + " " + currentName + " " + MatchData.PlayerData[id].Name + "\n";
-
-                if (ConsoleCanvas.Instance.Console.sendCommandFeedback)
-                    this.message += "System 1 0 <color=yellow>" + currentName + " changed his name to " + data.Split(' ')[2] + ".</color>\n";
-            }
-
-        }
-        catch
-        {
-
+            if (ConsoleCanvas.Instance.Console.sendCommandFeedback)
+                Network.Instance.Send(new SystemMessage("<color=yellow>" + currentName + " changed his name to " + data.Split(' ')[2] + ".</color>"));
         }
     }
 
-    private void HandleClientConnection(NetIncomingMessage message)
+    private void HandleClientConnection(string id)
     {
-        if (bannedIps.Contains(message.SenderConnection.RemoteEndPoint.Address))
+        if (bannedIps.Contains(id))
         {
-            this.message += "System 1 0 <color=yellow>A banned player attempted to connect.</color>\n";
+            Network.Instance.Send(new SystemMessage("<color=yellow>A banned player attempted to connect.</color>"));
 
-            clients.Add(message.SenderConnection.RemoteUniqueIdentifier, message.SenderConnection);
             var response = _server.CreateMessage();
             response.Write("BanMessage\n");
 
@@ -1136,9 +1095,7 @@ public class GameHost : MonoBehaviour
         }
         else
         {
-            this.message += "System 1 0 <color=yellow>New player connected.</color>\n";
-
-            clients.Add(message.SenderConnection.RemoteUniqueIdentifier, message.SenderConnection);
+            Network.Instance.Send(new SystemMessage("<color=yellow>New player connected.</color>"));
 
             var response1 = _server.CreateMessage();
 
@@ -1150,13 +1107,11 @@ public class GameHost : MonoBehaviour
             response2.Write("LoadScene " + SceneManager.GetActiveScene().name + "\n");
             _server.SendMessage(response2, recipient: message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
 
-            long playerId = message.SenderConnection.RemoteUniqueIdentifier;
-
-            PlayerData data = MatchData.GetPlayerData(playerId);
+            PlayerData data = MatchData.GetPlayerData(id);
             data.Name = "NewPlayer";
             data.Team = 2;
 
-            CheckNameLobby(playerId, true);
+            CheckNameLobby(id, true);
 
             playerCount++;
         }
@@ -1182,22 +1137,7 @@ public class GameHost : MonoBehaviour
 
     private void SendMessage()
     {
-        canSendMsg = true;
-        try
-        {
             this.message += "ServerAlive" + "\n";
-
-            var message = _server.CreateMessage();
-            message.Write(this.message);
-            _server.SendMessage(message, clients.Values.ToArray(), NetDeliveryMethod.ReliableOrdered, 0);
-
-            this.message = "";
-            ableToSend = false;
-        }
-        catch
-        {
-            message = "";
-        }
     }
 
     private IEnumerator MessageQueue(int ticks)
@@ -1267,11 +1207,11 @@ public class GameHost : MonoBehaviour
 
         List<Award> awards = new List<Award>();
 
-        List<long> awardedPlayers = new List<long>();
+        List<string> awardedPlayers = new List<string>();
 
         for (int i = 0; i < players.Count; i++)
         {
-            long playerID = players[i].playerID;
+            string playerID = players[i].playerID;
 
             PlayerData data = MatchData.PlayerData[playerID];
 
@@ -1309,20 +1249,20 @@ public class GameHost : MonoBehaviour
 
                 awardIDs.Remove(awards[i].id);
                 message += teamName + " " + awardsGiven.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[awards[i].playerID].Name + " " + MatchData.PlayerData[awards[i].playerID].Kills.ToString(CultureInfo.InvariantCulture) + " " + MatchData.PlayerData[awards[i].playerID].Deaths.ToString(CultureInfo.InvariantCulture) + " " + awards[i].title + "$" + awards[i].description + "\n";
-                
+
                 awardsGiven++;
             }
         }
     }
 
-    private void CheckName(long id)
+    private void CheckName(string id)
     {
         string temporaryName = GetNewName(id);
 
         MatchData.PlayerData[id].Name = temporaryName;
     }
 
-    private string GetNewName(long id)
+    private string GetNewName(string id)
     {
         bool playerNotFound = true;
         string temporaryName = MatchData.PlayerData[id].Name;
@@ -1331,7 +1271,7 @@ public class GameHost : MonoBehaviour
         while (playerNotFound)
         {
             playerNotFound = false;
-            foreach (long i in MatchData.PlayerData.Keys)
+            foreach (string i in MatchData.PlayerData.Keys)
             {
                 if (i != id && MatchData.PlayerData[i].Name == temporaryName)
                 {
@@ -1345,7 +1285,7 @@ public class GameHost : MonoBehaviour
         return temporaryName;
     }
 
-    private void CheckNameLobby(long id, bool connect)
+    private void CheckNameLobby(string id, bool connect)
     {
         string temporaryName = GetNewName(id);
 
@@ -1366,9 +1306,9 @@ public class GameHost : MonoBehaviour
         Disconnect();
     }
 
-    private long GetClientByName(string name)
+    private string GetClientByName(string name)
     {
-        foreach (long i in MatchData.PlayerData.Keys)
+        foreach (string i in MatchData.PlayerData.Keys)
         {
             if (MatchData.PlayerData[i].Name == name && MatchData.PlayerData[i].ClientAlive)
             {
@@ -1376,10 +1316,10 @@ public class GameHost : MonoBehaviour
             }
         }
 
-        return -1;
+        return "";
     }
 
-    private void RemoveClient(long playerID)
+    private void RemoveClient(string playerID)
     {
         MatchData.PlayerData[playerID].ClientAlive = false;
 
@@ -1462,7 +1402,7 @@ public class GameHost : MonoBehaviour
 
 public class Award
 {
-    public Award(int id, long playerID, int value, string title, string description)
+    public Award(int id, string playerID, int value, string title, string description)
     {
         this.id = id;
         this.playerID = playerID;
@@ -1472,7 +1412,7 @@ public class Award
     }
 
     public int id;
-    public long playerID;
+    public string playerID;
     public int value;
     public string title;
     public string description;

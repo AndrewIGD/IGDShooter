@@ -53,9 +53,9 @@ public class GameClient : MonoBehaviour
 
     public GameObject startGame;
 
-    public Dictionary<long, GameObject> players;
+    public Dictionary<string, GameObject> players;
 
-    public Dictionary<long, Player> playerScripts;
+    public Dictionary<string, Player> playerScripts;
 
     public Text playerCount;
 
@@ -73,7 +73,7 @@ public class GameClient : MonoBehaviour
 
     public float megamapSize = 300;
 
-    public long playerId;
+    public string playerId;
 
     public bool selectedTeam = false;
 
@@ -136,23 +136,25 @@ public class GameClient : MonoBehaviour
 
     public void Initialize()
     {
-        if (FindObjectsOfType<GameClient>().Length >= 2 && GameHost.Instance == null)
+        /*if (FindObjectsOfType<GameClient>().Length >= 2 && GameHost.Instance == null)
         {
             Destroy(gameObject);
 
             return;
-        }
+        }*/
 
-        MatchData.PlayerData = new Dictionary<long, PlayerData>();
+        DontDestroyOnLoad(gameObject);
+
+        MatchData.PlayerData = new Dictionary<string, PlayerData>();
 
         Instance = this;
 
         try
         {
-            players = new Dictionary<long, GameObject>();
-            playerScripts = new Dictionary<long, Player>();
+            players = new Dictionary<string, GameObject>();
+            playerScripts = new Dictionary<string, Player>();
 
-            config = new NetPeerConfiguration("IGDShooter")
+            /*config = new NetPeerConfiguration("IGDShooter")
             {
                 //EnableUPnP = true,
                 AcceptIncomingConnections = true,
@@ -173,11 +175,372 @@ public class GameClient : MonoBehaviour
 
             Invoke("SendConnectionMessage", 0.25f);
 
-            StartCoroutine(MessageQueue(64));
+            StartCoroutine(MessageQueue(64));*/
+
+            Network.Instance.OnMessagesReceived += ProcessMessages;
         }
         catch (Exception err)
         {
             GameObject.Find("ErrorText").GetComponent<Text>().text = "Error: Invalid IP!";
+        }
+    }
+
+    private void ProcessMessages(object[] objects, string senderId)
+    {
+        for (int i = 0; i < objects.Length; i++)
+        {
+            switch (objects[i])
+            {
+                case PlayerCount playerCountPacket:
+                    {
+                        if (playerCount == null)
+                            playerCount = GameObject.Find("PlayerCount").GetComponent<Text>();
+
+                        playerCount.text = "Connected Players: " + playerCountPacket.Number;
+
+                        break;
+                    }
+                case SystemMessage systemMessage:
+                    {
+                        Chat.Instance.AddMessage(systemMessage.Data);
+
+                        break;
+                    }
+                case ServerNewPlayerName serverNewPlayerName:
+                    {
+                        if (serverNewPlayerName.ID == playerId)
+                            currentName = serverNewPlayerName.Data;
+
+                        if (players[serverNewPlayerName.ID] != null)
+                            playerScripts[serverNewPlayerName.ID].SetName(serverNewPlayerName.Data);
+
+                        Tab.Instance.ModifyName(serverNewPlayerName.ID, serverNewPlayerName.Data);
+
+                        //Modificare nume in functie de senderId ^^^^^^^
+
+                        break;
+                    }
+                case Play play:
+                    {
+
+                        if (play.Position.HasValue == false)
+                        {
+                            GameObject obj = new GameObject();
+                            obj.transform.position = Vector3.zero;
+
+                            AudioSource source = obj.AddComponent<AudioSource>();
+
+                            source.clip = SoundArchive.Instance.sounds[play.SoundID];
+                            source.Play();
+                            Destroy(obj, obj.GetComponent<AudioSource>().clip.length + 1);
+
+                            if (play.SoundID == 15)
+                            {
+                                ConsoleCanvas.Instance.Console.MatchRoundEnd();
+                            }
+                        }
+                        else if (play.PlayerID == null)
+                        {
+                            GameObject obj = new GameObject();
+                            obj.transform.position = play.Position.Value;
+
+                            AudioSource source = obj.AddComponent<AudioSource>();
+                            source.clip = SoundArchive.Instance.sounds[play.SoundID];
+
+                            source.spatialBlend = 1f;
+                            source.spread = 360f;
+                            source.rolloffMode = AudioRolloffMode.Linear;
+                            source.dopplerLevel = 0f;
+                            source.maxDistance = 30f;
+                            source.minDistance = 5f;
+
+                            if (play.SoundID == 14 || play.SoundID == 17)
+                            {
+                                source.maxDistance = 60f;
+                                source.minDistance = 10f;
+                            }
+
+                            if (play.SoundID == 25 || play.SoundID == 26)
+                            {
+                                source.maxDistance = 45f;
+                                source.minDistance = 7.5f;
+                            }
+
+                            List<AudioSource> asList = new List<AudioSource>();
+
+                            foreach (AudioSource a in FindObjectsOfType<AudioSource>())
+                            {
+                                if (Vector2.Distance(a.transform.position, Camera.main.transform.position) < 10f && a.clip == source.clip && a != source)
+                                {
+                                    asList.Add(a);
+                                }
+                            }
+
+                            for (int k = asList.Count - 20; k >= 0; k--)
+                            {
+                                Destroy(asList[k].gameObject);
+                            }
+
+                            source.Play();
+                            Destroy(obj, source.clip.length + 1);
+                        }
+                        else
+                        {
+                            GameObject obj = new GameObject();
+
+                            obj.transform.parent = players[play.PlayerID].transform;
+
+                            obj.transform.position = play.Position.Value;
+                            AudioSource source = obj.AddComponent<AudioSource>();
+                            if (play.SoundID == 14)
+                                source.volume = 0.75f;
+
+                            source.spatialBlend = 1f;
+                            source.spread = 360f;
+                            source.rolloffMode = AudioRolloffMode.Linear;
+                            source.dopplerLevel = 0f;
+                            source.maxDistance = 30f;
+                            source.minDistance = 5f;
+                            source.clip = SoundArchive.Instance.sounds[play.SoundID];
+
+                            if (play.SoundID == 13 || play.SoundID == 12)
+                            {
+                                source.maxDistance = 60f;
+                                source.minDistance = 20f;
+                            }
+
+                            List<AudioSource> asList = new List<AudioSource>();
+
+                            foreach (AudioSource a in FindObjectsOfType<AudioSource>())
+                            {
+                                if (Vector2.Distance(a.transform.position, Camera.main.transform.position) < 10f && a.clip == source.clip && a != source)
+                                {
+                                    asList.Add(a);
+                                }
+                            }
+
+                            for (int k = asList.Count - 20; k >= 0; k--)
+                            {
+                                Destroy(asList[k].gameObject);
+                            }
+
+
+                            source.Play();
+                            Destroy(obj, source.clip.length + 1);
+                        }
+
+                        break;
+                    }
+                case Destroy destroy:
+                    {
+                        GameObject obj = GameObject.Find(destroy.ItemName);
+
+                        if (destroy.ItemName.Contains("wall"))
+                        {
+                            GameObject vfx = Instantiate(FightSceneManager.Instance.WallVfx);
+                            vfx.transform.position = obj.transform.position;
+                            Destroy(vfx, 2f);
+
+                            Walls.Remove(obj.GetComponent<Wall>());
+                        }
+
+                        Destroy(obj);
+
+                        break;
+                    }
+                case Kick kick:
+                    {
+                        Tab.Instance.RemovePlayer(kick.PlayerID);
+
+                        if (kick.PlayerID == playerId)
+                        {
+                            Escape.Instance.Kick(kick.Message);
+                        }
+
+                        break;
+                    }
+                case Ban ban:
+                    {
+                        Tab.Instance.RemovePlayer(ban.PlayerID);
+
+                        if (ban.PlayerID == playerId)
+                        {
+                            Escape.Instance.Kick(ban.Message);
+                        }
+
+                        break;
+                    }
+                case KillFeedPacket killFeed:
+                    {
+                        FightSceneManager.Instance.KillFeed.AddKillFeed(killFeed.KillerName, killFeed.TargetName, killFeed.KillType, killFeed.KillerTeam, killFeed.TargetTeam);
+
+                        break;
+                    }
+                case SetKills setKills:
+                    {
+                        Tab.Instance.ModifyKills(playerScripts[setKills.KillerId], setKills.Kills, playerScripts[setKills.KillerId].Team);
+
+                        break;
+                    }
+                case FlashScreen flashScreen:
+                    {
+                        Vector2 flashPoint = flashScreen.Position;
+
+                        Vector2 cameraPoint = Camera.main.WorldToViewportPoint(flashPoint);
+
+                        if (cameraPoint.x > 0 && cameraPoint.x < 1 && cameraPoint.y > 0 && cameraPoint.y < 1)
+                        {
+                            FightSceneManager.Instance.CameraAnimator.Play("flash", 0, 0);
+
+                            FightSceneManager.Instance.CameraAnimator.speed = ((float)((int)(Vector2.Distance(flashPoint, Camera.main.transform.position)) + 1)) / 6;
+                        }
+
+                        break;
+                    }
+                case SmokeVfx smokeVfx:
+                    {
+                        GameObject newVfx = Instantiate(FightSceneManager.Instance.SmokeVfx);
+                        newVfx.transform.position = smokeVfx.Position;
+                        newVfx.GetComponent<Smoke>().Activate();
+
+                        break;
+                    }
+                case WallPacket wall:
+                    {
+                        GameObject newVfx = Instantiate(FightSceneManager.Instance.Wall);
+                        newVfx.transform.position = wall.Position;
+                        newVfx.transform.localEulerAngles = new Vector3(0, 0, wall.Angle);
+                        newVfx.transform.name = "wall" + wall.ID;
+
+                        Walls.Add(newVfx.GetComponent<Wall>());
+
+                        break;
+                    }
+                case GrenadePacket grenade:
+                    {
+                        if (GameHost.Instance != null)
+                            break;
+
+
+                        GameObject newGren = null;
+
+                        switch (grenade.GrenadeID)
+                        {
+                            case 0:
+                                {
+                                    newGren = Instantiate(FightSceneManager.Instance.HePrefab);
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    newGren = Instantiate(FightSceneManager.Instance.FlashPrefab);
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    newGren = Instantiate(FightSceneManager.Instance.SmokePrefab);
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    newGren = Instantiate(FightSceneManager.Instance.WallPrefab);
+                                    break;
+                                }
+                        }
+
+                        newGren.transform.position = grenade.Position;
+                        newGren.GetComponent<Rigidbody2D>().velocity = grenade.Velocity;
+                        newGren.transform.localEulerAngles = new Vector3(0, 0, grenade.Angle);
+
+                        newGren.GetComponent<Grenade>().Invoke("Detonate", 1f);
+
+                        break;
+                    }
+                case Bullet bullet:
+                    {
+                        if (GameHost.Instance != null)
+                            break;
+
+                        GameObject newBullet = Instantiate(FightSceneManager.Instance.BulletPrefab);
+                        newBullet.transform.position = bullet.Position;
+                        newBullet.GetComponent<Rigidbody2D>().velocity = bullet.Velocity;
+                        newBullet.transform.localEulerAngles = new Vector3(0, 0, bullet.Angle);
+
+                        newBullet.transform.name = bullet.ID.ToString(CultureInfo.InvariantCulture);
+
+                        if (parameters.Length == 8)
+                            Destroy(newBullet, 0.5f);
+
+                        break;
+                    }
+                case Defused defused:
+                    {
+                        FightSceneManager.Instance.CanvasAnimator.Play("idle");
+                        ConsoleCanvas.Instance.Console.MatchBombDefused();
+
+                        break;
+                    }
+                case Warmup warmup:
+                    {
+                        FightSceneManager.Instance.Warmup.SetActive(true);
+
+                        break;
+                    }
+                case BombExplosion bombExplosion:
+                    {
+                        GameObject vfx = Instantiate(FightSceneManager.Instance.HeExplosion);
+                        vfx.transform.position = bombExplosion.Position;
+                        vfx.transform.localScale *= 5;
+
+                        Destroy(vfx, 3f);
+
+                        break;
+                    }
+                case ServerDrop serverDrop:
+                    {
+                        GameObject drop = Instantiate(FightSceneManager.Instance.Drops[serverDrop.Type]);
+
+                        drop.GetComponent<Drop>().Setup(serverDrop.BulletCount, serverDrop.RoundAmmo);
+                        drop.transform.position = serverDrop.Position;
+                        drop.GetComponent<Rigidbody2D>().velocity = serverDrop.Velocity;
+
+                        drop.transform.name = "drop" + serverDrop.ID;
+
+                        drop.transform.localScale *= 10;
+
+                        break;
+                    }
+                case Disconnect disconnect:
+                    {
+                        Tab.Instance.RemovePlayer(disconnect.ID);
+
+                        break;
+                    }
+                case SetDeaths setDeaths:
+                    {
+                        Tab.Instance.ModifyDeaths(playerScripts[setDeaths.Target], setDeaths.Deaths, playerScripts[setDeaths.Target].Team);
+
+                        break;
+                    }
+                case Death death:
+                    {
+                        if (death.Dealt.HasValue && death.Id == playerId)
+                        {
+                            playerScripts[death.Id].DeathData(death.Dealt.Value, death.Received.Value, death.Attacker);
+                            
+                            if (playerScripts[death.Id].Team == 0)
+                                ConsoleCanvas.Instance.Console.MatchCTDead(death.Attacker, playerScripts[death.Id].Name);
+                            else ConsoleCanvas.Instance.Console.MatchTDead(death.Attacker, playerScripts[death.Id].Name);
+                        }
+
+                        playerScripts[death.Id].TriggerDeath();
+
+                        Tab.Instance.ModifyAlive(playerScripts[death.Id], false, playerScripts[death.Id].Team);
+
+                        break;
+                    }
+
+            }
         }
     }
 
@@ -239,66 +602,6 @@ public class GameClient : MonoBehaviour
         client.SendMessage(message3,
         NetDeliveryMethod.ReliableOrdered);
     }
-
-    public void Send(string message)
-    {
-        string type = message.Split(" ")[0];
-
-        switch (type)
-        {
-            case "PlayerTarget":
-                targetMessage = message;
-                break;
-            case "Shoot":
-                shootMessage = message;
-                break;
-            case "ThrowNade":
-                nadeMessage = message;
-                break;
-            case "Switch":
-                switchWeaponMessage = message;
-                break;
-            case "Process":
-                buyMessage = message;
-                break;
-            case "Reload":
-                reloadMessage = message;
-                break;
-            case "Defuse":
-                defuseMessage = message;
-                break;
-            case "StopDef":
-                stopDefuseMessage = message;
-                break;
-            case "DropTarget":
-                dropTargetMessage = message;
-                break;
-            case "Shift":
-                shiftMessage = message;
-                break;
-            case "StopSh":
-                noShiftMessage = message;
-                break;
-            case "Throw":
-                throwMessage = message;
-                break;
-            case "ScrollUp":
-                scrollUpMessage = message;
-                break;
-            case "ScrollDown":
-                scrollDownMessage = message;
-                break;
-            case "Graffiti":
-                graffitiMessage = message;
-                break;
-
-            default:
-                this.message += message + "\n";
-                break;
-        }
-    }
-
-
     #endregion
 
     #region Private Methods
@@ -753,25 +1056,10 @@ public class GameClient : MonoBehaviour
                 client.SendMessage(message3,
                 NetDeliveryMethod.ReliableOrdered);
             }
-            else if (type == "Disconnect")
-            {
-                Tab.Instance.RemovePlayer(data.Split(' ')[1]);
-            }
             else if (type == "BanMessage")
             {
                 GameObject clonedText = Instantiate(Resources.Load<GameObject>("Prefabs\\banText"));
                 clonedText.GetComponentInChildren<Text>().text = "You are banned on this server.";
-            }
-            else if (type == "Kick" || type == "Ban")
-            {
-                Tab.Instance.RemovePlayer(data.Split(' ')[1]);
-
-                if (data.Split(' ')[1] == currentName)
-                {
-                    if (type == "Kick")
-                        Escape.Instance.Kick(string.Join(" ", data.Split(' ').Skip(2)));
-                    else Escape.Instance.Ban(string.Join(" ", data.Split(' ').Skip(2)));
-                }
             }
             else if (type == "TabPlayer")
             {
@@ -786,18 +1074,6 @@ public class GameClient : MonoBehaviour
             {
                 timeBetweenResponses = 0;
             }
-            else if (type == "PlayerCount")
-            {
-                try
-                {
-                    playerCount = GameObject.Find("PlayerCount").GetComponent<Text>();
-                    playerCount.text = "Player Count: " + data.Split(' ')[1];
-                }
-                catch
-                {
-
-                }
-            }
             else if (type == "LoadScene")
             {
                 string[] parameters = data.Split(' ');
@@ -805,10 +1081,6 @@ public class GameClient : MonoBehaviour
                 if (data.Split(' ')[1] != "OnlineWaitMenu")
 
                     SceneManager.LoadScene(data.Split(' ')[1]);
-            }
-            else if (type == "Warmup")
-            {
-                FightSceneManager.Instance.Warmup.SetActive(true);
             }
             else if (type == "Disconnect" || (type.Contains("Server") && type.Contains("ServerAlive") == false))
             {
@@ -847,39 +1119,6 @@ public class GameClient : MonoBehaviour
                 {
                     Debug.Log(err.ToString());
                 }
-            }
-            else if (type == "Expl")
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject vfx = Instantiate(FightSceneManager.Instance.HeExplosion);
-                vfx.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                vfx.transform.localScale *= 5;
-
-                Destroy(vfx, 3f);
-            }
-            else if (type == "SetDeaths")
-            {
-                string[] parameters = data.Split(' ');
-
-                long id = long.Parse(parameters[1], CultureInfo.InvariantCulture);
-
-
-                Tab.Instance.ModifyDeaths(playerScripts[id], int.Parse(parameters[2], CultureInfo.InvariantCulture), playerScripts[id].Team);
-            }
-            else if (type == "SetKills")
-            {
-                string[] parameters = data.Split(' ');
-
-                long id = long.Parse(parameters[1], CultureInfo.InvariantCulture);
-
-                Tab.Instance.ModifyKills(playerScripts[id], int.Parse(parameters[2], CultureInfo.InvariantCulture), playerScripts[id].Team);
-            }
-            else if (type == "KillFeed")
-            {
-                string[] parameters = data.Split(' ');
-
-                FindObjectOfType<KillFeed>().AddKillFeed(parameters[1], parameters[2], int.Parse(parameters[3], CultureInfo.InvariantCulture), parameters[4], parameters[5]);
             }
             else if (type == "PlayerInfo")
             {
@@ -994,152 +1233,6 @@ public class GameClient : MonoBehaviour
                     timeObj = GameObject.Find("RoundTime");
                 }
             }
-            else if (type == "Bullet" && GameHost.Instance == null)
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject newBullet = Instantiate(FightSceneManager.Instance.BulletPrefab);
-                newBullet.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(float.Parse(parameters[3], CultureInfo.InvariantCulture), float.Parse(parameters[4], CultureInfo.InvariantCulture));
-                newBullet.transform.localEulerAngles = new Vector3(0, 0, float.Parse(parameters[5], CultureInfo.InvariantCulture));
-
-                newBullet.transform.name = parameters[6];
-
-                if (parameters.Length == 8)
-                    Destroy(newBullet, 0.5f);
-            }
-            else if (type == "HE" && GameHost.Instance == null)
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject newGren = Instantiate(FightSceneManager.Instance.HePrefab);
-                newGren.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                newGren.GetComponent<Rigidbody2D>().velocity = new Vector2(float.Parse(parameters[3], CultureInfo.InvariantCulture), float.Parse(parameters[4], CultureInfo.InvariantCulture));
-                newGren.transform.localEulerAngles = new Vector3(0, 0, float.Parse(parameters[5], CultureInfo.InvariantCulture));
-
-                newGren.GetComponent<Grenade>().Invoke("Detonate", 1f);
-            }
-            else if (type == "Flash" && GameHost.Instance == null)
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject newGren = Instantiate(FightSceneManager.Instance.FlashPrefab);
-                newGren.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                newGren.GetComponent<Rigidbody2D>().velocity = new Vector2(float.Parse(parameters[3], CultureInfo.InvariantCulture), float.Parse(parameters[4], CultureInfo.InvariantCulture));
-                newGren.transform.localEulerAngles = new Vector3(0, 0, float.Parse(parameters[5], CultureInfo.InvariantCulture));
-
-                newGren.GetComponent<Grenade>().Invoke("Detonate", 1f);
-            }
-            else if (type == "Smoke" && GameHost.Instance == null)
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject newGren = Instantiate(FightSceneManager.Instance.SmokePrefab);
-                newGren.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                newGren.GetComponent<Rigidbody2D>().velocity = new Vector2(float.Parse(parameters[3], CultureInfo.InvariantCulture), float.Parse(parameters[4], CultureInfo.InvariantCulture));
-                newGren.transform.localEulerAngles = new Vector3(0, 0, float.Parse(parameters[5], CultureInfo.InvariantCulture));
-
-
-                newGren.GetComponent<Grenade>().Invoke("Detonate", 1f);
-            }
-            else if (type == "WallGren" && GameHost.Instance == null)
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject newGren = Instantiate(FightSceneManager.Instance.WallPrefab);
-                newGren.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                newGren.GetComponent<Rigidbody2D>().velocity = new Vector2(float.Parse(parameters[3], CultureInfo.InvariantCulture), float.Parse(parameters[4], CultureInfo.InvariantCulture));
-                newGren.transform.localEulerAngles = new Vector3(0, 0, float.Parse(parameters[5], CultureInfo.InvariantCulture));
-
-
-                newGren.GetComponent<Grenade>().Invoke("Detonate", 1f);
-            }
-            else if (type == "FlashScreen" && GameHost.Instance == null)
-            {
-                string[] parameters = data.Split(' ');
-
-                Vector2 flashPoint = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-
-                Vector2 cameraPoint = Camera.main.WorldToViewportPoint(flashPoint);
-
-                if (cameraPoint.x > 0 && cameraPoint.x < 1 && cameraPoint.y > 0 && cameraPoint.y < 1)
-                {
-                    if (FightSceneManager.Instance.CameraAnimator.GetCurrentAnimatorStateInfo(0).IsName("flash"))
-                        FightSceneManager.Instance.CameraAnimator.Play("flash2");
-                    else FightSceneManager.Instance.CameraAnimator.Play("flash");
-                    FightSceneManager.Instance.CameraAnimator.speed = ((float)((int)(Vector2.Distance(flashPoint, Camera.main.transform.position)) + 1)) / 6;
-                }
-            }
-            else if (type == "SmokeVfx" && GameHost.Instance == null)
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject newVfx = Instantiate(FightSceneManager.Instance.SmokeVfx);
-                newVfx.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                newVfx.GetComponent<Smoke>().Activate();
-            }
-            else if (type == "Wall")
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject newVfx = Instantiate(FightSceneManager.Instance.Wall);
-                newVfx.transform.position = new Vector2(float.Parse(parameters[1], CultureInfo.InvariantCulture), float.Parse(parameters[2], CultureInfo.InvariantCulture));
-                newVfx.transform.localEulerAngles = new Vector3(0, 0, float.Parse(parameters[3], CultureInfo.InvariantCulture));
-                newVfx.transform.name = parameters[4];
-
-                Walls.Add(newVfx.GetComponent<Wall>());
-            }
-            else if (type == "Death")
-            {
-                string[] parameters = data.Split(' ');
-
-                long id = long.Parse(parameters[1], CultureInfo.InvariantCulture);
-
-                if (parameters.Length > 2 && id == playerId)
-                {
-
-                    playerScripts[id].DeathData(parameters[2], parameters[3], parameters[4]);
-                    if (playerScripts[id].Team == 0)
-                        ConsoleCanvas.Instance.Console.MatchCTDead(parameters[4], playerScripts[id].Name);
-                    else ConsoleCanvas.Instance.Console.MatchTDead(parameters[4], playerScripts[id].Name);
-
-                }
-
-                playerScripts[id].TriggerDeath();
-
-                Tab.Instance.ModifyAlive(playerScripts[id], false, playerScripts[id].Team);
-            }
-            else if (type == "Drop")
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject drop = Instantiate(FightSceneManager.Instance.Drops[int.Parse(parameters[1], CultureInfo.InvariantCulture)]);
-
-                drop.GetComponent<Drop>().Setup(int.Parse(parameters[7], CultureInfo.InvariantCulture), int.Parse(parameters[8], CultureInfo.InvariantCulture));
-                drop.transform.position = new Vector2(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture));
-                drop.GetComponent<Rigidbody2D>().velocity = new Vector2(float.Parse(parameters[4], CultureInfo.InvariantCulture), float.Parse(parameters[5], CultureInfo.InvariantCulture));
-
-                drop.transform.name = "drop" + parameters[6];
-
-                drop.transform.localScale *= 10;
-            }
-            else if (type == "Destroy")
-            {
-                string[] parameters = data.Split(' ');
-
-                GameObject obj = GameObject.Find(parameters[1]);
-
-                if (parameters[1].Contains("wall"))
-                {
-                    GameObject vfx = Instantiate(FightSceneManager.Instance.WallVfx);
-                    vfx.transform.position = GameObject.Find(parameters[1]).transform.position;
-                    Destroy(vfx, 2f);
-
-                    Walls.Remove(obj.GetComponent<Wall>());
-                }
-
-                Destroy(obj);
-            }
             else if (type == "Plant")
             {
                 string[] parameters = data.Split(' ');
@@ -1190,11 +1283,6 @@ public class GameClient : MonoBehaviour
                     FightSceneManager.Instance.CanvasAnimator.Play("idle");
                 }
             }
-            else if (type == "Defused")
-            {
-                FightSceneManager.Instance.CanvasAnimator.Play("idle");
-                ConsoleCanvas.Instance.Console.MatchBombDefused();
-            }
             else if (type == "Rounds")
             {
                 try
@@ -1225,114 +1313,6 @@ public class GameClient : MonoBehaviour
 
                 }
             }
-            else if (type == "Play")
-            {
-                string[] parameters = data.Split(' ');
-
-                if (parameters.Length == 2)
-                {
-                    GameObject obj = new GameObject();
-                    obj.transform.position = Vector3.zero;
-                    obj.AddComponent<AudioSource>();
-                    obj.GetComponent<AudioSource>().clip = SoundArchive.Instance.sounds[int.Parse(parameters[1], CultureInfo.InvariantCulture)];
-                    obj.GetComponent<AudioSource>().Play();
-                    Destroy(obj, obj.GetComponent<AudioSource>().clip.length + 1);
-                    if (parameters[1] == "15")
-                    {
-                        ConsoleCanvas.Instance.Console.MatchRoundEnd();
-                    }
-                }
-                else if (parameters.Length == 4)
-                {
-                    GameObject obj = new GameObject();
-                    obj.transform.position = new Vector3(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture), 0);
-
-                    AudioSource source = obj.AddComponent<AudioSource>();
-                    source.clip = SoundArchive.Instance.sounds[int.Parse(parameters[1], CultureInfo.InvariantCulture)];
-
-                    source.spatialBlend = 1f;
-                    source.spread = 360f;
-                    source.rolloffMode = AudioRolloffMode.Linear;
-                    source.dopplerLevel = 0f;
-                    source.maxDistance = 30f;
-                    source.minDistance = 5f;
-
-                    if (parameters[1] == "14" || parameters[1] == "17")
-                    {
-                        source.maxDistance = 60f;
-                        source.minDistance = 10f;
-                    }
-                    if (parameters[1] == "25" || parameters[1] == "26")
-                    {
-                        source.maxDistance = 45f;
-                        source.minDistance = 7.5f;
-                    }
-
-
-                    List<AudioSource> asList = new List<AudioSource>();
-
-                    foreach (AudioSource a in FindObjectsOfType<AudioSource>())
-                    {
-                        if (Vector2.Distance(a.transform.position, Camera.main.transform.position) < 10f && a.clip == obj.GetComponent<AudioSource>().clip && a != obj.GetComponent<AudioSource>())
-                        {
-                            asList.Add(a);
-                        }
-                    }
-
-                    for (int i = asList.Count - 20; i >= 0; i--)
-                    {
-                        Destroy(asList[i].gameObject);
-                    }
-
-                    obj.GetComponent<AudioSource>().Play();
-                    Destroy(obj, obj.GetComponent<AudioSource>().clip.length + 1);
-                }
-                else if (parameters.Length == 5)
-                {
-                    GameObject obj = new GameObject();
-
-                    long id = long.Parse(parameters[4], CultureInfo.InvariantCulture);
-                    obj.transform.parent = players[id].transform;
-
-                    obj.transform.position = new Vector3(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture), 0);
-                    AudioSource source = obj.AddComponent<AudioSource>();
-                    if (parameters[1] == "14")
-                        source.volume = 0.75f;
-
-                    source.spatialBlend = 1f;
-                    source.spread = 360f;
-                    source.rolloffMode = AudioRolloffMode.Linear;
-                    source.dopplerLevel = 0f;
-                    source.maxDistance = 30f;
-                    source.minDistance = 5f;
-                    source.clip = SoundArchive.Instance.sounds[int.Parse(parameters[1], CultureInfo.InvariantCulture)];
-
-                    if (parameters[1] == "13" || parameters[1] == "12")
-                    {
-                        source.maxDistance = 60f;
-                        source.minDistance = 20f;
-                    }
-
-                    List<AudioSource> asList = new List<AudioSource>();
-
-                    foreach (AudioSource a in FindObjectsOfType<AudioSource>())
-                    {
-                        if (Vector2.Distance(a.transform.position, Camera.main.transform.position) < 10f && a.clip == obj.GetComponent<AudioSource>().clip && a != obj.GetComponent<AudioSource>())
-                        {
-                            asList.Add(a);
-                        }
-                    }
-
-                    for (int i = asList.Count - 20; i >= 0; i--)
-                    {
-                        Destroy(asList[i].gameObject);
-                    }
-
-
-                    source.Play();
-                    Destroy(obj, source.clip.length + 1);
-                }
-            }
             else if (type == "Msg")
             {
                 string[] parameters = data.Split(' ');
@@ -1351,14 +1331,6 @@ public class GameClient : MonoBehaviour
                 string[] parameters = data.Split(' ');
 
                 string msg = "(All) " + string.Join(" ", parameters.Skip(3));
-
-                Chat.Instance.AddMessage(msg);
-            }
-            else if (type == "System")
-            {
-                string[] parameters = data.Split(' ');
-
-                string msg = string.Join(" ", parameters.Skip(3));
 
                 Chat.Instance.AddMessage(msg);
             }
@@ -1615,28 +1587,6 @@ public class GameClient : MonoBehaviour
                     }
                 }
             }
-            else if (type == "NewName")
-            {
-                string[] parameters = data.Split(' ');
-
-                long id = long.Parse(parameters[1], CultureInfo.InvariantCulture);
-
-                if (id == playerId)
-                    currentName = parameters[3];
-
-                try
-                {
-                    if (players[id + 1] != null)
-                        playerScripts[id + 1].SetName(parameters[3]);
-                }
-                catch
-                {
-
-                }
-
-                Tab.Instance.ModifyName(parameters[2], parameters[3]);
-
-            }
             else if (type == "NewLobbyName")
             {
                 string[] parameters = data.Split(' ');
@@ -1693,20 +1643,18 @@ public class GameClient : MonoBehaviour
         {
             if (playerName.text != currentName)
             {
-                currentName = playerName.text;
-
-                message += "NewPlayerName " + playerId.ToString(CultureInfo.InvariantCulture) + ' ' + playerName.text + "\n";
+                Network.Instance.Send(new ClientNewPlayerName(playerName.text));
             }
         }
         else
         {
-            message += "NewPlayerName " + playerId.ToString(CultureInfo.InvariantCulture) + ' ' + currentName + "\n";
+            Network.Instance.Send(new ClientNewPlayerName(playerName.text));
         }
     }
 
     private void SendPlayerTeam()
     {
-        message += "NewPlayerTeam " + playerId.ToString(CultureInfo.InvariantCulture) + ' ' + Team.ToString(CultureInfo.InvariantCulture) + "\n";
+        Network.Instance.Send(new NewPlayerTeam(Team));
     }
 
     private void OnDestroy()
@@ -1733,8 +1681,6 @@ public class GameClient : MonoBehaviour
     {
         try
         {
-            this.message += "ClientAlive " + playerId.ToString(CultureInfo.InvariantCulture) + "\n";
-
             if (timeObj == null)
                 timeObj = GameObject.Find("RoundTime");
 

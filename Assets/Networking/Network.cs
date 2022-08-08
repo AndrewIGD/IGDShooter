@@ -28,6 +28,10 @@ public class Network : MonoBehaviour
 
     public event JoinedServer OnJoinedServer = delegate { };
 
+    public delegate void SessionListUpdate(List<SessionData> sessionList);
+
+    public event SessionListUpdate OnSessionListUpdated = delegate { };
+
 
     [HideInInspector]
     public NetworkingLibrary _library;
@@ -41,6 +45,11 @@ public class Network : MonoBehaviour
     private List<object> _objects = new List<object>();
 
     JsonSerializerSettings serializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+
+    public void UpdateSessionList(List<SessionData> sessionList)
+    {
+        OnSessionListUpdated.Invoke(sessionList);
+    }
 
     public void Host()
     {
@@ -84,7 +93,39 @@ public class Network : MonoBehaviour
         OnJoinedServer.Invoke();
     }
 
-    public void SetNetworkingLibrary(NetworkingLibrary library) => _library = library;
+    public void SetNetworkingLibrary(NetworkingLibrary library)
+    {
+        _library = library;
+
+        GameObject networkHandler = new GameObject();
+
+        switch (_library)
+        {
+            case NetworkingLibrary.Bolt:
+                {
+                    _networkHandler = networkHandler.AddComponent<PhotonNetworkHandler>();
+                    networkHandler.name = "Bolt";
+
+                    break;
+                }
+            case NetworkingLibrary.Lidgren:
+                {
+                    _networkHandler = networkHandler.AddComponent<LidgrenNetworkHandler>();
+                    networkHandler.name = "Lidgren";
+
+                    break;
+                }
+        }
+
+        DontDestroyOnLoad(networkHandler);
+    }
+
+    public void StartClient()
+    {
+        _networkHandler.Init();
+
+        StartCoroutine(MessageLoop());
+    }
 
     public string GetSelfID() => _networkHandler.GetSelfID();
 
@@ -115,37 +156,5 @@ public class Network : MonoBehaviour
 
             _networkHandler.Send(bytes);
         }
-    }
-
-    private void OnLevelWasLoaded(int level)
-    {
-        if (level != 1) //Room Scene
-            return;
-
-        GameObject networkHandler = new GameObject();
-
-        switch (_library)
-        {
-            case NetworkingLibrary.Bolt:
-                {
-                    _networkHandler = networkHandler.AddComponent<PhotonNetworkHandler>();
-                    networkHandler.name = "Bolt";
-
-                    break;
-                }
-            case NetworkingLibrary.Lidgren:
-                {
-                    _networkHandler = networkHandler.AddComponent<LidgrenNetworkHandler>();
-                    networkHandler.name = "Lidgren";
-
-                    break;
-                }
-        }
-
-        _networkHandler.Init();
-
-        DontDestroyOnLoad(networkHandler);
-
-        StartCoroutine(MessageLoop());
     }
 }

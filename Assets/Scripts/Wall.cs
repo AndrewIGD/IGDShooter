@@ -21,12 +21,13 @@ public class Wall : MonoBehaviour
         _health -= damage;
         if (GameHost.Instance != null && _health > 0)
         {
-            GameHost.Instance.message += "Play " + "25" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
+            Network.Instance.Send(new Play(25, transform.position));
         }
         if (_health <= 0 && GameHost.Instance != null)
         {
-            GameHost.Instance.message += "Play " + "26" + " " + transform.position.x.ToString(CultureInfo.InvariantCulture) + " " + transform.position.y.ToString(CultureInfo.InvariantCulture) + "\n";
-            GameHost.Instance.message += "Destroy " + transform.name + "\n";
+            Network.Instance.Send(new Play(26, transform.position));
+
+            Network.Instance.Send(new Destroy(transform.name));
         }
     }
 }

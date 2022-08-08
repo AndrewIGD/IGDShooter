@@ -21,7 +21,7 @@ public class Hitbox : MonoBehaviour
 
     private string _name;
 
-    private long _playerNumber = 0;
+    private string _playerNumber = "";
 
     private Player _parentScript;
 
@@ -39,7 +39,7 @@ public class Hitbox : MonoBehaviour
     {
         if (destroyOnHit)
         {
-            GameHost.Instance.message += "Destroy " + transform.name + "\n";
+            Network.Instance.Send(new Destroy(transform.name));
             Destroy(gameObject);
         }
     }

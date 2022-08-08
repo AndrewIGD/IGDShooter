@@ -160,7 +160,23 @@ public class MainMenuActions : MonoBehaviour
 
     public void GoLobby()
     {
-        SceneManager.LoadScene("OnlineLobby");
+        SceneManager.LoadScene("StartScene");
+    }
+
+    public void Quit() => Application.Quit();
+
+    public void LAN()
+    {
+        MatchData.NetworkingLibrary = NetworkingLibrary.Lidgren;
+
+        SceneManager.LoadScene("HostRoom");
+    }
+
+    public void Online()
+    {
+        MatchData.NetworkingLibrary = NetworkingLibrary.Bolt;
+
+        SceneManager.LoadScene("HostRoom");
     }
 
     public void Graf()
