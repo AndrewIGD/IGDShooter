@@ -386,6 +386,35 @@ public static class BinarySerializer
 
                     break;
                 }
+            case PlayerInfo playerInfo:
+                {
+                    _byteList.Add((byte)BinaryType.PlayerInfo);
+                    _byteList.AddRange(SerializeString(playerInfo.PlayerID));
+                    _byteList.AddRange(SerializeFloat(playerInfo.Position.x));
+                    _byteList.AddRange(SerializeFloat(playerInfo.Position.y));
+                    _byteList.AddRange(SerializeFloat(playerInfo.Angle));
+                    _byteList.AddRange(SerializeInt(playerInfo.Health));
+                    _byteList.AddRange(SerializeFloat(playerInfo.MoveDir.x));
+                    _byteList.AddRange(SerializeFloat(playerInfo.MoveDir.y));
+                    _byteList.AddRange(SerializeString(playerInfo.Anim));
+                    _byteList.AddRange(SerializeInt(playerInfo.GunScriptType));
+                    _byteList.AddRange(SerializeInt(playerInfo.Armor));
+                    _byteList.AddRange(SerializeInt(playerInfo.Cash));
+                    _byteList.AddRange(SerializeInt(playerInfo.GunType));
+                    _byteList.Add((byte)(playerInfo.Pistol));
+                    _byteList.Add((byte)(playerInfo.HE));
+                    _byteList.Add((byte)(playerInfo.Flash));
+                    _byteList.Add((byte)(playerInfo.Smoke));
+                    _byteList.AddRange(SerializeInt(playerInfo.GunRoundAmmo));
+                    _byteList.AddRange(SerializeInt(playerInfo.GunBulletCount));
+                    _byteList.AddRange(SerializeInt(playerInfo.RoundTime));
+                    _byteList.Add((byte)(playerInfo.CanBuy));
+                    _byteList.Add((byte)(playerInfo.InBuyZone));
+                    _byteList.Add((byte)(playerInfo.HasBomb));
+                    _byteList.Add((byte)(playerInfo.HasWall));
+
+                    break;
+                }
         }
     }
 

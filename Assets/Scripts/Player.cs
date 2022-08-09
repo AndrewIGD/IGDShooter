@@ -961,7 +961,7 @@ public class Player : MonoBehaviour
             _currentGunID = 7;
     }
 
-    public void UpdateInfo(Vector2 playerPos, float angle, float health, string armorText, int canBuy, int inBuyZone)
+    public void UpdateInfo(Vector2 playerPos, float angle, float health, float armorText, int canBuy, int inBuyZone)
     {
         if (Vector2.Distance(transform.position, playerPos) > 0.1f)
         {
@@ -980,7 +980,7 @@ public class Player : MonoBehaviour
         if (_controlling)
         {
             FightSceneManager.Instance.HealthText.text = health.ToString(CultureInfo.InvariantCulture);
-            FightSceneManager.Instance.ArmorText.text = armorText;
+            FightSceneManager.Instance.ArmorText.text = armorText.ToString(CultureInfo.InvariantCulture);
 
             if (canBuy == 1)
                 _canBuy = true;
@@ -1445,30 +1445,30 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void UpdateGunInfo(float v1, string v2, int bulletCount, int roundAmmo, string v3, string v4)
+    public void UpdateGunInfo(float armor, int gunScriptType, int bulletCount, int roundAmmo, float health)
     {
         if (_controlling)
         {
-            if (v1 == 0)
+            if (armor == 0)
                 FightSceneManager.Instance.ArmorObject.SetActive(false);
             else FightSceneManager.Instance.ArmorObject.SetActive(true);
         }
         else
         {
-            if (health > maxHealth)
-                maxHealth = health;
+            if (this.health > maxHealth)
+                maxHealth = this.health;
 
-            setHealthBar.transform.localScale = new Vector3(float.Parse(v3, CultureInfo.InvariantCulture) / maxHealth, 1, 0);
-            setArmorBar.transform.localScale = new Vector3(float.Parse(v4, CultureInfo.InvariantCulture) / maxHealth, 1, 0);
+            setHealthBar.transform.localScale = new Vector3(this.health / maxHealth, 1, 0);
+            setArmorBar.transform.localScale = new Vector3(armor / 100f, 1, 0);
         }
 
 
-        if (v2 == "6")
+        if (gunScriptType == 6)
         {
             _pistolBulletCount = bulletCount;
             _pistolRoundAmmo = roundAmmo;
         }
-        else if (int.Parse(v2, CultureInfo.InvariantCulture) > 0 && int.Parse(v2, CultureInfo.InvariantCulture) <= 5)
+        else if (gunScriptType > 0 && gunScriptType <= 5)
         {
             _gunBulletCount = bulletCount;
             _gunRoundAmmo = roundAmmo;

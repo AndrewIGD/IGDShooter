@@ -45,7 +45,8 @@ public enum BinaryType
     SpawnPlayer,
     Disconnect,
     SetDeaths,
-    Death
+    Death,
+    PlayerInfo
 }
 
 public class PlayerCount
@@ -409,4 +410,55 @@ public class Death
     public int? Dealt;
     public int? Received;
     public string Attacker;
+}
+
+public class PlayerInfo
+{
+    public PlayerInfo(string playerID, Vector2 position, float angle, int health, Vector2 moveDir, string anim, int gunScriptType, int armor, int cash, int gunType, int pistol, int he, int flash, int smoke, int gunRoundAmmo, int gunBulletCount, int roundTime, int canBuy, int inBuyZone, int hasBomb, int hasWall)
+    {
+        PlayerID = playerID;
+        Position = position;
+        Angle = angle;
+        Health = health;
+        MoveDir = moveDir;
+        Anim = anim;
+        GunScriptType = gunScriptType;
+        GunType = gunType;
+        Pistol = pistol;
+        HE = he;
+        Flash = flash;
+        Smoke = smoke;
+        Armor = armor;
+        Cash = cash;
+        GunRoundAmmo = gunRoundAmmo;
+        GunBulletCount = gunBulletCount;
+        RoundTime = roundTime;
+        CanBuy = canBuy;
+        InBuyZone = inBuyZone;
+        HasBomb = hasBomb;
+        HasWall = hasWall;
+
+    }
+
+    public string PlayerID;
+    public Vector2 Position;
+    public float Angle;
+    public int Health;
+    public Vector2 MoveDir;
+    public string Anim;
+    public int GunScriptType;
+    public int GunRoundAmmo;
+    public int GunBulletCount;
+    public int RoundTime;
+    public int CanBuy;
+    public int InBuyZone;
+    public int HasBomb;
+    public int GunType;
+    public int Pistol;
+    public int HE;
+    public int Flash;
+    public int Smoke;
+    public int Armor;
+    public int Cash;
+    public int HasWall;
 }

@@ -301,6 +301,12 @@ public static class BinaryDeserializer
 
                         break;
                     }
+                case BinaryType.PlayerInfo:
+                    {
+                        objectList.Add(new PlayerInfo(DeserializeString(), new Vector2(DeserializeFloat(), DeserializeFloat()), DeserializeFloat(), DeserializeInt(), new Vector2(DeserializeFloat(), DeserializeFloat()), DeserializeString(), DeserializeInt(), DeserializeInt(), DeserializeInt(), DeserializeInt(), DeserializeByte(), DeserializeByte(), DeserializeByte(), DeserializeByte(), DeserializeInt(), DeserializeInt(), DeserializeInt(), DeserializeByte(), DeserializeByte(), DeserializeByte(), DeserializeByte()));
+
+                        break;
+                    }
             }
         }
 

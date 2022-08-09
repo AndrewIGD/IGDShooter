@@ -539,7 +539,95 @@ public class GameClient : MonoBehaviour
 
                         break;
                     }
+                case PlayerInfo playerInfo:
+                    {
+                        if (GameHost.Instance == null || (GameHost.Instance != null && RoundData.Instance.Spawned))
+                        {
+                            string id = playerInfo.PlayerID;
 
+                            if (GameHost.Instance == null)
+                            {
+                                Vector2 playerPos = playerInfo.Position;
+
+                                playerScripts[id].UpdateInfo(playerPos, playerInfo.Angle, playerInfo.Health, playerInfo.Armor, playerInfo.CanBuy, playerInfo.InBuyZone);
+                            }
+
+                            playerScripts[id].UpdateGunInfo(playerInfo.Armor, playerInfo.GunScriptType, playerInfo.GunBulletCount, playerInfo.GunRoundAmmo, playerInfo.Health);
+
+                            if (playerScripts[id].Controlling)
+                            {
+                                FightSceneManager.Instance.CashText.GetComponent<Text>().text = "$" + playerInfo.Cash;
+
+                                FightSceneManager.Instance.BulletText.text = playerInfo.GunRoundAmmo + "/" + playerInfo.GunBulletCount;
+                                int gunType = playerInfo.GunType;
+
+                                if (gunType != -1)
+                                {
+                                    FightSceneManager.Instance.WeaponUIObjects[0].SetActive(true);
+                                    FightSceneManager.Instance.WeaponImages[0].sprite = FightSceneManager.Instance.Drops[gunType].GetComponent<SpriteRenderer>().sprite;
+                                }
+                                else FightSceneManager.Instance.WeaponUIObjects[0].SetActive(false);
+                                int hasPistol = playerInfo.Pistol;
+                                if (hasPistol == 1)
+                                {
+                                    FightSceneManager.Instance.WeaponUIObjects[1].SetActive(true);
+                                }
+                                else FightSceneManager.Instance.WeaponUIObjects[1].SetActive(false);
+
+                                int hasHe = playerInfo.HE;
+                                if (hasHe == 1)
+                                {
+                                    FightSceneManager.Instance.WeaponUIObjects[3].SetActive(true);
+                                }
+                                else FightSceneManager.Instance.WeaponUIObjects[3].SetActive(false);
+
+                                int hasFlash = playerInfo.Flash;
+                                if (hasFlash == 1)
+                                {
+                                    FightSceneManager.Instance.WeaponUIObjects[4].SetActive(true);
+                                }
+                                else FightSceneManager.Instance.WeaponUIObjects[4].SetActive(false);
+
+                                int hasSmoke = playerInfo.Smoke;
+                                if (hasSmoke == 1)
+                                {
+                                    FightSceneManager.Instance.WeaponUIObjects[5].SetActive(true);
+                                }
+                                else FightSceneManager.Instance.WeaponUIObjects[5].SetActive(false);
+
+                                int hasBomb = playerInfo.HasBomb;
+                                if (hasBomb == 1)
+                                {
+                                    FightSceneManager.Instance.WeaponUIObjects[6].SetActive(true);
+                                }
+                                else FightSceneManager.Instance.WeaponUIObjects[6].SetActive(false);
+
+                                int hasWall = playerInfo.HasWall;
+                                if (hasWall == 1)
+                                {
+                                    FightSceneManager.Instance.WeaponUIObjects[7].SetActive(true);
+                                }
+                                else FightSceneManager.Instance.WeaponUIObjects[7].SetActive(false);
+                            }
+                            else
+                            {
+                                if (setTime == false)
+                                {
+                                    gameTime = playerInfo.RoundTime;
+
+                                    setTime = true;
+                                }
+                            }
+
+
+                            if (GameHost.Instance == null)
+                            {
+                                playerScripts[id].UpdateOther(playerInfo.Cash, playerInfo.GunScriptType, playerInfo.MoveDir, playerInfo.Anim);
+                            }
+                        }
+
+                        break;
+                    }
             }
         }
     }
@@ -1118,95 +1206,6 @@ public class GameClient : MonoBehaviour
                 catch (Exception err)
                 {
                     Debug.Log(err.ToString());
-                }
-            }
-            else if (type == "PlayerInfo")
-            {
-                if (GameHost.Instance == null || (GameHost.Instance != null && RoundData.Instance.Spawned))
-                {
-                    string[] parameters = data.Split(' ');
-
-                    long id = long.Parse(parameters[1], CultureInfo.InvariantCulture);
-
-                    if (GameHost.Instance == null)
-                    {
-                        Vector2 playerPos = new Vector2(float.Parse(parameters[2], CultureInfo.InvariantCulture), float.Parse(parameters[3], CultureInfo.InvariantCulture));
-
-                        playerScripts[id].UpdateInfo(playerPos, float.Parse(parameters[4], CultureInfo.InvariantCulture), float.Parse(parameters[5], CultureInfo.InvariantCulture), parameters[10], int.Parse(parameters[20], CultureInfo.InvariantCulture), int.Parse(parameters[21], CultureInfo.InvariantCulture));
-                    }
-
-                    playerScripts[id].UpdateGunInfo(float.Parse(parameters[10], CultureInfo.InvariantCulture), parameters[9], int.Parse(parameters[18], CultureInfo.InvariantCulture), int.Parse(parameters[17], CultureInfo.InvariantCulture), parameters[5], parameters[10]);
-
-                    if (playerScripts[id].Controlling)
-                    {
-                        FightSceneManager.Instance.CashText.GetComponent<Text>().text = "$" + parameters[11];
-
-                        FightSceneManager.Instance.BulletText.text = parameters[17] + "/" + parameters[18];
-                        int gunType = int.Parse(parameters[12], CultureInfo.InvariantCulture);
-
-                        if (gunType != -1)
-                        {
-                            FightSceneManager.Instance.WeaponUIObjects[0].SetActive(true);
-                            FightSceneManager.Instance.WeaponImages[0].sprite = FightSceneManager.Instance.Drops[gunType].GetComponent<SpriteRenderer>().sprite;
-                        }
-                        else FightSceneManager.Instance.WeaponUIObjects[0].SetActive(false);
-                        int hasPistol = int.Parse(parameters[13], CultureInfo.InvariantCulture);
-                        if (hasPistol == 1)
-                        {
-                            FightSceneManager.Instance.WeaponUIObjects[1].SetActive(true);
-                        }
-                        else FightSceneManager.Instance.WeaponUIObjects[1].SetActive(false);
-
-                        int hasHe = int.Parse(parameters[14], CultureInfo.InvariantCulture);
-                        if (hasHe == 1)
-                        {
-                            FightSceneManager.Instance.WeaponUIObjects[3].SetActive(true);
-                        }
-                        else FightSceneManager.Instance.WeaponUIObjects[3].SetActive(false);
-
-                        int hasFlash = int.Parse(parameters[15], CultureInfo.InvariantCulture);
-                        if (hasFlash == 1)
-                        {
-                            FightSceneManager.Instance.WeaponUIObjects[4].SetActive(true);
-                        }
-                        else FightSceneManager.Instance.WeaponUIObjects[4].SetActive(false);
-
-                        int hasSmoke = int.Parse(parameters[16], CultureInfo.InvariantCulture);
-                        if (hasSmoke == 1)
-                        {
-                            FightSceneManager.Instance.WeaponUIObjects[5].SetActive(true);
-                        }
-                        else FightSceneManager.Instance.WeaponUIObjects[5].SetActive(false);
-
-                        int hasBomb = int.Parse(parameters[22], CultureInfo.InvariantCulture);
-                        if (hasBomb == 1)
-                        {
-                            FightSceneManager.Instance.WeaponUIObjects[6].SetActive(true);
-                        }
-                        else FightSceneManager.Instance.WeaponUIObjects[6].SetActive(false);
-
-                        int hasWall = int.Parse(parameters[23], CultureInfo.InvariantCulture);
-                        if (hasWall == 1)
-                        {
-                            FightSceneManager.Instance.WeaponUIObjects[7].SetActive(true);
-                        }
-                        else FightSceneManager.Instance.WeaponUIObjects[7].SetActive(false);
-                    }
-                    else
-                    {
-                        if (setTime == false)
-                        {
-                            gameTime = int.Parse(parameters[19], CultureInfo.InvariantCulture);
-
-                            setTime = true;
-                        }
-                    }
-
-
-                    if (GameHost.Instance == null)
-                    {
-                        playerScripts[id].UpdateOther(int.Parse(parameters[11], CultureInfo.InvariantCulture), int.Parse(parameters[9], CultureInfo.InvariantCulture), new Vector2(float.Parse(parameters[6], CultureInfo.InvariantCulture), float.Parse(parameters[7], CultureInfo.InvariantCulture)), parameters[8]);
-                    }
                 }
             }
             else if (type == "Graffiti")

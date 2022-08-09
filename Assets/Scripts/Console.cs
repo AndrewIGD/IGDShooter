@@ -105,7 +105,7 @@ public class Console : MonoBehaviour
 
                         List<string> names = new List<string>();
 
-                        foreach (long i in MatchData.PlayerData.Keys)
+                        foreach (string i in MatchData.PlayerData.Keys)
                         {
                             if (MatchData.PlayerData[i].ClientAlive && gameClient.players[i] == null)
                             {
