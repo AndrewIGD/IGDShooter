@@ -85,8 +85,6 @@ public class LidgrenNetworkHandler : MonoBehaviour, INetworkHandler
         {
             yield return new WaitForSecondsRealtime(1f / Network.Instance.UpdateRate);
 
-            Debug.Log("M");
-
             List<NetIncomingMessage> messages = new List<NetIncomingMessage>();
 
             if (_client != null)

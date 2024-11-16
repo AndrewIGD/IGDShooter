@@ -41,31 +41,30 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonLibs\WebSocket\websocket-sharp.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Mdb.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonLibs\Photon3Unity3D.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Rocks.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Pdb.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\BouncyCastle\Mirror.BouncyCastle.Cryptography.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Rocks.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonLibs\WebSocket\websocket-sharp.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll" />
     <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\ThirdParty\StandaloneFileBrowser\Plugins\System.Windows.Forms.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonLibs\Metro\Photon3Unity3D.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonLibs\Photon3Unity3D.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Pdb.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\BouncyCastle\Mirror.BouncyCastle.Cryptography.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Mdb.dll" />
     <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\ThirdParty\StandaloneFileBrowser\Plugins\Ookii.Dialogs.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll" />
     <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Lidgren.Network.dll" />
     <Analyzer Include="D:\Programs\Unity Editors\6000.0.27f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\Programs\Unity Editors\6000.0.27f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="D:\Programs\Unity Editors\6000.0.27f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.dotnet.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\editor\bolt.compiler.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.photon.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\editor\protobuf-net.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.null.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\bolt.user.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\editor\bolt.editor.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.common.dll" />
-    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\bolt.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\bolt.user.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.null.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\editor\protobuf-net.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.common.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\editor\bolt.compiler.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\editor\bolt.editor.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.dotnet.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\bolt.dll" />
+    <Analyzer Include="D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.photon.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Bomb.cs" />
@@ -75,6 +74,7 @@
     <Compile Include="Assets\Scripts\BuyZone.cs" />
     <Compile Include="Assets\Scripts\BombAssign.cs" />
     <Compile Include="Assets\Scripts\MainMenuActions.cs" />
+    <Compile Include="Assets\Networking\Mirror\GameLogic\MirrorDiscoveryResponse.cs" />
     <Compile Include="Assets\Scripts\Buy.cs" />
     <Compile Include="Assets\Scripts\DeleteNo.cs" />
     <Compile Include="Assets\Scripts\RoundData.cs" />
@@ -89,7 +89,6 @@
     <Compile Include="Assets\Scripts\Smoke.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\Tab.cs" />
-    <Compile Include="Assets\Networking\Libraries\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\Scripts\DeleteMap.cs" />
     <Compile Include="Assets\Scripts\WinLoseAnim.cs" />
     <Compile Include="Assets\Scripts\Undo.cs" />
@@ -111,10 +110,12 @@
     <Compile Include="Assets\Scripts\Console.cs" />
     <Compile Include="Assets\Scripts\Hitbox.cs" />
     <Compile Include="Assets\Scripts\Config.cs" />
+    <Compile Include="Assets\Networking\Mirror\GameLogic\MirrorNetworkingHandler.cs" />
     <Compile Include="Assets\Scripts\Packets.cs" />
+    <Compile Include="Assets\Networking\Mirror\GameLogic\MirrorByteArray.cs" />
     <Compile Include="Assets\Scripts\ScriptDebugger.cs" />
+    <Compile Include="Assets\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\Scripts\MapCreatorCameraDrag.cs" />
-    <Compile Include="Assets\Networking\Libraries\Photon\PhotonLibs\WebSocket\WebSocket.cs" />
     <Compile Include="Assets\Scripts\GameHost.cs" />
     <Compile Include="Assets\ThirdParty\StandaloneFileBrowser\Sample\CanvasSampleOpenFileTextMultiple.cs" />
     <Compile Include="Assets\ThirdParty\StandaloneFileBrowser\Sample\BasicSample.cs" />
@@ -136,7 +137,9 @@
     <Compile Include="Assets\Scripts\MegamapSIze.cs" />
     <Compile Include="Assets\ThirdParty\OutlineEffect\LinkedSet.cs" />
     <Compile Include="Assets\Scripts\UnsavedChanges.cs" />
+    <Compile Include="Assets\Networking\Mirror\GameLogic\MirrorDiscovery.cs" />
     <Compile Include="Assets\ThirdParty\StandaloneFileBrowser\StandaloneFileBrowser.cs" />
+    <Compile Include="Assets\Photon\PhotonLibs\WebSocket\WebSocket.cs" />
     <Compile Include="Assets\Scripts\TeamSelect.cs" />
     <Compile Include="Assets\Scripts\TextureImport.cs" />
     <Compile Include="Assets\Scripts\BulletDestroyer.cs" />
@@ -164,18 +167,19 @@
     <Compile Include="Assets\Scripts\ChatCommands.cs" />
     <Compile Include="Assets\Scripts\MapLoadScript.cs" />
     <Compile Include="Assets\Scripts\MapCreatorButtons.cs" />
+    <Compile Include="Assets\Networking\Mirror\GameLogic\MirrorNetworkManager.cs" />
     <Compile Include="Assets\ThirdParty\StandaloneFileBrowser\Sample\CanvasSampleSaveFileImage.cs" />
     <Compile Include="Assets\Networking\Network.cs" />
     <Compile Include="Assets\ThirdParty\StandaloneFileBrowser\StandaloneFileBrowserEditor.cs" />
     <Compile Include="Assets\Scripts\KillFeed.cs" />
     <None Include="Library\PackageCache\com.unity.modules.subsystems\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Library\PackageCache\com.unity.modules.jsonserialize\package.json" />
     <None Include="Library\PackageCache\com.unity.burst\package.json" />
-    <None Include="Assets\Networking\Libraries\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
+    <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Library\PackageCache\com.unity.modules.screencapture\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.cloth\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Library\PackageCache\com.unity.test-framework.performance\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.unitywebrequesttexture\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.ai\package.json" />
@@ -185,7 +189,7 @@
     <None Include="Library\PackageCache\com.unity.ext.nunit\package.json" />
     <None Include="Library\PackageCache\com.unity.2d.pixel-perfect\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.assetbundle\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Library\PackageCache\com.unity.modules.imgui\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.tilemap\package.json" />
     <None Include="Library\PackageCache\com.unity.test-framework.performance\ValidationExceptions.json" />
@@ -195,48 +199,48 @@
     <None Include="Library\PackageCache\com.unity.modules.terrainphysics\package.json" />
     <None Include="Library\PackageCache\com.unity.mathematics\package.json" />
     <None Include="Library\PackageCache\com.unity.burst\ValidationExceptions.json" />
-    <None Include="Assets\Networking\Libraries\Photon\link.xml" />
+    <None Include="Assets\Photon\link.xml" />
     <None Include="Library\PackageCache\com.unity.collab-proxy\package.json" />
     <None Include="Library\PackageCache\com.unity.ugui\PackageConversionData.json" />
     <None Include="Library\PackageCache\com.unity.modules.unitywebrequestassetbundle\package.json" />
     <None Include="Library\PackageCache\com.unity.ide.visualstudio\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Library\PackageCache\com.unity.modules.imageconversion\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.unityanalytics\package.json" />
     <None Include="Library\PackageCache\com.unity.ide.rider\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.video\package.json" />
-    <None Include="Assets\Networking\Mirror\Version.txt" />
+    <None Include="Assets\Networking\Libraries\Mirror\Version.txt" />
     <None Include="Library\PackageCache\com.unity.test-framework\package.json" />
-    <None Include="Assets\Networking\Mirror\Readme.txt" />
+    <None Include="Assets\Networking\Libraries\Mirror\Readme.txt" />
     <None Include="Assets\ThirdParty\OutlineEffect\Resources\OutlineBufferShader.shader" />
     <None Include="Library\PackageCache\com.unity.nuget.mono-cecil\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.particlesystem\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.physics2d\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Library\PackageCache\com.unity.modules.vr\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Library\PackageCache\com.unity.2d.common\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Library\PackageCache\com.unity.ide.visualstudio\ValidationExceptions.json" />
     <None Include="Library\PackageCache\com.unity.nuget.newtonsoft-json\link.xml" />
     <None Include="Library\PackageCache\com.unity.modules.wind\package.json" />
-    <None Include="Assets\Networking\Libraries\Photon\PhotonLibs\changes-library.txt" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\Photon\PhotonLibs\changes-library.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Library\PackageCache\com.unity.modules.umbra\package.json" />
     <None Include="Library\PackageCache\com.unity.nuget.newtonsoft-json\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\Networking\Libraries\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.deps.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.deps.json" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
     <None Include="Library\PackageCache\com.unity.modules.audio\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.physics\package.json" />
-    <None Include="Assets\Networking\Mirror\Notice.txt" />
+    <None Include="Assets\Networking\Libraries\Mirror\Notice.txt" />
     <None Include="Library\PackageCache\com.unity.modules.vehicles\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.unitywebrequestwww\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Library\PackageCache\com.unity.modules.unitywebrequestaudio\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.hierarchycore\package.json" />
-    <None Include="Assets\Networking\Mirror\Plugins\Mono.Cecil\License.txt" />
+    <None Include="Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\License.txt" />
     <None Include="Library\PackageCache\com.unity.ugui\Editor Resources\Shaders\TMP_SDF_SSD.cginc" />
     <None Include="Library\PackageCache\com.unity.collab-proxy\ValidationConfig.json" />
     <None Include="Library\PackageCache\com.unity.ai.navigation\package.json" />
@@ -245,33 +249,33 @@
     <None Include="Library\PackageCache\com.unity.ugui\Editor Resources\Shaders\TMP_Properties.cginc" />
     <None Include="Library\PackageCache\com.unity.nuget.newtonsoft-json\Runtime\AOT\Newtonsoft.Json.xml" />
     <None Include="Library\PackageCache\com.unity.ugui\Editor Resources\Shaders\TMP_SDF Internal Editor.shader" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Library\PackageCache\com.unity.modules.director\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.terrain\package.json" />
     <None Include="Library\PackageCache\com.unity.2d.sprite\package.json" />
-    <None Include="Assets\Networking\Libraries\Photon\PhotonLibs\Photon3Unity3D.xml" />
+    <None Include="Assets\Photon\PhotonLibs\Photon3Unity3D.xml" />
     <None Include="Library\PackageCache\com.unity.collections\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.androidjni\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Library\PackageCache\com.unity.ugui\PackageConversionData_Assets.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Library\PackageCache\com.unity.2d.spriteshape\package.json" />
     <None Include="Library\PackageCache\com.unity.mathematics\ValidationExceptions.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Library\PackageCache\com.unity.modules.animation\package.json" />
     <None Include="Library\PackageCache\com.unity.2d.animation\package.json" />
     <None Include="Library\PackageCache\com.unity.nuget.newtonsoft-json\Runtime\Newtonsoft.Json.xml" />
     <None Include="Library\PackageCache\com.unity.collections\ValidationExceptions.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Library\PackageCache\com.unity.burst\Unity.Burst.Unsafe.xml" />
     <None Include="Library\PackageCache\com.unity.2d.psdimporter\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.unitywebrequest\package.json" />
     <None Include="Library\PackageCache\com.unity.modules.uielements\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Sprites\EmojiOne.json" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne.json" />
     <None Include="Library\PackageCache\com.unity.modules.ui\package.json" />
-    <None Include="Assets\Fonts\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <None Include="Library\PackageCache\com.unity.multiplayer.center\package.json" />
-    <None Include="Assets\Networking\Mirror\Hosting\Readme.txt" />
+    <None Include="Assets\Networking\Libraries\Mirror\Hosting\Readme.txt" />
     <None Include="Library\PackageCache\com.unity.ide.vscode\package.json" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Programs\Unity Editors\6000.0.27f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
@@ -628,16 +632,16 @@
       <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Library\PackageCache\com.unity.ext.nunit\net40\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="udpkit.platform.dotnet">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.dotnet.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.dotnet.dll</HintPath>
     </Reference>
     <Reference Include="udpkit.platform.photon">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.photon.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.photon.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonLibs\WebSocket\websocket-sharp.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonLibs\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="udpkit">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.dll</HintPath>
     </Reference>
     <Reference Include="Ookii.Dialogs">
       <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\ThirdParty\StandaloneFileBrowser\Plugins\Ookii.Dialogs.dll</HintPath>
@@ -646,43 +650,43 @@
       <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Library\PackageCache\com.unity.nuget.newtonsoft-json\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="udpkit.platform.null">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.null.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.platform.null.dll</HintPath>
     </Reference>
     <Reference Include="Lidgren.Network">
       <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="bolt">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\bolt.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\bolt.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Library\PackageCache\com.unity.nuget.mono-cecil\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="udpkit.common">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\udpkit\udpkit.common.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\udpkit\udpkit.common.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms">
       <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\ThirdParty\StandaloneFileBrowser\Plugins\System.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="bolt.user">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Photon\PhotonBolt\assemblies\bolt.user.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Photon\PhotonBolt\assemblies\bolt.user.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CecilX.Mdb">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Mdb.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CecilX.Pdb">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Pdb.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CecilX">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CecilX.Rocks">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Rocks.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="Mirror.BouncyCastle.Cryptography">
-      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Mirror\Plugins\BouncyCastle\Mirror.BouncyCastle.Cryptography.dll</HintPath>
+      <HintPath>D:\Projects\Personal\IGDShooter-2024\IGDShooter\Assets\Networking\Libraries\Mirror\Plugins\BouncyCastle\Mirror.BouncyCastle.Cryptography.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Android.Types">
       <HintPath>D:\Programs\Unity Editors\6000.0.27f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Types.dll</HintPath>
@@ -1067,10 +1071,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Mirror.Editor.csproj">
-      <Project>{899abd68-de69-a6fa-8ad4-d70616572068}</Project>
-      <Name>Mirror.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{89025fc0-9f97-5a92-5f01-f5167656d57a}</Project>
       <Name>UnityEditor.UI</Name>
@@ -1087,6 +1087,10 @@
       <Project>{34f66c1e-b514-a279-a676-e20fb1531c6e}</Project>
       <Name>PsdPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="Edgegap.csproj">
+      <Project>{394a154f-af29-d6bc-c381-e80a73d081d9}</Project>
+      <Name>Edgegap</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.2D.Common.Editor.csproj">
       <Project>{8fcd9732-1cdb-e04c-841f-97d8b0c89605}</Project>
       <Name>Unity.2D.Common.Editor</Name>
@@ -1095,9 +1099,13 @@
       <Project>{3521d723-f6c9-9943-baf7-2a3d59e73f74}</Project>
       <Name>Unity.2D.Common.Path.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="kcp2k.csproj">
-      <Project>{64a26f8c-0233-d06e-ce3a-bfebe83de5a7}</Project>
-      <Name>kcp2k</Name>
+    <ProjectReference Include="Mirror.Components.csproj">
+      <Project>{0570fda2-1bc5-a5e7-767a-377ea5af85c6}</Project>
+      <Name>Mirror.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="EncryptionTransportEditor.csproj">
+      <Project>{b48fb9b5-fec9-185e-785d-b305de3f0d74}</Project>
+      <Name>EncryptionTransportEditor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.2D.IK.Editor.csproj">
       <Project>{c7c2e4f8-42fa-cdf0-816a-c67f3cf82b34}</Project>
@@ -1111,10 +1119,6 @@
       <Project>{17a56721-4799-bcbe-07cb-7856e89d6dcf}</Project>
       <Name>Unity.2D.SpriteShape.Runtime</Name>
     </ProjectReference>
-    <ProjectReference Include="PhotonBolt.csproj">
-      <Project>{1e043340-2797-6e19-919a-9bbea96d5883}</Project>
-      <Name>PhotonBolt</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Timeline.Editor.csproj">
       <Project>{c6d89734-df3a-3dd1-f06d-48f2bb34c388}</Project>
       <Name>Unity.Timeline.Editor</Name>
@@ -1127,6 +1131,10 @@
       <Project>{8ef3e01c-e33b-9d4c-f32d-617c6eccd674}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="PhotonBolt-Editor.csproj">
+      <Project>{3ce1b7a6-2c14-46ec-8e9d-0e7d84deebce}</Project>
+      <Name>PhotonBolt-Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Multiplayer.Center.Editor.csproj">
       <Project>{acf93d69-491a-1c82-dda4-dc1fda32d585}</Project>
       <Name>Unity.Multiplayer.Center.Editor</Name>
@@ -1135,29 +1143,17 @@
       <Project>{d2de034d-6f09-ffd4-2beb-474ec1e0df6d}</Project>
       <Name>IngameDebugConsole.Runtime</Name>
     </ProjectReference>
-    <ProjectReference Include="Mirror.Components.csproj">
-      <Project>{0570fda2-1bc5-a5e7-767a-377ea5af85c6}</Project>
-      <Name>Mirror.Components</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.csproj">
-      <Project>{55718019-cfc6-0c71-a77c-1baf8d7ac1ff}</Project>
-      <Name>Mirror</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Mathematics.Editor.csproj">
       <Project>{7ee716b2-c686-33ce-fafb-df7eda7c97b9}</Project>
       <Name>Unity.Mathematics.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="Edgegap.csproj">
-      <Project>{394a154f-af29-d6bc-c381-e80a73d081d9}</Project>
-      <Name>Edgegap</Name>
+    <ProjectReference Include="Mirror.Transports.csproj">
+      <Project>{faffdf0e-6a8e-154e-a30f-857e76e1034d}</Project>
+      <Name>Mirror.Transports</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.InternalAPIEditorBridge.001.csproj">
       <Project>{4347e252-199f-3508-19cb-d9d391359b5a}</Project>
       <Name>Unity.InternalAPIEditorBridge.001</Name>
-    </ProjectReference>
-    <ProjectReference Include="Telepathy.csproj">
-      <Project>{a05e50d8-edda-7ed3-bed8-4688db302a85}</Project>
-      <Name>Telepathy</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.2D.Animation.Editor.csproj">
       <Project>{9d29aad3-126f-50c1-8855-c536ab9c11e3}</Project>
@@ -1167,13 +1163,9 @@
       <Project>{6aa89995-4852-c0a4-0e82-f8756a024bd9}</Project>
       <Name>Unity.Collections</Name>
     </ProjectReference>
-    <ProjectReference Include="Mirror.Examples.csproj">
-      <Project>{236ef28f-f346-4c15-2c82-02469122e023}</Project>
-      <Name>Mirror.Examples</Name>
-    </ProjectReference>
-    <ProjectReference Include="SimpleWebTransport.csproj">
-      <Project>{e78044e9-9bec-7d25-491c-3c9f156e1a12}</Project>
-      <Name>SimpleWebTransport</Name>
+    <ProjectReference Include="PhotonRealtime.csproj">
+      <Project>{7c17ba38-acd8-3810-6653-1c03339c6b57}</Project>
+      <Name>PhotonRealtime</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.2D.PixelPerfect.Editor.csproj">
       <Project>{6cfb3317-49df-d8de-7f31-4048bfd38984}</Project>
@@ -1183,21 +1175,29 @@
       <Project>{f755256f-f5ff-f9ba-fe34-915b9d30e4e1}</Project>
       <Name>Unity.InternalAPIEngineBridge.001</Name>
     </ProjectReference>
+    <ProjectReference Include="Mirror.Examples.csproj">
+      <Project>{236ef28f-f346-4c15-2c82-02469122e023}</Project>
+      <Name>Mirror.Examples</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.2D.Tilemap.Editor.csproj">
       <Project>{97ed5895-d5a7-d5a8-2908-7b23590c7a32}</Project>
       <Name>Unity.2D.Tilemap.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.CompilerSymbols.csproj">
+      <Project>{38aa4f72-3975-e41e-3460-9ee7e5130455}</Project>
+      <Name>Mirror.CompilerSymbols</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.2D.Animation.Runtime.csproj">
       <Project>{8b661ecb-a0d3-bd94-7d62-d3bebaa40db3}</Project>
       <Name>Unity.2D.Animation.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="PhotonBolt.csproj">
+      <Project>{1e043340-2797-6e19-919a-9bbea96d5883}</Project>
+      <Name>PhotonBolt</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Collections.Editor.csproj">
       <Project>{bc1ad1df-f077-960b-49fd-daac186549fb}</Project>
       <Name>Unity.Collections.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="EncryptionTransportEditor.csproj">
-      <Project>{b48fb9b5-fec9-185e-785d-b305de3f0d74}</Project>
-      <Name>EncryptionTransportEditor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Multiplayer.Center.Common.csproj">
       <Project>{57e02176-c396-efae-5daa-100799d6e127}</Project>
@@ -1207,13 +1207,25 @@
       <Project>{b4e15cab-d153-c378-073e-b13af75d1404}</Project>
       <Name>Unity.AI.Navigation.Updater</Name>
     </ProjectReference>
-    <ProjectReference Include="PhotonBolt-Editor.csproj">
-      <Project>{3ce1b7a6-2c14-46ec-8e9d-0e7d84deebce}</Project>
-      <Name>PhotonBolt-Editor</Name>
+    <ProjectReference Include="Mirror.Authenticators.csproj">
+      <Project>{cb74b826-dad9-8fce-5f1c-688078cc02a3}</Project>
+      <Name>Mirror.Authenticators</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.csproj">
+      <Project>{55718019-cfc6-0c71-a77c-1baf8d7ac1ff}</Project>
+      <Name>Mirror</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.Editor.csproj">
+      <Project>{899abd68-de69-a6fa-8ad4-d70616572068}</Project>
+      <Name>Mirror.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{a6c2c8e5-7b92-09ae-ddfd-65e74b9ae3e1}</Project>
       <Name>Unity.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="kcp2k.csproj">
+      <Project>{64a26f8c-0233-d06e-ce3a-bfebe83de5a7}</Project>
+      <Name>kcp2k</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
       <Project>{5044f822-6254-082e-d0d9-fb6be97d7cc9}</Project>
@@ -1231,10 +1243,6 @@
       <Project>{8396a84f-d20a-3d9b-d5cc-d436b415b59c}</Project>
       <Name>Unity.Mathematics</Name>
     </ProjectReference>
-    <ProjectReference Include="PhotonRealtime.csproj">
-      <Project>{7c17ba38-acd8-3810-6653-1c03339c6b57}</Project>
-      <Name>PhotonRealtime</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.VSCode.Editor.csproj">
       <Project>{fd7d5676-2405-1d52-ec9a-1321b7590509}</Project>
       <Name>Unity.VSCode.Editor</Name>
@@ -1246,10 +1254,6 @@
     <ProjectReference Include="Unity.2D.Sprite.Editor.csproj">
       <Project>{644329b6-6e4a-4fe0-ec20-49e6efd4e876}</Project>
       <Name>Unity.2D.Sprite.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.Authenticators.csproj">
-      <Project>{cb74b826-dad9-8fce-5f1c-688078cc02a3}</Project>
-      <Name>Mirror.Authenticators</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.AI.Navigation.Editor.ConversionSystem.csproj">
       <Project>{a011fe72-d4e0-38e2-e0cb-73e7af463194}</Project>
@@ -1271,6 +1275,10 @@
       <Project>{fc2c8b12-0039-3a07-86ef-d56a7c9ba78e}</Project>
       <Name>Unity.2D.PixelPerfect</Name>
     </ProjectReference>
+    <ProjectReference Include="SimpleWebTransport.csproj">
+      <Project>{e78044e9-9bec-7d25-491c-3c9f156e1a12}</Project>
+      <Name>SimpleWebTransport</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Burst.csproj">
       <Project>{8e7e792c-c8ca-62c4-548b-0d845c27bfdb}</Project>
       <Name>Unity.Burst</Name>
@@ -1279,17 +1287,13 @@
       <Project>{56d761cf-8a8c-b923-0af3-38210db9ec4e}</Project>
       <Name>Unity.VisualStudio.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="Mirror.Transports.csproj">
-      <Project>{faffdf0e-6a8e-154e-a30f-857e76e1034d}</Project>
-      <Name>Mirror.Transports</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.CompilerSymbols.csproj">
-      <Project>{38aa4f72-3975-e41e-3460-9ee7e5130455}</Project>
-      <Name>Mirror.CompilerSymbols</Name>
-    </ProjectReference>
     <ProjectReference Include="IngameDebugConsole.Editor.csproj">
       <Project>{fbbe13be-881b-16cf-8a93-c3667b3405e1}</Project>
       <Name>IngameDebugConsole.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Telepathy.csproj">
+      <Project>{a05e50d8-edda-7ed3-bed8-4688db302a85}</Project>
+      <Name>Telepathy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

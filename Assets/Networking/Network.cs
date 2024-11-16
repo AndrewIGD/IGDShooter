@@ -161,6 +161,14 @@ public class Network : MonoBehaviour
 
                     break;
                 }
+            
+            case NetworkingLibrary.Mirror:
+            {
+                _networkHandler = networkHandler.AddComponent<MirrorNetworkingHandler>();
+                networkHandler.name = "Mirror";
+
+                break;
+            }
         }
 
         DontDestroyOnLoad(networkHandler);

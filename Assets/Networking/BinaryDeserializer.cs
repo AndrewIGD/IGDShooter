@@ -16,12 +16,14 @@ public static class BinaryDeserializer
         _bytes = bytes;
         _byteIndex = 0;
 
+        var length = DeserializeInt();
+
         try
         {
             while (_byteIndex < bytes.Length)
             {
                 BinaryType type = (BinaryType)DeserializeByte();
-
+                
                 switch (type)
                 {
                     case BinaryType.Integer:

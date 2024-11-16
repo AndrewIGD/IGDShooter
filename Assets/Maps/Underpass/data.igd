@@ -1,0 +1,38 @@
+CtSpawn -29.07248 -15.93653
+Tile Maps\Underpass\Textures\tex0 0.01036835 0.04597092 32767 12 12 False False False True 0 0 0 True
+Tile Maps\Underpass\Textures\tex1 -28.48114 -22.15852 32766 12 12 False False True True 0 0 0 True
+Tile Maps\Underpass\Textures\tex2 -25.88448 7.048337 32765 10 10 True False False True 0 0 0 True
+Tile Maps\Underpass\Textures\tex3 38.94096 26.2582 32764 12 12 False True False True 0 0 0 True
+TSpawn 34.34133 27.60029
+TSpawn 39.09809 31.57951
+TSpawn 42.80288 27.46308
+TSpawn 41.385 22.61483
+TSpawn 36.99414 22.47762
+CtSpawn -25.68518 -19.25019
+CtSpawn -32.16524 -19.10292
+CtSpawn -30.61886 -23.00568
+CtSpawn -26.86337 -23.00568
+Tile Maps\Underpass\Textures\tex4 0.06245422 35.32776 32763 12 12 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 0.02654266 -35.20617 32762 12 12 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -47.31811 -2.408896 32761 12 12 False False False False 0 0 90 True
+Tile Maps\Underpass\Textures\tex4 -47.27793 -2.488125 32760 12 12 False False False False 0 0 90 True
+Tile Maps\Underpass\Textures\tex4 47.34546 6.742702 32761 12 12 False False False False 0 0 90 True
+Tile Maps\Underpass\Textures\tex4 -10.6132 31.51004 32762 2.411554 67.32771 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -9.547263 12.94658 32761 1.264001 85.64166 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -3.74594 11.80378 32760 1.264001 64.98513 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -8.874485 8.898531 32759 1.1219 64.98513 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -8.777845 -4.546811 32758 1.1047 86.86723 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -21.19843 -6.907093 32757 4.209845 47.5292 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -45.20515 -6.869451 32756 0.6454239 47.5292 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 18.9242 11.77911 32758 3.174591 64.98513 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 18.76417 -8.187011 32757 3.790715 22.21189 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 31.84079 -8.682019 32756 0.5746999 64.3552 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 30.80784 -23.01457 32755 2.02004 56.95314 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 4.554002 -23.13747 32754 3.160612 56.95314 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 1.103569 -23.27714 32753 2.298004 90.14144 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -19.61478 -21.8802 32752 0.5643435 79.49964 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -36.44106 -22.07819 32751 0.438807 100.2614 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -36.44329 -33.34937 32750 0.456264 18.30692 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex1 -28.48114 -22.15852 32765 12 12 True False False True 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -29.74252 13.02782 32756 0.6794233 43.11197 False False False False 0 0 0 True
+Tile Maps\Underpass\Textures\tex4 -29.40334 2.951885 32755 2.460109 11.30592 False False False False 0 0 0 True

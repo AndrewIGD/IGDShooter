@@ -387,6 +387,8 @@ public class GameHost : MonoBehaviour
 
     float delta;
 
+    private float lastPlayerCountSend = 0;
+
     private IEnumerator MessageQueue()
     {
         delta = 1f / Network.Instance.UpdateRate;
@@ -407,7 +409,7 @@ public class GameHost : MonoBehaviour
 
                 SendPlayerCount(playersConnected);
 
-                Network.Instance.Send(new ExperimentalFeatures(Config.ExperimentalFeatures));
+                //Network.Instance.Send(new ExperimentalFeatures(Config.ExperimentalFeatures));
             }
             catch (Exception ex)
             {
@@ -819,7 +821,11 @@ public class GameHost : MonoBehaviour
     {
         if (_inGame == false)
         {
-            Network.Instance.Send(new PlayerCount(playersConnected++));
+            if (Time.realtimeSinceStartup - lastPlayerCountSend > 1)
+            {
+                Network.Instance.Send(new PlayerCount(playersConnected++));
+                lastPlayerCountSend = Time.realtimeSinceStartup;
+            }
         }
         else if (_warmup)
             Network.Instance.Send(new Warmup());
@@ -1003,7 +1009,7 @@ public class GameHost : MonoBehaviour
     private void HandleNewPlayerName(string data, string id)
     {
         string currentName = MatchData.PlayerData[id].Name;
-        MatchData.PlayerData[id].Name = data.Split(' ')[2];
+        MatchData.PlayerData[id].Name = data.Split(' ')[0];
         CheckName(id);
 
         if (Chat.Instance != null)
