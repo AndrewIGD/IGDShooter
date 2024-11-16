@@ -165,7 +165,7 @@ public class MainMenuActions : MonoBehaviour
 
     public void LAN()
     {
-        MatchData.NetworkingLibrary = NetworkingLibrary.Lidgren;
+        MatchData.NetworkingLibrary = NetworkingLibrary.Mirror;
 
         SceneManager.LoadScene("HostRoom");
     }

@@ -109,7 +109,7 @@ public class Weapon : MonoBehaviour
 
             Rigidbody2D grenadeRb = grenade.GetComponent<Rigidbody2D>();
 
-            grenadeRb.velocity = grenade.transform.up * bulletSpeed;
+            grenadeRb.linearVelocity = grenade.transform.up * bulletSpeed;
 
             Grenade grenadeScript = grenade.GetComponent<Grenade>();
 
@@ -203,12 +203,12 @@ public class Weapon : MonoBehaviour
         Rigidbody2D bulletRb = newBullet.GetComponent<Rigidbody2D>();
 
         if (running == false || parentScript.GunRecoil == false)
-            bulletRb.velocity = -newBullet.transform.up * bulletSpeed;
-        else bulletRb.velocity = -newBullet.transform.up * bulletSpeed + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
+            bulletRb.linearVelocity = -newBullet.transform.up * bulletSpeed;
+        else bulletRb.linearVelocity = -newBullet.transform.up * bulletSpeed + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
 
         newBullet.transform.name = GameHost.Instance.drop.ToString(CultureInfo.InvariantCulture);
 
-        Network.Instance.Send(new Bullet(newBullet.transform.position, bulletRb.velocity, newBullet.transform.localEulerAngles.z, GameHost.Instance.drop++, destroy));
+        Network.Instance.Send(new Bullet(newBullet.transform.position, bulletRb.linearVelocity, newBullet.transform.localEulerAngles.z, GameHost.Instance.drop++, destroy));
 
         if (destroy)
             Destroy(newBullet, 0.5f);

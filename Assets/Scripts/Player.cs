@@ -551,7 +551,7 @@ public class Player : MonoBehaviour
                 {
                     try
                     {
-                        child.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+                        child.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
                         child.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-360, 360);
                         child.GetComponent<BoxCollider2D>().enabled = true;
                     }
@@ -615,7 +615,7 @@ public class Player : MonoBehaviour
                     damageReceived = attacker.GetDamageDealt(this);
                 }
 
-                _rb.velocity = Vector2.zero;
+                _rb.linearVelocity = Vector2.zero;
 
                 MatchData.PlayerData[_playerNumber].Deaths++;
 
@@ -1366,7 +1366,7 @@ public class Player : MonoBehaviour
 
         NullTargetPosition();
 
-        _rb.velocity = -transform.up * Config.DashSpeed;
+        _rb.linearVelocity = -transform.up * Config.DashSpeed;
 
         if (_gunScript.IsKnife || _gunScript.IsNade)
             _animator.Play("dash_knife", 0, 0);
@@ -1771,7 +1771,7 @@ public class Player : MonoBehaviour
         _timeAlive += Time.deltaTime;
 
         if(dashGun == false && dashKnife == false)
-            _rb.velocity = new Vector2(0, 0);
+            _rb.linearVelocity = new Vector2(0, 0);
 
         if(GameHost.Instance != null && _dashTimer < 5 && Controllable)
         {
@@ -2111,7 +2111,7 @@ public class Player : MonoBehaviour
             }
             if (GameHost.Instance != null)
             {
-                _rb.velocity = new Vector2(0, 0);
+                _rb.linearVelocity = new Vector2(0, 0);
             }
         }
     }

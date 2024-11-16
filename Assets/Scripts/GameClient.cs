@@ -470,7 +470,7 @@ public class GameClient : MonoBehaviour
                     }
 
                     newGren.transform.position = grenade.Position;
-                    newGren.GetComponent<Rigidbody2D>().velocity = grenade.Velocity;
+                    newGren.GetComponent<Rigidbody2D>().linearVelocity = grenade.Velocity;
                     newGren.transform.localEulerAngles = new Vector3(0, 0, grenade.Angle);
 
                     newGren.GetComponent<Grenade>().Invoke("Detonate", 1f);
@@ -484,7 +484,7 @@ public class GameClient : MonoBehaviour
 
                     GameObject newBullet = Instantiate(FightSceneManager.Instance.BulletPrefab);
                     newBullet.transform.position = bullet.Position;
-                    newBullet.GetComponent<Rigidbody2D>().velocity = bullet.Velocity;
+                    newBullet.GetComponent<Rigidbody2D>().linearVelocity = bullet.Velocity;
                     newBullet.transform.localEulerAngles = new Vector3(0, 0, bullet.Angle);
 
                     newBullet.transform.name = bullet.ID.ToString(CultureInfo.InvariantCulture);
@@ -526,7 +526,7 @@ public class GameClient : MonoBehaviour
 
                     drop.GetComponent<Drop>().Setup(serverDrop.BulletCount, serverDrop.RoundAmmo);
                     drop.transform.position = serverDrop.Position;
-                    drop.GetComponent<Rigidbody2D>().velocity = serverDrop.Velocity;
+                    drop.GetComponent<Rigidbody2D>().linearVelocity = serverDrop.Velocity;
 
                     drop.transform.name = "drop" + serverDrop.ID;
 

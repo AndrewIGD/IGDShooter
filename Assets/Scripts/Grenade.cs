@@ -102,7 +102,7 @@ public class Grenade : MonoBehaviour
         }
         else if (smoke)
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0, 0);
 
             if (GameHost.Instance != null)
             {
@@ -119,7 +119,7 @@ public class Grenade : MonoBehaviour
         }
         else if (wall)
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0, 0);
 
             if (GameHost.Instance != null)
             {
