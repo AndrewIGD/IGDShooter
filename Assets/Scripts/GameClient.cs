@@ -85,6 +85,8 @@ public class GameClient : MonoBehaviour
 
     public int Team = -1;
 
+    public int RoundIndex => _sceneIndex;
+
     #endregion
 
     #region Private Variables
@@ -152,29 +154,6 @@ public class GameClient : MonoBehaviour
             players = new Dictionary<string, GameObject>();
             playerScripts = new Dictionary<string, Player>();
 
-            /*config = new NetPeerConfiguration("IGDShooter")
-            {
-                //EnableUPnP = true,
-                AcceptIncomingConnections = true,
-                PingInterval = 1f,
-                ResendHandshakeInterval = 1f,
-                MaximumHandshakeAttempts = 15,
-                ConnectionTimeout = 1000f,
-                ReceiveBufferSize = PlayerPrefs.GetInt("ClientReceiveBuffer", 3072),
-                SendBufferSize = PlayerPrefs.GetInt("ClientSendBuffer", 1024)
-            };
-
-            client = new NetClient(config);
-            client.Start();
-
-            client.Connect(host: ip, port: 25565);
-
-            Invoke("TestConnection", 3.5f);
-
-            Invoke("SendConnectionMessage", 0.25f);
-
-            StartCoroutine(MessageQueue(64));*/
-
             GameObject clientMap = new GameObject();
             clientMap.transform.position = transform.position;
             clientMap.transform.parent = transform;
@@ -204,9 +183,6 @@ public class GameClient : MonoBehaviour
 
     private void InterpretObject(object o)
     {
-        if (o is SpawnPlayer)
-            Debug.Log("SpawnDetected");
-
         switch (o)
         {
             case PlayerCount playerCountPacket:
@@ -569,6 +545,9 @@ public class GameClient : MonoBehaviour
                     {
                         string id = playerInfo.PlayerID;
 
+                        if (playerScripts.ContainsKey(id) == false)
+                            break;
+
                         if (GameHost.Instance == null)
                         {
                             Vector2 playerPos = playerInfo.Position;
@@ -713,10 +692,6 @@ public class GameClient : MonoBehaviour
                 }
             case SpawnPlayer spawnPlayer:
                 {
-                    Debug.Log("Spawn");
-
-                    RoundData.Instance.Spawned = false;
-
                     spawnPlayers.Add(spawnPlayer);
 
                     break;
@@ -822,7 +797,7 @@ public class GameClient : MonoBehaviour
                     break;
                 }
             case StartGame startGame:
-                {
+            {
                     StartCoroutine(LoadNewScene(startGame));
 
                     break;
@@ -1070,6 +1045,8 @@ public class GameClient : MonoBehaviour
                 {
                     if (loadScene.Name != "OnlineWaitMenu")
                         SceneManager.LoadScene(loadScene.Name);
+
+                    _sceneIndex = loadScene.SceneIndex;
 
                     break;
                 }
@@ -1410,6 +1387,9 @@ public class GameClient : MonoBehaviour
 
     private void SpawnPlayers()
     {
+        if (RoundData.Instance == null || RoundData.Instance.RoundIndex < _sceneIndex)
+            return;
+        
         if (spawnPlayers.Count != 0)
         {
             foreach (SpawnPlayer spawnPlayer in spawnPlayers)
@@ -1428,6 +1408,7 @@ public class GameClient : MonoBehaviour
             {
                 try
                 {
+                    Debug.Log(spawnPlayer.SceneIndex + " " + _sceneIndex);
                     if (spawnPlayer.SceneIndex <= _sceneIndex)
                     {
                         toRemove.Add(spawnPlayer);
@@ -1452,7 +1433,7 @@ public class GameClient : MonoBehaviour
                     if (ok)
                     {
                         GameObject player = null;
-
+                        
                         Player playerScript = null;
                         if (spawnPlayer.Team == 0)
                         {
@@ -1513,23 +1494,7 @@ public class GameClient : MonoBehaviour
                             spawnPlayer.Armor,
                             spawnPlayer.Cash, spawnPlayer.Team);
 
-                        Vector2 spawnPos = new Vector2(0, 0);
-
-                        if (playerScript.Team == 0)
-                        {
-                            spawnPos = GameObject.Find("ctSpawn" + (ctSpawnIndex++).ToString(CultureInfo.InvariantCulture)).transform.position;
-                            if (GameObject.Find("ctSpawn" + ctSpawnIndex.ToString(CultureInfo.InvariantCulture)) == null)
-                                ctSpawnIndex = 0;
-
-                        }
-                        else
-                        {
-                            spawnPos = GameObject.Find("tSpawn" + (tSpawnIndex++).ToString(CultureInfo.InvariantCulture)).transform.position;
-                            if (GameObject.Find("tSpawn" + tSpawnIndex.ToString(CultureInfo.InvariantCulture)) == null)
-                                tSpawnIndex = 0;
-                        }
-
-                        player.transform.position = spawnPos;
+                        OnPlayerDeath(playerScript, player);
 
                         AlivePlayers.Add(playerScript);
 
@@ -1586,6 +1551,26 @@ public class GameClient : MonoBehaviour
 
 
         }
+    }
+
+    public void OnPlayerDeath(Player playerScript, GameObject player)
+    {
+        Vector2 spawnPos;
+        if (playerScript.Team == 0)
+        {
+            spawnPos = GameObject.Find("ctSpawn" + (ctSpawnIndex++).ToString(CultureInfo.InvariantCulture)).transform.position;
+            if (GameObject.Find("ctSpawn" + ctSpawnIndex.ToString(CultureInfo.InvariantCulture)) == null)
+                ctSpawnIndex = 0;
+
+        }
+        else
+        {
+            spawnPos = GameObject.Find("tSpawn" + (tSpawnIndex++).ToString(CultureInfo.InvariantCulture)).transform.position;
+            if (GameObject.Find("tSpawn" + tSpawnIndex.ToString(CultureInfo.InvariantCulture)) == null)
+                tSpawnIndex = 0;
+        }
+
+        player.transform.position = spawnPos;
     }
 
     private void ActivateTeamSelection()
@@ -1654,6 +1639,8 @@ public class GameClient : MonoBehaviour
     private IEnumerator LoadNewScene(StartGame startGame)
     {
         loadingScene = true;
+        
+        _sceneIndex = startGame.SceneIndex;
 
         var scene = SceneManager.LoadSceneAsync(Config.FightSceneName);
 
@@ -1671,8 +1658,6 @@ public class GameClient : MonoBehaviour
 
         ctSpawnIndex = 0;
         tSpawnIndex = 0;
-
-        _sceneIndex = startGame.SceneIndex;
 
         loadingScene = false;
 

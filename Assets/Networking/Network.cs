@@ -101,13 +101,13 @@ public class Network : MonoBehaviour
     {
         BinarySerializer.Add(obj);
 
-        if (IsHost)
+        if (IsHost && !_networkHandler.HasManualProcessing())
             ProcessObject(obj, _networkHandler.GetSelfID()); // The host doesn't have a client processing this data, so might as well just do it here
     }
 
     public void SendTo(string id, object obj)
     {
-        if (id == _networkHandler.GetSelfID())
+        if (id == _networkHandler.GetSelfID() && !_networkHandler.HasManualProcessing())
             ProcessObject(obj, _networkHandler.GetSelfID());
 
         _networkHandler.SendTo(id, BinarySerializer.GetDirect(obj));
@@ -116,11 +116,7 @@ public class Network : MonoBehaviour
     public void Process(byte[] message, string senderId)
     {
         object[] objects = BinaryDeserializer.Deserialize(message);
-
-        foreach (object o in objects)
-            if (o is SpawnPlayer)
-                Debug.Log("Spawn in Process");
-
+        
         OnMessagesReceived.Invoke(objects, senderId);
     }
 
@@ -203,7 +199,7 @@ public class Network : MonoBehaviour
         while (true)
         {
             yield return new WaitForSecondsRealtime(_timeStep);
-
+            
             ForceSendPackets();
         }
     }

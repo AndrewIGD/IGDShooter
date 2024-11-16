@@ -162,6 +162,9 @@ public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
         networkManager.OnClientConnected += conn => OnClientConnected(conn.connectionId.ToString());
 
         await Task.Delay(0);
+
+        NetworkClient.exceptionsDisconnect = false;
+        NetworkServer.exceptionsDisconnect = false;
         
         NetworkClient.RegisterHandler<MirrorByteArray>(OnClientReceiveMessage);
         NetworkServer.RegisterHandler<MirrorByteArray>(OnServerReceiveMessage);
@@ -239,6 +242,8 @@ public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
     {
         return Mathf.RoundToInt((float)NetworkTime.rtt * 1000);
     }
+
+    public bool HasManualProcessing() => true;
 }
 
 public class MirrorSessionData : SessionData

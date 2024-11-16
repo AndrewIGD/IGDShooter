@@ -302,6 +302,8 @@ public class LidgrenNetworkHandler : MonoBehaviour, INetworkHandler
 
         StartCoroutine(MessageCheck());
     }
+    
+    public bool HasManualProcessing() => false;
 }
 
 public class LidgrenSessionData : SessionData

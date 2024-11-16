@@ -347,6 +347,8 @@ public class PhotonNetworkHandler : GlobalEventListener, INetworkHandler
     {
         return;
     }
+    
+    public bool HasManualProcessing() => false;
 }
 
 public class BoltSessionData : SessionData

@@ -409,7 +409,7 @@ public class GameHost : MonoBehaviour
 
                 SendPlayerCount(playersConnected);
 
-                //Network.Instance.Send(new ExperimentalFeatures(Config.ExperimentalFeatures));
+                Network.Instance.Send(new ExperimentalFeatures(Config.ExperimentalFeatures));
             }
             catch (Exception ex)
             {
@@ -481,7 +481,7 @@ public class GameHost : MonoBehaviour
 
             if (GameClient.Instance.loadingScene)
                 return;
-
+            
             if (RoundData.Instance.Spawned && RoundData.Instance.Ended == false)
             {
                 bool bluePlayersExist = false;
@@ -976,6 +976,8 @@ public class GameHost : MonoBehaviour
         {
             MatchData.PlayerData[senderID].Team = teamID;
 
+            Debug.Log("New Team: " + _warmup + " " + (MatchData.PlayerData[senderID].Team != 2));
+            
             if (_warmup && MatchData.PlayerData[senderID].Team != 2)
             {
                 int hasPistol = 0;

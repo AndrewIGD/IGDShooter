@@ -13,8 +13,12 @@ public class RoundData : MonoBehaviour
     public bool RoundStart = false;
     public bool Ended = false;
 
+    public int RoundIndex = -1;
+
     private void Awake()
     {
         Instance = this;
+
+        RoundIndex = GameClient.Instance.RoundIndex;
     }
 }

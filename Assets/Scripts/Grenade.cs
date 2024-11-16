@@ -60,7 +60,7 @@ public class Grenade : MonoBehaviour
 
                     if (distance < 8f && player.Dead == false)
                     {
-                        int damage = 200 / ((int)distance + 1);
+                        int damage = (int)(300 / (distance + 1));
 
                         player.DecreaseHp(_parentScript, damage, 6);
                     }

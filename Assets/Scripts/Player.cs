@@ -630,11 +630,9 @@ public class Player : MonoBehaviour
                 health = 100;
                 if (gameHost != null && _controlling)
                     FightSceneManager.Instance.HealthText.text = "100";
-                if (_team == 0)
-                    transform.position = GameObject.Find("ctSpawn" + (Random.Range(0, 99999) % 9).ToString(CultureInfo.InvariantCulture)).transform.position;
-                else if (_team == 1)
-                    transform.position = GameObject.Find("tSpawn" + (Random.Range(0, 99999) % 9).ToString(CultureInfo.InvariantCulture)).transform.position;
 
+                GameClient.Instance.OnPlayerDeath(this, gameObject);
+                
                 MatchData.PlayerData[_playerNumber].Deaths++;
 
                 Network.Instance.Send(new SetDeaths(_playerNumber, MatchData.PlayerData[_playerNumber].Deaths));
