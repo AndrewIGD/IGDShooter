@@ -1255,8 +1255,6 @@ public class GameClient : MonoBehaviour
 
             try
             {
-                ActivateMegamap();
-                ActivateTeamSelection();
                 SpawnPlayers();
                 RunOnRoundInitialization();
                 LobbyUpdate();
@@ -1292,6 +1290,12 @@ public class GameClient : MonoBehaviour
                 Debug.LogError(ex.ToString());
             }
         }
+    }
+
+    private void Update()
+    {
+        ActivateMegamap();
+        ActivateTeamSelection();
     }
 
     private void LobbyUpdate()

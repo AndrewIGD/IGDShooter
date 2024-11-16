@@ -1,0 +1,101 @@
+Tile Maps\Wagon\Textures\tex0 0.07355118 -0.1203156 32767 30 30 False False False True 0 0 0 True
+CtSpawn 26.02715 -20.23067
+Tile Maps\Wagon\Textures\tex1 18.55478 -20.61749 32766 16 16 True False False True 0 0 0 False
+Tile Maps\Wagon\Textures\tex1 11.11126 1.216817 32600 16 16 True False False True 0 0 0 False
+Tile Maps\Wagon\Textures\tex2 27.54318 -21.94812 32764 16 16 False False True True 0 0 0 False
+Tile Maps\Wagon\Textures\tex2 -27.39461 21.82266 32763 16 16 False True False True 0 0 0 False
+Tile Maps\Wagon\Textures\tex3 24.89446 -1.90005 32762 2 2 False False False True 0 0 0 True
+Tile Maps\Wagon\Textures\tex3 24.90001 8.271763 32761 2 2 False False False True 0 0 0 True
+Tile Maps\Wagon\Textures\tex3 8.663104 5.535497 32760 2 2 False False False True 0 0 0 True
+Tile Maps\Wagon\Textures\tex3 1.423176 1.379646 32759 2 2 False False False True 0 0 0 True
+Tile Maps\Wagon\Textures\tex3 1.423176 -2.725596 32758 2 2 False False False True 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 23.40923 21.60239 32599 1 1 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 -2.529083 10.306 32598 1.5 1.5 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 -9.294205 14.93026 32597 3 3 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 -5.611923 21.60975 32596 3 3 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 -34.37107 22.36416 32595 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 32.01548 -16.78468 32594 3 3 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 33.06863 -22.05963 32593 1.431432 1.402402 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 20.85826 -14.17089 32592 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 17.2607 -24.54969 32591 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 22.4501 -20.4109 32590 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 8.569248 -6.784742 32589 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 -10.82453 5.641209 32588 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex4 4.84634 22.39214 32587 0.5 0.5 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex5 10.79126 5.576965 32586 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex5 -0.4413624 -2.726721 32585 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex6 22.80777 -1.880335 32584 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex6 26.9727 -1.880335 32583 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex7 4.321466 1.386039 32582 2 2 False False False False 0 0 0 True
+Tile Maps\Wagon\Textures\tex7 -3.666258 1.402819 32581 2 2 False False False False 0 0 0 True
+CtSpawn 28.38818 -20.26644
+CtSpawn 28.31663 -22.73479
+CtSpawn 26.20602 -22.73479
+TSpawn -29.01099 23.56111
+TSpawn -26.54476 23.56111
+TSpawn -26.51273 21.19096
+TSpawn -28.59462 21.12691
+TSpawn -28.59462 21.12691
+Tile Maps\Wagon\Textures\tex8 -16.27888 25.7854 32580 43.74215 9.910748 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -26.95711 26.03316 32579 43.74215 9.910748 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -38.3786 25.11646 32578 43.74215 9.910748 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -42.6361 13.91334 32577 43.74215 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -36.2916 7.527098 32576 43.74215 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -28.36097 5.77401 32575 43.74215 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -18.35791 9.113222 32574 18.78924 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -21.3632 8.236679 32573 18.78924 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -11.70205 -6.848438 32572 31.03724 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -2.986538 -15.78575 32571 64.60658 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 5.643393 -22.31528 32570 64.60658 70.5387 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 15.20712 -12.18835 32569 8.520675 7.582647 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 29.16948 -35.61012 32568 88.40378 42.01354 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 47.86969 -32.53302 32567 88.40378 42.1761 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 48.12709 -23.47269 32566 88.40378 42.1761 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 48.43085 -11.39503 32565 88.40378 42.1761 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 47.79264 -0.8844967 32564 88.40378 42.1761 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 47.1914 7.579329 32563 88.40378 76.66217 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 39.65075 14.47099 32562 88.40378 28.05607 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 38.26482 17.5558 32561 88.40378 33.9239 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 39.69546 19.03114 32560 88.40378 33.9239 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 40.00841 26.27372 32559 88.40378 33.9239 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 26.23857 34.36574 32558 88.40378 33.9239 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 6.925016 33.56101 32557 88.40378 33.9239 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -0.4619598 33.14431 32556 88.40378 33.9239 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 5.18375 32.50032 32555 71.8223 33.9239 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -5.245859 27.15672 32554 6.637232 13.13968 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -40.72319 40.53487 32553 196.1281 90.07571 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 43.46715 46.91233 32552 526.1278 90.07571 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 124.0479 -22.45935 32551 526.1278 468.412 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 13.98053 -105.343 32550 526.1278 468.412 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -98.75189 -74.1617 32549 526.1278 468.412 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -87.02559 -91.48464 32548 526.1278 468.412 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -123.2705 -1.405289 32547 526.1278 468.412 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 111.7855 122.1992 32546 1570.013 468.412 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 330.4304 -97.90894 32545 1570.013 1263.069 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -54.4054 -278.1222 32544 1570.013 1263.069 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -334.3332 -63.11271 32543 1570.013 1263.069 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -348.8749 129.5649 32542 1570.013 1263.069 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -11.81894 305.6234 32541 1570.013 1263.069 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 359.5138 289.5236 32540 1570.013 1263.069 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -280.3211 -196.0655 32539 1570.013 1263.069 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 0.2211623 13.93458 32538 47.36913 16.07171 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 4.095048 13.30747 32537 23.15734 19.99119 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 0.672379 16.67595 32536 50.38929 18.76786 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -0.467621 20.06955 32535 20.39399 19.99119 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 13.01037 17.6728 32534 48.83956 32.64016 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 15.04209 17.92125 32533 9.449339 34.19296 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 18.96 15.58327 32532 12.5048 34.19296 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 21.1073 11.19173 32531 0.9158432 6.745863 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 23.60038 3.421453 32530 36.5001 17.38094 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 19.30492 1.072634 32529 15.347 3.946281 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 19.31718 5.594491 32528 15.347 3.946281 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 27.62099 -8.766893 32527 19.04407 27.75447 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 24.05086 -8.689152 32526 32.64126 26.84576 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 23.01886 -6.555437 32525 39.09122 13.51004 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 22.17012 -7.555305 32524 44.39589 7.260872 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 20.38982 -8.3076 32523 55.52277 2.559026 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 12.61196 -7.559933 32522 6.911165 7.231942 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 24.35938 -20.33643 32521 3.537363 32.69491 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 27.23556 -24.95013 32520 21.51351 3.859246 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -7.192124 12.3415 32535 2.341874 18.76786 False False False False 0 0 0 False
+Tile Maps\Wagon\Textures\tex8 -7.176498 5.711966 32534 2.439538 10.91367 False False False False 0 0 0 False
