@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using kcp2k;
 using Mirror;
+using Mirror.SimpleWeb;
 using UnityEngine;
 
 public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
@@ -46,12 +47,12 @@ public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
     public async void Host()
     {
         await CreateNetworkManager();
+
+        ((ThreadedKcpTransport)networkManager.transport).port = 7777;
         
         Stop();
 
-        networkManager.networkAddress = "localhost";
-
-        networkManager.StartHost();
+        networkManager.StartServer();
         
         CreateDiscovery();
         
@@ -70,8 +71,6 @@ public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
         Stop();
         
         await CreateNetworkManager();
-        
-        networkManager.networkAddress = ip;
         
         networkManager.StartClient();
     }
@@ -153,10 +152,13 @@ public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
         networkManagerObj.transform.SetParent(transform);
         
         var transport = networkManagerObj.AddComponent<ThreadedKcpTransport>();
+        transport.port = port;
         
         networkManager = networkManagerObj.AddComponent<MirrorNetworkManager>();
         networkManager.transport = transport;
         networkManager.autoCreatePlayer = false;
+
+        networkManager.networkAddress = relay;
         
         networkManager.OnJoinedServer += () => OnJoinedServer();
         networkManager.OnClientConnected += conn => OnClientConnected(conn.connectionId.ToString());
@@ -219,7 +221,6 @@ public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
         for (int i = 0; i < NetworkServer.connections.Count; i++)
         {
             connections[i] = NetworkServer.connections.Values.ElementAt(i).connectionId.ToString();
-            Debug.Log(connections[i]);
         }
 
         return connections;
@@ -244,6 +245,12 @@ public class MirrorNetworkingHandler : MonoBehaviour, INetworkHandler
     }
 
     public bool HasManualProcessing() => true;
+
+    public bool ShouldSelfConnect() => false;
+
+    private string relay = "2c31463d64a0.pr.edgegap.net";
+
+    private ushort port = 30831;
 }
 
 public class MirrorSessionData : SessionData

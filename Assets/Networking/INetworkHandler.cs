@@ -2,6 +2,8 @@
 
 internal interface INetworkHandler
 {
+    public bool ShouldSelfConnect();
+    
     public bool HasManualProcessing();
     
     public bool HasConnections();

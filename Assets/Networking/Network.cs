@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Network : MonoBehaviour
 {
@@ -80,6 +81,9 @@ public class Network : MonoBehaviour
 
     public IEnumerator SelfConnect()
     {
+        if (!_networkHandler.ShouldSelfConnect())
+            yield break;
+        
         yield return new WaitUntil(() => _networkHandler.IsReady());
 
         OnClientConnected.Invoke(_networkHandler.GetSelfID());
@@ -192,6 +196,11 @@ public class Network : MonoBehaviour
         else Destroy(gameObject);
 
         _timeStep = 1 / UpdateRate;
+        
+        SetNetworkingLibrary(NetworkingLibrary.Mirror);
+        Host();
+        
+        SceneManager.LoadScene("OnlineWaitMenu");
     }
 
     private IEnumerator MessageLoop()

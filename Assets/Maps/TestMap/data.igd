@@ -1,7 +1,0 @@
-Tile D:/Proiecte/Shooter/Assets\Maps\TestMap\Textures\tex0 0.7900957 -0.7569039 32767 52 52 False False False True 0 0 0 True
-Tile D:/Proiecte/Shooter/Assets\Maps\TestMap\Textures\tex1 -4.972302 5.908063 32766 85.40195 82.87611 False False True True 0 0 0 False
-Tile D:/Proiecte/Shooter/Assets\Maps\TestMap\Textures\tex1 5.769247 0.4107082 10000 45.50684 42.07219 False True False True 0 0 0 False
-Tile D:/Proiecte/Shooter/Assets\Maps\TestMap\Textures\tex2 -2.243243 -6.733357 32764 67.27414 48.88408 True False False True 0 0 0 False
-CtSpawn -4.879382 6.278289
-TSpawn 0.4623218 -1.398374
-Tile D:/Proiecte/Shooter/Assets\Maps\TestMap\Textures\tex1 -1.89895 0.617923 9999 45.50684 282.911 False True False False 0 0 0 False

@@ -347,7 +347,12 @@ public class PhotonNetworkHandler : GlobalEventListener, INetworkHandler
     {
         return;
     }
-    
+
+    public bool ShouldSelfConnect()
+    {
+        return true;
+    }
+
     public bool HasManualProcessing() => false;
 }
 

@@ -302,7 +302,12 @@ public class LidgrenNetworkHandler : MonoBehaviour, INetworkHandler
 
         StartCoroutine(MessageCheck());
     }
-    
+
+    public bool ShouldSelfConnect()
+    {
+        return true;
+    }
+
     public bool HasManualProcessing() => false;
 }
 

@@ -21,7 +21,7 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Networking/Libraries/Mirror/Examples/Chat/Scenes/MirrorChat.unity
+    m_path: Assets/Networking/Libraries/Mirror/Examples/Pong/Scenes/MirrorPong.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []
