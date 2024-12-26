@@ -143,13 +143,6 @@ public class Network : MonoBehaviour
 
         switch (_library)
         {
-            case NetworkingLibrary.Bolt:
-                {
-                    _networkHandler = networkHandler.AddComponent<PhotonNetworkHandler>();
-                    networkHandler.name = "Bolt";
-
-                    break;
-                }
             case NetworkingLibrary.Lidgren:
                 {
                     _networkHandler = networkHandler.AddComponent<LidgrenNetworkHandler>();
@@ -157,14 +150,6 @@ public class Network : MonoBehaviour
 
                     break;
                 }
-            
-            case NetworkingLibrary.Mirror:
-            {
-                _networkHandler = networkHandler.AddComponent<MirrorNetworkingHandler>();
-                networkHandler.name = "Mirror";
-
-                break;
-            }
         }
 
         DontDestroyOnLoad(networkHandler);
