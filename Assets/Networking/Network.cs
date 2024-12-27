@@ -150,6 +150,14 @@ public class Network : MonoBehaviour
 
                     break;
                 }
+            
+            case NetworkingLibrary.LiteNetLib:
+            {
+                _networkHandler = networkHandler.AddComponent<LiteNetLibNetworkingHandler>();
+                networkHandler.name = "LiteNetLib";
+
+                break;
+            }
         }
 
         DontDestroyOnLoad(networkHandler);

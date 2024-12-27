@@ -9,6 +9,7 @@ using System.Linq;
 using TMPro;
 using System.IO;
 using System.Globalization;
+using System.Threading.Tasks;
 
 public class GameClient : MonoBehaviour
 {
@@ -129,6 +130,8 @@ public class GameClient : MonoBehaviour
     private int ctSpawnIndex = 0;
 
     private int tSpawnIndex = 0;
+    
+    private Queue<object> _processQueue = new Queue<object>();
 
     #endregion
 
@@ -163,9 +166,11 @@ public class GameClient : MonoBehaviour
 
             tile = Resources.Load("Prefabs\\tile") as GameObject;
 
-            Network.Instance.OnMessagesReceived += ProcessMessages;
+            Network.Instance.OnMessagesReceived += QueueMessages;
 
             StartCoroutine(MessageQueue());
+
+            StartCoroutine(ProcessMessages());
         }
         catch (Exception err)
         {
@@ -173,15 +178,42 @@ public class GameClient : MonoBehaviour
         }
     }
 
-    private void ProcessMessages(object[] objects, string senderId)
+    private void QueueMessages(object[] objects, string senderId)
     {
-        for (int i = 0; i < objects.Length; i++)
+        _processQueue.Enqueue(objects);
+    }
+
+    private IEnumerator ProcessMessages()
+    {
+        while (true)
         {
-            InterpretObject(objects[i]);
+            while(_processQueue.Count > 0)
+            {
+                var objectArray = (object[])_processQueue.Dequeue();
+
+                foreach (var obj in objectArray)
+                {
+                    var task = InterpretObject(obj);
+                    
+                    if(task.IsCompleted)
+                        continue;
+                
+                    yield return new WaitUntil(() => task.IsCompleted);
+                }
+            }
+            
+            yield return null;
         }
     }
 
-    private void InterpretObject(object o)
+    private async Task LoadSceneAsync(string name)
+    {
+        var ao = SceneManager.LoadSceneAsync(name);
+        while(!ao.isDone)
+            await Task.Yield();
+    }
+
+    private async Task InterpretObject(object o)
     {
         switch (o)
         {
@@ -797,8 +829,26 @@ public class GameClient : MonoBehaviour
                     break;
                 }
             case StartGame startGame:
-            {
-                    StartCoroutine(LoadNewScene(startGame));
+                {
+                    loadingScene = true;
+            
+                    _sceneIndex = startGame.SceneIndex;
+
+                    await LoadSceneAsync(Config.FightSceneName);
+
+                    AlivePlayers = new List<Player>();
+                    Walls = new List<Wall>();
+
+                    gameStart = true;
+
+                    mapTransform.SetActive(true);
+
+                    ctSpawnIndex = 0;
+                    tSpawnIndex = 0;
+
+                    loadingScene = false;
+
+                    SpawnPlayers();
 
                     break;
                 }
@@ -1023,7 +1073,7 @@ public class GameClient : MonoBehaviour
                 }
             case ServerDisconnect serverDisconnect:
                 {
-                    SceneManager.LoadScene("OnlineLobby");
+                    await LoadSceneAsync("OnlineLobby");
 
                     Network.Instance.Shutdown();
 
@@ -1044,7 +1094,7 @@ public class GameClient : MonoBehaviour
             case LoadScene loadScene:
                 {
                     if (loadScene.Name != "OnlineWaitMenu")
-                        SceneManager.LoadScene(loadScene.Name);
+                        await LoadSceneAsync(loadScene.Name);
 
                     _sceneIndex = loadScene.SceneIndex;
 
@@ -1070,7 +1120,7 @@ public class GameClient : MonoBehaviour
                     if (Directory.Exists(Application.dataPath + "\\Maps\\" + map))
                     {
                         if (GameHost.Instance == null)
-                            SceneManager.LoadScene("OnlineWaitMenu");
+                            await LoadSceneAsync("OnlineWaitMenu");
 
                         if (File.Exists(Application.dataPath + "\\Maps\\" + map + "\\megamap.igd"))
                         {
@@ -1638,34 +1688,6 @@ public class GameClient : MonoBehaviour
     private void SendConnectionMessage()
     {
         message += "NewPlayer" + "\n";
-    }
-
-    private IEnumerator LoadNewScene(StartGame startGame)
-    {
-        loadingScene = true;
-        
-        _sceneIndex = startGame.SceneIndex;
-
-        var scene = SceneManager.LoadSceneAsync(Config.FightSceneName);
-
-        while (scene.isDone == false)
-        {
-            yield return null;
-        }
-
-        AlivePlayers = new List<Player>();
-        Walls = new List<Wall>();
-
-        gameStart = true;
-
-        mapTransform.SetActive(true);
-
-        ctSpawnIndex = 0;
-        tSpawnIndex = 0;
-
-        loadingScene = false;
-
-        SpawnPlayers();
     }
 
     #endregion

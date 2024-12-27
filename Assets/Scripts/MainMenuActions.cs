@@ -165,16 +165,14 @@ public class MainMenuActions : MonoBehaviour
 
     public void LAN()
     {
-        MatchData.NetworkingLibrary = NetworkingLibrary.Mirror;
+        MatchData.NetworkingLibrary = NetworkingLibrary.LiteNetLib;
 
         SceneManager.LoadScene("HostRoom");
     }
 
     public void Online()
     {
-        MatchData.NetworkingLibrary = NetworkingLibrary.Bolt;
-
-        SceneManager.LoadScene("HostRoom");
+        
     }
 
     public void Graf()
